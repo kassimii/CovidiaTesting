@@ -49,4 +49,12 @@ const addPatient = asyncHandler(async (req, res) => {
   }
 });
 
-export { addPatient };
+//@desc Fetch all patients
+//@route GET /api/patients
+//@access Public
+const getPatients = asyncHandler(async (req, res) => {
+  const patients = await Patient.find({});
+  res.json(patients);
+});
+
+export { addPatient, getPatients };

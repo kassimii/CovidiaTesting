@@ -19,7 +19,13 @@ const Header = () => {
                   <i className='fas fa-plus-square px-1'></i>Adauga pacient
                 </Nav.Link>
               </LinkContainer>
+              <LinkContainer to='/pacienti'>
+                <Nav.Link>
+                  <i class='fas fa-list'></i>Pacienti
+                </Nav.Link>
+              </LinkContainer>
             </Nav>
+
             <Nav className='ml-auto'>
               <LinkContainer to='/login'>
                 <Nav.Link>
