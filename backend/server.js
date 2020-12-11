@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 import patientRoutes from './routes/patientRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/patients', patientRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 
