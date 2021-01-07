@@ -2,7 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { patientListReducer } from './reducers/patientReducers';
+import {
+  patientListReducer,
+  patientUpdateReducer,
+  patientDetailsReducer,
+} from './reducers/patientReducers';
 import {
   userLoginReducer,
   userDetailsReducer,
@@ -15,6 +19,8 @@ import {
 
 const reducer = combineReducers({
   patientList: patientListReducer,
+  patientDetails: patientDetailsReducer,
+  patientUpdate: patientUpdateReducer,
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,

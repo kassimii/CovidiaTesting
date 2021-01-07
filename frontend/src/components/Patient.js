@@ -1,4 +1,5 @@
 import React from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 
@@ -22,16 +23,18 @@ const Patient = ({ patient }) => {
             </Card.Body>
           </Col>
           <Col>
-            <Button
-              className='btn-block '
-              type='button'
-              xs={3}
-              sm={3}
-              md={3}
-              lg={3}
-            >
-              Editeaza pacient
-            </Button>
+            <LinkContainer to={`/pacienti/${patient._id}`}>
+              <Button
+                className='btn-block '
+                type='button'
+                xs={3}
+                sm={3}
+                md={3}
+                lg={3}
+              >
+                Editeaza pacient
+              </Button>
+            </LinkContainer>
           </Col>
         </Row>
       </Card>

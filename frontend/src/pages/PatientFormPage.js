@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import axios from 'axios';
@@ -18,6 +18,9 @@ const PatientFormPage = ({ history }) => {
   const [addressResidence, setAddressResidence] = useState(null);
   const [message, setMessage] = useState(null);
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const submitHandler = (e) => {
     e.preventDefault();
     const patient = {
@@ -30,8 +33,15 @@ const PatientFormPage = ({ history }) => {
       addressResidence,
     };
 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
     const makePostRequest = async () => {
-      const { data } = await axios.post('/api/patients', patient);
+      const { data } = await axios.post('/api/patients', patient, config);
       console.log(data);
     };
 

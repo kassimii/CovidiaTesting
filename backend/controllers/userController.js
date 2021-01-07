@@ -180,7 +180,7 @@ const createUser = asyncHandler(async (req, res) => {
   });
 
   var mailOptions = {
-    from: 'CovidTesting',
+    from: `CovidTesting <${process.env.TRANSPORTER_EMAIL}>`,
     to: email,
     subject: 'Cont creat pe platforma CovidTesting',
     text: `

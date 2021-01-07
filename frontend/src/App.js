@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
 import AddUserPage from './pages/AddUserPage';
+import PatientEditPage from './pages/PatientEditPage';
 
 function App() {
   return (
@@ -24,8 +25,10 @@ function App() {
             component={UserEditPage}
           />
           <Route path='/login' component={LoginPage} />
-          <Route path='/pacienti/adaugare' component={PatientFormPage} />
+          <Route path='/pacienti/adaugare' component={PatientFormPage} exact />
           <Route path='/pacienti' component={PatientListPage} exact />
+          <Route path='/pacienti/:id' component={PatientEditPage} exact />
+          <Route path='/pacienti/cautare/:cnp' component={PatientListPage} />
           <Route path='/profil' component={ProfilePage} />
         </Container>
       </main>

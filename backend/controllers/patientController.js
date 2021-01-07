@@ -53,8 +53,63 @@ const addPatient = asyncHandler(async (req, res) => {
 //@route GET /api/patients
 //@access Public
 const getPatients = asyncHandler(async (req, res) => {
-  const patients = await Patient.find({});
+  const keyword = req.query.cnp
+    ? {
+        cnp: req.query.cnp,
+      }
+    : {};
+
+  console.log(keyword);
+
+  const patients = await Patient.find({ ...keyword });
   res.json(patients);
 });
 
-export { addPatient, getPatients };
+//@desc Get patient by id
+//@route GET /api/patients/:id
+//@access Private
+const getPatientById = asyncHandler(async (req, res) => {
+  const patient = await Patient.findById(req.params.id).select('-password');
+  if (patient) {
+    res.json(patient);
+  } else {
+    res.status(404);
+    throw new Error('Patient not found');
+  }
+});
+
+//@desc Update patient
+//@route PUT /api/patients/:id
+//@access Private
+const updatePatient = asyncHandler(async (req, res) => {
+  const patient = await Patient.findById(req.params.id);
+
+  if (patient) {
+    patient.name = req.body.name || patient.name;
+    patient.surname = req.body.surname || patient.surname;
+    patient.cnp = req.body.cnp || patient.cnp;
+    patient.addressID = req.body.addressID || patient.addressID;
+    patient.phoneNumber = req.body.phoneNumber || patient.phoneNumber;
+    patient.email = req.body.email || patient.email;
+    patient.addressResidence =
+      req.body.addressResidence || patient.addressResidence;
+
+    const updatedPatient = await patient.save();
+
+    res.json({
+      _id: updatedPatient._id,
+      name: updatedPatient.name,
+      surname: updatedPatient.surname,
+      cnp: updatedPatient.cnp,
+      addressID: updatedPatient.addressID,
+      phoneNumber: updatedPatient.phoneNumber,
+      email: updatedPatient.email,
+      addressResidence: updatedPatient.addressResidence,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export { addPatient, getPatients, getPatientById, updatePatient };

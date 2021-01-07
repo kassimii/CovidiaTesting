@@ -23,7 +23,6 @@ import {
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
   USER_CREATE_FAIL,
-  USER_CREATE_RESET,
 } from '../constants/userConstants';
 import { PATIENT_LIST_RESET } from '../constants/patientConstants';
 import axios from 'axios';
@@ -69,6 +68,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: PATIENT_LIST_RESET });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
+  dispatch({ type: USER_DETAILS_RESET });
 };
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
