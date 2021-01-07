@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import User from '../models/userModel.js';
+import nodemailer from 'nodemailer';
 
 //@desc Auth user & get token
 //@route POST /api/users/login
@@ -17,6 +18,7 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isLabWorker: user.isLabWorker,
+      isPrelevationWorker: user.isPrelevationWorker,
       token: generateToken(user._id),
     });
   } else {
@@ -38,6 +40,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isLabWorker: user.isLabWorker,
+      isPrelevationWorker: user.isPrelevationWorker,
     });
   } else {
     res.status(404);
@@ -45,11 +48,106 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Register a new user
+//@desc Update user profile
+//@route PUT /api/users/profile/:id
+//@access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      isLabWorker: updatedUser.isLabWorker,
+      isPrelevationWorker: updatedUser.isPrelevationWorker,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+//@desc Get all users
+//@route GET /api/users/
+//@access Private/Admin
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+
+  res.json(users);
+});
+
+//@desc Delete user
+//@route DELETE /api/users/:id
+//@access Private/Admin
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    await user.remove();
+    res.json({ message: 'User removed' });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+//@desc Get user by id
+//@route GET /api/users/:id
+//@access Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+//@desc Update user
+//@route PUT /api/users/:id
+//@access Private/Admin
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
+    user.isLabWorker = req.body.isLabWorker;
+    user.isPrelevationWorker = req.body.isPrelevationWorker;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      isLabWorker: updatedUser.isLabWorker,
+      isPrelevationWorker: updatedUser.isPrelevationWorker,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+//@desc Create a user
 //@route POST /api/users
-//@access Public
-const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+//@access Private/Admin
+const createUser = asyncHandler(async (req, res) => {
+  const { name, email, isAdmin, isPrelevationWorker, isLabWorker } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -58,10 +156,44 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('User already exists');
   }
 
+  var randomPassword = Math.random().toString(36).slice(-8);
+
   const user = await User.create({
     name,
     email,
-    password,
+    password: randomPassword,
+    isPrelevationWorker,
+    isLabWorker,
+  });
+
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: `${process.env.TRANSPORTER_EMAIL}`,
+      pass: `${process.env.TRANSPORTER_PASS}`,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  var mailOptions = {
+    from: 'CovidTesting',
+    to: email,
+    subject: 'Cont creat pe platforma CovidTesting',
+    text: `
+    Email: ${email} 
+    Parola: ${randomPassword}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log('Eroare' + error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
   });
 
   if (user) {
@@ -70,6 +202,8 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isPrelevationWorker: user.isPrelevationWorker,
+      isLabWorker: user.isLabWorker,
       token: generateToken(user._id),
     });
   } else {
@@ -78,4 +212,13 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser };
+export {
+  authUser,
+  getUserProfile,
+  updateUserProfile,
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUser,
+  createUser,
+};

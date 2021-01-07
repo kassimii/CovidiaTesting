@@ -44,7 +44,7 @@ const PatientListPage = () => {
             md={2}
             lg={2}
           >
-            <i class='fas fa-search'></i>
+            <i className='fas fa-search'></i>
           </Button>
         </Col>
       </Row>

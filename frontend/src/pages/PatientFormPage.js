@@ -5,7 +5,7 @@ import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import axios from 'axios';
 
-const PatientFormPage = () => {
+const PatientFormPage = ({ history }) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [cnp, setCnp] = useState('');
@@ -36,6 +36,7 @@ const PatientFormPage = () => {
     };
 
     makePostRequest();
+    history.push('/pacienti');
   };
 
   return (

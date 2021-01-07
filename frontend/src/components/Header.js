@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
@@ -23,7 +23,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
 
           <Navbar.Collapse id='basic-navbar-nav'>
-            {userInfo && (
+            {userInfo && userInfo.isPrelevationWorker && (
               <Nav className='mr-auto'>
                 <LinkContainer to='/pacienti/adaugare'>
                   <Nav.Link>
@@ -32,7 +32,7 @@ const Header = () => {
                 </LinkContainer>
                 <LinkContainer to='/pacienti'>
                   <Nav.Link>
-                    <i class='fas fa-list'></i>Pacienti
+                    <i className='fas fa-list'></i>Pacienti
                   </Nav.Link>
                 </LinkContainer>
               </Nav>
@@ -41,7 +41,7 @@ const Header = () => {
             <Nav className='ml-auto'>
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id='username'>
-                  <LinkContainer to='/profile'>
+                  <LinkContainer to='/profil'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
@@ -54,6 +54,13 @@ const Header = () => {
                     <i className='fas fa-user'></i>Login
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='adminmenu'>
+                  <LinkContainer to='/admin/utilizatori'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
