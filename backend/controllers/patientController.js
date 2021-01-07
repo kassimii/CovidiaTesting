@@ -59,8 +59,6 @@ const getPatients = asyncHandler(async (req, res) => {
       }
     : {};
 
-  console.log(keyword);
-
   const patients = await Patient.find({ ...keyword });
   res.json(patients);
 });

@@ -42,7 +42,6 @@ const PatientFormPage = ({ history }) => {
 
     const makePostRequest = async () => {
       const { data } = await axios.post('/api/patients', patient, config);
-      console.log(data);
     };
 
     makePostRequest();
