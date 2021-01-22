@@ -227,11 +227,13 @@ const PatientPage = ({ history, match }) => {
             <Col>
               <h2>Istoric teste</h2>
             </Col>
-            <Col className='text-right'>
-              <Button className='my-3' onClick={() => setModalShow(true)}>
-                <i className='fas fa-plus' /> Adauga test
-              </Button>
-            </Col>
+            {userInfo && userInfo.isPrelevationWorker && (
+              <Col className='text-right'>
+                <Button className='my-3' onClick={() => setModalShow(true)}>
+                  <i className='fas fa-plus' /> Adauga test
+                </Button>
+              </Col>
+            )}
           </Row>
 
           <AddTestModal show={modalShow} onClose={() => setModalShow(false)} />
