@@ -5,15 +5,13 @@ import {
   PATIENT_DETAILS_REQUEST,
   PATIENT_DETAILS_SUCCESS,
   PATIENT_DETAILS_FAIL,
-  PATIENT_DETAILS_RESET,
   PATIENT_UPDATE_REQUEST,
   PATIENT_UPDATE_SUCCESS,
   PATIENT_UPDATE_FAIL,
-  PATIENT_UPDATE_RESET,
 } from '../constants/patientConstants';
 import axios from 'axios';
 
-export const listPatients = (cnpSearch = '') => async (dispatch, getState) => {
+export const listPatients = (keyword = '') => async (dispatch, getState) => {
   try {
     dispatch({ type: PATIENT_LIST_REQUEST });
 
@@ -28,7 +26,10 @@ export const listPatients = (cnpSearch = '') => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/patients?cnp=${cnpSearch}`, config);
+    const { data } = await axios.get(
+      `/api/patients?keyword=${keyword}`,
+      config
+    );
 
     dispatch({
       type: PATIENT_LIST_SUCCESS,

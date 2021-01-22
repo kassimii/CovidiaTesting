@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
@@ -23,18 +23,23 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
 
           <Navbar.Collapse id='basic-navbar-nav'>
-            {userInfo && userInfo.isPrelevationWorker && (
+            {userInfo && (
               <Nav className='mr-auto'>
-                <LinkContainer to='/pacienti/adaugare'>
-                  <Nav.Link>
-                    <i className='fas fa-plus-square px-1'></i>Adauga pacient
-                  </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/pacienti'>
-                  <Nav.Link>
-                    <i className='fas fa-list'></i>Pacienti
-                  </Nav.Link>
-                </LinkContainer>
+                {userInfo.isPrelevationWorker && (
+                  <LinkContainer to='/pacienti/adaugare'>
+                    <Nav.Link>
+                      <i className='fas fa-plus-square px-1'></i>Adauga pacient
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
+
+                {(userInfo.isPrelevationWorker || userInfo.isLabWorker) && (
+                  <LinkContainer to='/pacienti'>
+                    <Nav.Link>
+                      <i className='fas fa-list'></i>Pacienti
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
               </Nav>
             )}
 

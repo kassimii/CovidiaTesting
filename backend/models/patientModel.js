@@ -13,6 +13,7 @@ const patientSchema = mongoose.Schema(
     cnp: {
       type: String,
       required: true,
+      unique: true,
     },
     addressID: {
       type: String,
@@ -28,6 +29,11 @@ const patientSchema = mongoose.Schema(
     },
     addressResidence: {
       type: String,
+    },
+    patientCode: {
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   { timestamps: true }

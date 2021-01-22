@@ -22,6 +22,8 @@ const addPatient = asyncHandler(async (req, res) => {
     throw new Error('Patient already exists');
   }
 
+  const patientCode = Math.random().toString(36).substr(2, 9);
+
   const patient = await Patient.create({
     name,
     surname,
@@ -30,6 +32,7 @@ const addPatient = asyncHandler(async (req, res) => {
     phoneNumber,
     email,
     addressResidence,
+    patientCode,
   });
 
   if (patient) {
@@ -42,6 +45,7 @@ const addPatient = asyncHandler(async (req, res) => {
       phoneNumber: patient.phoneNumber,
       email: patient.email,
       addressResidence: patient.addressResidence,
+      patientCode: patient.patientCode,
     });
   } else {
     res.status(400);
@@ -53,10 +57,14 @@ const addPatient = asyncHandler(async (req, res) => {
 //@route GET /api/patients
 //@access Public
 const getPatients = asyncHandler(async (req, res) => {
-  const keyword = req.query.cnp
-    ? {
-        cnp: req.query.cnp,
-      }
+  const keyword = req.query.keyword
+    ? req.query.keyword.length === 9
+      ? {
+          patientCode: req.query.keyword.toLowerCase(),
+        }
+      : {
+          cnp: req.query.keyword,
+        }
     : {};
 
   const patients = await Patient.find({ ...keyword });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -15,11 +15,18 @@ const PatientFormPage = ({ history }) => {
   const [differentResidenceAddress, setDifferentResidenceAddress] = useState(
     false
   );
+
   const [addressResidence, setAddressResidence] = useState(null);
   const [message, setMessage] = useState(null);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login');
+    }
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -42,10 +49,10 @@ const PatientFormPage = ({ history }) => {
 
     const makePostRequest = async () => {
       const { data } = await axios.post('/api/patients', patient, config);
+      history.push(`/pacienti/detalii/${data._id}`);
     };
 
     makePostRequest();
-    history.push('/pacienti');
   };
 
   return (
@@ -62,7 +69,7 @@ const PatientFormPage = ({ history }) => {
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId='name'>
+        <Form.Group controlId='surname'>
           <Form.Label>Prenume</Form.Label>
           <Form.Control
             type='text'
@@ -72,7 +79,7 @@ const PatientFormPage = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='name'>
+        <Form.Group controlId='cnp'>
           <Form.Label>CNP</Form.Label>
           <Form.Control
             type='text'
@@ -82,7 +89,7 @@ const PatientFormPage = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='name'>
+        <Form.Group controlId='addressID'>
           <Form.Label>Adresa</Form.Label>
           <Form.Control
             type='text'
@@ -92,7 +99,7 @@ const PatientFormPage = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='name'>
+        <Form.Group controlId='phoneNumber'>
           <Form.Label>Numar de telefon</Form.Label>
           <Form.Control
             placeholder='Introduceti numarul de telefon'
@@ -121,7 +128,7 @@ const PatientFormPage = ({ history }) => {
           />
         </Form.Group>
         {differentResidenceAddress && (
-          <Form.Group controlId='name'>
+          <Form.Group controlId='addressResidence'>
             <Form.Label>Adresa de domiciliu</Form.Label>
             <Form.Control
               type='text'

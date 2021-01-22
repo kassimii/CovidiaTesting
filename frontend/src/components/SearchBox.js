@@ -19,7 +19,7 @@ const SearchBox = ({ history }) => {
         type='text'
         name='q'
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder='Cauta pacient dupa CNP'
+        placeholder='Cauta pacient'
       ></Form.Control>
       <Button type='submit' variant='outline-success' className='p-2'>
         <i className='fas fa-search'></i>

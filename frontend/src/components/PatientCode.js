@@ -3,7 +3,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 
-const Patient = ({ patient }) => {
+const PatientCode = ({ patient }) => {
   return (
     <div>
       <Card className='my-3 p-3 rounded'>
@@ -12,14 +12,9 @@ const Patient = ({ patient }) => {
             <Card.Body>
               <Link to={`/pacienti/detalii/${patient._id}`}>
                 <Card.Title as='div'>
-                  <h4>
-                    {patient.name} {patient.surname}
-                  </h4>
+                  <h4>{patient.patientCode}</h4>
                 </Card.Title>
               </Link>
-              <Card.Text as='div'>
-                <strong>{patient.cnp}</strong>
-              </Card.Text>
             </Card.Body>
           </Col>
           <Col>
@@ -32,7 +27,7 @@ const Patient = ({ patient }) => {
                 md={3}
                 lg={3}
               >
-                Editeaza pacient
+                Detalii
               </Button>
             </LinkContainer>
           </Col>
@@ -42,4 +37,4 @@ const Patient = ({ patient }) => {
   );
 };
 
-export default Patient;
+export default PatientCode;

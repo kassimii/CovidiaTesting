@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import Patient from '../components/Patient';
+import PatientCode from '../components/PatientCode';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import SearchBox from '../components/SearchBox';
 import { listPatients } from '../redux/actions/patientActions';
 
 const PatientListPage = ({ history, match }) => {
-  const cnpSearch = match.params.cnp;
+  const keyword = match.params.keyword;
 
   const dispatch = useDispatch();
 
@@ -22,9 +23,9 @@ const PatientListPage = ({ history, match }) => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      dispatch(listPatients(cnpSearch));
+      dispatch(listPatients(keyword));
     }
-  }, [dispatch, userInfo, cnpSearch]);
+  }, [dispatch, history, userInfo, keyword]);
 
   return (
     <>
@@ -38,7 +39,12 @@ const PatientListPage = ({ history, match }) => {
         <Row>
           {patients.map((patient) => (
             <Col key={patient._id} sm={12}>
-              <Patient patient={patient} />
+              {userInfo && userInfo.isPrelevationWorker && (
+                <Patient patient={patient} />
+              )}
+              {userInfo && userInfo.isLabWorker && (
+                <PatientCode patient={patient} />
+              )}
             </Col>
           ))}
         </Row>
