@@ -8,6 +8,9 @@ import {
   TEST_UPDATE_REQUEST,
   TEST_UPDATE_SUCCESS,
   TEST_UPDATE_FAIL,
+  TEST_LIST_ADMIN_REQUEST,
+  TEST_LIST_ADMIN_SUCCESS,
+  TEST_LIST_ADMIN_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -106,6 +109,39 @@ export const addTestResult = (test) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getTests = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_LIST_ADMIN_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/tests`, config);
+
+    dispatch({
+      type: TEST_LIST_ADMIN_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_LIST_ADMIN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

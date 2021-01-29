@@ -32,7 +32,6 @@ const UserListPage = ({ history }) => {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    user: createdUser,
   } = userCreate;
 
   useEffect(() => {
@@ -46,16 +45,12 @@ const UserListPage = ({ history }) => {
     if (successCreate) {
       history.push(`/admin/utilizatori/${createUser._id}/editare`);
     }
-  }, [dispatch, history, userInfo, successDelete]);
+  }, [dispatch, history, userInfo, successDelete, successCreate]);
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
       dispatch(deleteUser(id));
     }
-  };
-
-  const createUserHandler = () => {
-    dispatch(createUser());
   };
 
   return (

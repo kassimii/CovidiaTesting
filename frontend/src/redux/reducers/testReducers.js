@@ -11,6 +11,10 @@ import {
   TEST_UPDATE_SUCCESS,
   TEST_UPDATE_FAIL,
   TEST_UPDATE_RESET,
+  TEST_LIST_ADMIN_REQUEST,
+  TEST_LIST_ADMIN_SUCCESS,
+  TEST_LIST_ADMIN_FAIL,
+  TEST_LIST_ADMIN_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -69,6 +73,29 @@ export const testUpdateReducer = (state = {}, action) => {
       };
     case TEST_UPDATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const testListAdminReducer = (state = { tests: [] }, action) => {
+  switch (action.type) {
+    case TEST_LIST_ADMIN_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_LIST_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        tests: action.payload,
+      };
+    case TEST_LIST_ADMIN_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_LIST_ADMIN_RESET:
+      return { tests: [] };
     default:
       return state;
   }

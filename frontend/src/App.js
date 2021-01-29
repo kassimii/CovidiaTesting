@@ -11,6 +11,7 @@ import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
 import AddUserPage from './pages/AddUserPage';
 import PatientPage from './pages/PatientPage';
+import TestListPage from './pages/TestListPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Header />
       <main className='py-3'>
         <Container>
+          <Route path='/admin/teste' component={TestListPage} />
           <Route path='/admin/utilizatori' component={UserListPage} exact />
           <Route path='/admin/utilizatori/adaugare' component={AddUserPage} />
           <Route

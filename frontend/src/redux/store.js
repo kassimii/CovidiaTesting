@@ -20,6 +20,7 @@ import {
   testCreateReducer,
   testListReducer,
   testUpdateReducer,
+  testListAdminReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -36,6 +37,7 @@ const reducer = combineReducers({
   testCreate: testCreateReducer,
   testList: testListReducer,
   testUpdate: testUpdateReducer,
+  testListAdmin: testListAdminReducer,
 });
 
 const initialState = {};

@@ -43,4 +43,12 @@ const updateTest = asyncHandler(async (req, res) => {
   }
 });
 
-export { addTestEntry, getTestsForPatient, updateTest };
+//@desc Get all tests
+//@route PUT /api/tests
+//@access Private/Admin
+const getTests = asyncHandler(async (req, res) => {
+  const tests = await Test.find({}).populate('patient', 'id patientCode');
+  res.json(tests);
+});
+
+export { addTestEntry, getTestsForPatient, updateTest, getTests };
