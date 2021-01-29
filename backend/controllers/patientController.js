@@ -57,6 +57,9 @@ const addPatient = asyncHandler(async (req, res) => {
 //@route GET /api/patients
 //@access Public
 const getPatients = asyncHandler(async (req, res) => {
+  const pageSize = 4;
+  const page = Number(req.query.pageNumber) || 1;
+
   const keyword = req.query.keyword
     ? req.query.keyword.length === 9
       ? {
@@ -67,8 +70,12 @@ const getPatients = asyncHandler(async (req, res) => {
         }
     : {};
 
-  const patients = await Patient.find({ ...keyword });
-  res.json(patients);
+  const count = await Patient.countDocuments({ ...keyword });
+
+  const patients = await Patient.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ patients, page, pages: Math.ceil(count / pageSize) });
 });
 
 //@desc Get patient by id

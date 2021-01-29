@@ -47,8 +47,17 @@ const updateTest = asyncHandler(async (req, res) => {
 //@route PUT /api/tests
 //@access Private/Admin
 const getTests = asyncHandler(async (req, res) => {
-  const tests = await Test.find({}).populate('patient', 'id patientCode');
-  res.json(tests);
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
+
+  const count = await Test.countDocuments();
+
+  const tests = await Test.find({})
+    .populate('patient', 'id patientCode')
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({ tests, page, pages: Math.ceil(count / pageSize) });
 });
 
 export { addTestEntry, getTestsForPatient, updateTest, getTests };

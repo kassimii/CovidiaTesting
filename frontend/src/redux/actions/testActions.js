@@ -117,7 +117,7 @@ export const addTestResult = (test) => async (dispatch, getState) => {
   }
 };
 
-export const getTests = () => async (dispatch, getState) => {
+export const getTests = (pageNumber = '') => async (dispatch, getState) => {
   try {
     dispatch({
       type: TEST_LIST_ADMIN_REQUEST,
@@ -133,7 +133,10 @@ export const getTests = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/tests`, config);
+    const { data } = await axios.get(
+      `/api/tests?pageNumber=${pageNumber}`,
+      config
+    );
 
     dispatch({
       type: TEST_LIST_ADMIN_SUCCESS,

@@ -19,8 +19,14 @@ function App() {
       <Header />
       <main className='py-3'>
         <Container>
-          <Route path='/admin/teste' component={TestListPage} />
+          <Route path='/admin/teste' component={TestListPage} exact />
+          <Route path='/admin/teste/:pageNumber' component={TestListPage} />
           <Route path='/admin/utilizatori' component={UserListPage} exact />
+          <Route
+            path='/admin/utilizatori/:pageNumber'
+            component={UserListPage}
+            exact
+          />
           <Route path='/admin/utilizatori/adaugare' component={AddUserPage} />
           <Route
             path='/admin/utilizatori/:id/editare'
@@ -29,6 +35,10 @@ function App() {
           <Route path='/login' component={LoginPage} />
           <Route path='/pacienti/adaugare' component={PatientFormPage} exact />
           <Route path='/pacienti' component={PatientListPage} exact />
+          <Route
+            path='/pacienti/pagina/:pageNumber'
+            component={PatientListPage}
+          />
           <Route path='/pacienti/detalii/:id' component={PatientPage} exact />
           <Route
             path='/pacienti/cautare/:keyword'

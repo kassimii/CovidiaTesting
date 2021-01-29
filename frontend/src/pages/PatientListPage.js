@@ -6,10 +6,12 @@ import PatientCode from '../components/PatientCode';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import SearchBox from '../components/SearchBox';
+import Paginate from '../components/Paginate';
 import { listPatients } from '../redux/actions/patientActions';
 
 const PatientListPage = ({ history, match }) => {
   const keyword = match.params.keyword;
+  const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
 
@@ -17,15 +19,15 @@ const PatientListPage = ({ history, match }) => {
   const { userInfo } = userLogin;
 
   const patientList = useSelector((state) => state.patientList);
-  const { loading, error, patients } = patientList;
+  const { loading, error, patients, page, pages } = patientList;
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      dispatch(listPatients(keyword));
+      dispatch(listPatients(keyword, pageNumber));
     }
-  }, [dispatch, history, userInfo, keyword]);
+  }, [dispatch, history, userInfo, keyword, pageNumber]);
 
   return (
     <>
@@ -36,18 +38,21 @@ const PatientListPage = ({ history, match }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Row>
-          {patients.map((patient) => (
-            <Col key={patient._id} sm={12}>
-              {userInfo && userInfo.isPrelevationWorker && (
-                <Patient patient={patient} />
-              )}
-              {userInfo && userInfo.isLabWorker && (
-                <PatientCode patient={patient} />
-              )}
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {patients.map((patient) => (
+              <Col key={patient._id} sm={12}>
+                {userInfo && userInfo.isPrelevationWorker && (
+                  <Patient patient={patient} />
+                )}
+                {userInfo && userInfo.isLabWorker && (
+                  <PatientCode patient={patient} />
+                )}
+              </Col>
+            ))}
+          </Row>
+          <Paginate pages={pages} page={page} scope='patients' />
+        </>
       )}
     </>
   );

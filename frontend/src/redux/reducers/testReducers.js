@@ -87,7 +87,9 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
     case TEST_LIST_ADMIN_SUCCESS:
       return {
         loading: false,
-        tests: action.payload,
+        tests: action.payload.tests,
+        pages: action.payload.pages,
+        page: action.payload.page,
       };
     case TEST_LIST_ADMIN_FAIL:
       return {
