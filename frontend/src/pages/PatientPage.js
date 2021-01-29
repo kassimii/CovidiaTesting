@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import AddTestModal from '../components/AddTestModal';
+import AddResultModal from '../components/AddResultModal';
 import {
   updatePatient,
   getPatientDetails,
@@ -26,7 +27,10 @@ const PatientPage = ({ history, match }) => {
   );
   const [addressResidence, setAddressResidence] = useState(null);
 
-  const [modalShow, setModalShow] = useState(false);
+  const [addTestModalShow, setAddTestModalShow] = useState(false);
+  const [addResultModalShow, setAddResultModalShow] = useState(false);
+
+  const [currentTest, setCurrentTest] = useState('');
 
   const dispatch = useDispatch();
 
@@ -45,6 +49,9 @@ const PatientPage = ({ history, match }) => {
     error: errorUpdate,
     success: successUpdate,
   } = patientUpdate;
+
+  const testUpdate = useSelector((state) => state.testUpdate);
+  const { success: successTestUpdate, error: errorTestUpdate } = testUpdate;
 
   useEffect(() => {
     if (!userInfo) {
@@ -78,7 +85,8 @@ const PatientPage = ({ history, match }) => {
     patientId,
     patient,
     successUpdate,
-    testList,
+    tests,
+    successTestUpdate,
   ]);
 
   const submitHandler = (e) => {
@@ -227,16 +235,34 @@ const PatientPage = ({ history, match }) => {
             <Col>
               <h2>Istoric teste</h2>
             </Col>
+            {errorTestUpdate && (
+              <Message variant='danger'>{errorTestUpdate}</Message>
+            )}
             {userInfo && userInfo.isPrelevationWorker && (
               <Col className='text-right'>
-                <Button className='my-3' onClick={() => setModalShow(true)}>
+                <Button
+                  className='my-3'
+                  onClick={() => setAddTestModalShow(true)}
+                >
                   <i className='fas fa-plus' /> Adauga test
                 </Button>
               </Col>
             )}
           </Row>
 
-          <AddTestModal show={modalShow} onClose={() => setModalShow(false)} />
+          <AddTestModal
+            show={addTestModalShow}
+            onClose={() => setAddTestModalShow(false)}
+          />
+
+          <AddResultModal
+            show={addResultModalShow}
+            onClose={() => {
+              setAddResultModalShow(false);
+              setCurrentTest('');
+            }}
+            currenttest={currentTest}
+          />
 
           {loadingTests ? (
             <Loader />
@@ -262,11 +288,29 @@ const PatientPage = ({ history, match }) => {
                     <td>{test.resultDate ? test.resultDate : '-'}</td>
                     <td>{test.labId}</td>
                     <td>{test.status}</td>
-                    <td>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </td>
+                    {userInfo &&
+                      (userInfo.isLabWorker ? (
+                        <td>
+                          <Button
+                            className='btn-sm'
+                            variant='light'
+                            onClick={() => {
+                              setAddResultModalShow(true);
+                              setCurrentTest(test._id);
+                            }}
+                          >
+                            Add result
+                          </Button>
+                        </td>
+                      ) : (
+                        userInfo.isPrelevationWorker && (
+                          <td>
+                            <Button className='btn-sm' variant='light'>
+                              Edit
+                            </Button>
+                          </td>
+                        )
+                      ))}
                   </tr>
                 ))}
               </tbody>

@@ -25,4 +25,22 @@ const getTestsForPatient = asyncHandler(async (req, res) => {
   res.json(tests);
 });
 
-export { addTestEntry, getTestsForPatient };
+//@desc Update test result
+//@route PUT /api/tests/:testId
+//@access Private
+const updateTest = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId);
+
+  if (test) {
+    test.resultDate = req.body.resultDate;
+    test.status = req.body.status;
+
+    const updatedTest = await test.save();
+    res.json(updatedTest);
+  } else {
+    res.status(404);
+    throw new Error('Test not found');
+  }
+});
+
+export { addTestEntry, getTestsForPatient, updateTest };

@@ -16,7 +16,11 @@ import {
   userUpdateReducer,
   userCreateReducer,
 } from './reducers/userReducers';
-import { testCreateReducer, testListReducer } from './reducers/testReducers';
+import {
+  testCreateReducer,
+  testListReducer,
+  testUpdateReducer,
+} from './reducers/testReducers';
 
 const reducer = combineReducers({
   patientList: patientListReducer,
@@ -31,6 +35,7 @@ const reducer = combineReducers({
   userCreate: userCreateReducer,
   testCreate: testCreateReducer,
   testList: testListReducer,
+  testUpdate: testUpdateReducer,
 });
 
 const initialState = {};

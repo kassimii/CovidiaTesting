@@ -7,6 +7,10 @@ import {
   TEST_LIST_SUCCESS,
   TEST_LIST_FAIL,
   TEST_LIST_RESET,
+  TEST_UPDATE_REQUEST,
+  TEST_UPDATE_SUCCESS,
+  TEST_UPDATE_FAIL,
+  TEST_UPDATE_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -42,6 +46,29 @@ export const testListReducer = (state = { tests: [] }, action) => {
       };
     case TEST_LIST_RESET:
       return { tests: [] };
+    default:
+      return state;
+  }
+};
+
+export const testUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TEST_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case TEST_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_UPDATE_RESET:
+      return {};
     default:
       return state;
   }

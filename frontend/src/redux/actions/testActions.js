@@ -5,6 +5,9 @@ import {
   TEST_LIST_REQUEST,
   TEST_LIST_SUCCESS,
   TEST_LIST_FAIL,
+  TEST_UPDATE_REQUEST,
+  TEST_UPDATE_SUCCESS,
+  TEST_UPDATE_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -66,6 +69,43 @@ export const getTestsForPatient = (patientId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const addTestResult = (test) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/tests/${test.testId}`,
+      test.test,
+      config
+    );
+
+    dispatch({
+      type: TEST_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
