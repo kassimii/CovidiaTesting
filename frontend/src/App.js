@@ -20,14 +20,21 @@ function App() {
       <main className='py-3'>
         <Container>
           <Route path='/admin/teste' component={TestListPage} exact />
-          <Route path='/admin/teste/:pageNumber' component={TestListPage} />
+          <Route
+            path='/admin/teste/pagina/:pageNumber'
+            component={TestListPage}
+          />
           <Route path='/admin/utilizatori' component={UserListPage} exact />
           <Route
-            path='/admin/utilizatori/:pageNumber'
+            path='/admin/utilizatori/pagina/:pageNumber'
             component={UserListPage}
             exact
           />
-          <Route path='/admin/utilizatori/adaugare' component={AddUserPage} />
+          <Route
+            path='/admin/utilizatori/adaugare'
+            component={AddUserPage}
+            exact
+          />
           <Route
             path='/admin/utilizatori/:id/editare'
             component={UserEditPage}

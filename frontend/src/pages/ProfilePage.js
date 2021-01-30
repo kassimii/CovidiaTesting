@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -19,35 +21,38 @@ const ProfilePage = ({ location, history }) => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
-
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { loading, error, userInfo } = userLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
   useEffect(() => {
-    dispatch({ type: USER_UPDATE_PROFILE_RESET });
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (!user.name) {
+      if (success) {
+        toast.success('Profile updated!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
+      }
+      if (!userInfo.name) {
         dispatch(getUserDetails('profile'));
       } else {
-        setName(user.name);
-        setEmail(user.email);
+        setName(userInfo.name);
+        setEmail(userInfo.email);
       }
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
     }
   };
 
@@ -56,7 +61,6 @@ const ProfilePage = ({ location, history }) => {
       <h2 className='py-3'>User profile</h2>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Profile updated</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
@@ -102,6 +106,7 @@ const ProfilePage = ({ location, history }) => {
         <Button type='submit' variant='primar'>
           Update
         </Button>
+        <ToastContainer />
       </Form>
     </FormContainer>
   );

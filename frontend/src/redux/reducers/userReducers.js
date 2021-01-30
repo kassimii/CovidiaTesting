@@ -38,6 +38,8 @@ export const userLoginReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_LOGOUT:
       return {};
+    case USER_UPDATE_PROFILE_SUCCESS:
+      return { loading: false, userInfo: action.payload };
     default:
       return state;
   }

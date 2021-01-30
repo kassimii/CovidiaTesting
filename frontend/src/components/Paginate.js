@@ -12,8 +12,8 @@ const Paginate = ({ pages, page, isAdmin = false, scope }) => {
             to={
               isAdmin
                 ? scope === 'tests'
-                  ? `/admin/teste/${x + 1}`
-                  : `/admin/utilizatori/${x + 1}`
+                  ? `/admin/teste/pagina/${x + 1}`
+                  : `/admin/utilizatori/pagina/${x + 1}`
                 : scope === 'patients' && `/pacienti/pagina/${x + 1}`
             }
           >
