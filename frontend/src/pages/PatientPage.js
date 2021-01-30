@@ -50,8 +50,11 @@ const PatientPage = ({ history, match }) => {
     success: successUpdate,
   } = patientUpdate;
 
+  const testCreate = useSelector((state) => state.testCreate);
+  const { error: errorTestCreate } = testCreate;
+
   const testUpdate = useSelector((state) => state.testUpdate);
-  const { success: successTestUpdate, error: errorTestUpdate } = testUpdate;
+  const { error: errorTestUpdate } = testUpdate;
 
   useEffect(() => {
     if (!userInfo) {
@@ -59,7 +62,6 @@ const PatientPage = ({ history, match }) => {
     } else {
       if (successUpdate) {
         dispatch({ type: PATIENT_UPDATE_RESET });
-        history.push('/pacienti');
       } else {
         if (!patient.name || patient._id !== patientId) {
           dispatch(getPatientDetails(patientId));
@@ -78,16 +80,7 @@ const PatientPage = ({ history, match }) => {
         }
       }
     }
-  }, [
-    dispatch,
-    history,
-    userInfo,
-    patientId,
-    patient,
-    successUpdate,
-    tests,
-    successTestUpdate,
-  ]);
+  }, [dispatch, history, userInfo, patientId, patient, successUpdate, tests]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -235,6 +228,9 @@ const PatientPage = ({ history, match }) => {
             <Col>
               <h2>Istoric teste</h2>
             </Col>
+            {errorTestCreate && (
+              <Message variant='danger'>{errorTestCreate}</Message>
+            )}
             {errorTestUpdate && (
               <Message variant='danger'>{errorTestUpdate}</Message>
             )}

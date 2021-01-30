@@ -50,6 +50,24 @@ export const testListReducer = (state = { tests: [] }, action) => {
       };
     case TEST_LIST_RESET:
       return { tests: [] };
+    case TEST_CREATE_SUCCESS:
+      return { loading: false, tests: [...state.tests, action.payload] };
+    case TEST_UPDATE_SUCCESS: {
+      const updatedTests = state.tests.map((test) => {
+        if (test._id === action.payload._id)
+          return {
+            ...test,
+            status: action.payload.status,
+            resultDate: action.payload.resultDate,
+          };
+        else return test;
+      });
+      return {
+        loading: false,
+        tests: updatedTests,
+      };
+    }
+
     default:
       return state;
   }
