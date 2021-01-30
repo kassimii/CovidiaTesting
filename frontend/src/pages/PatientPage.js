@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Card, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -102,9 +101,12 @@ const PatientPage = ({ history, match }) => {
     <>
       <Row>
         <Col>
-          <Link to='/pacienti' className='btn btn-light my-3'>
+          <Button
+            className='btn btn-light my-3'
+            onClick={() => history.goBack()}
+          >
             Go Back
-          </Link>
+          </Button>
         </Col>
         <Col>
           <Card className='my-3 p-3 rounded'>
