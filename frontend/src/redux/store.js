@@ -21,6 +21,7 @@ import {
   testListReducer,
   testUpdateReducer,
   testListAdminReducer,
+  testDSPReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -38,6 +39,7 @@ const reducer = combineReducers({
   testList: testListReducer,
   testUpdate: testUpdateReducer,
   testListAdmin: testListAdminReducer,
+  testDSP: testDSPReducer,
 });
 
 const initialState = {};

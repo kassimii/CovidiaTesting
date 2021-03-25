@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Test from '../models/testModel.js';
+import { createDspPdf } from '../utils/generatePDF.js';
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -44,7 +45,7 @@ const updateTest = asyncHandler(async (req, res) => {
 });
 
 //@desc Get all tests
-//@route PUT /api/tests
+//@route GET /api/tests
 //@access Private/Admin
 const getTests = asyncHandler(async (req, res) => {
   const pageSize = 10;
@@ -60,4 +61,19 @@ const getTests = asyncHandler(async (req, res) => {
   res.json({ tests, page, pages: Math.ceil(count / pageSize) });
 });
 
-export { addTestEntry, getTestsForPatient, updateTest, getTests };
+//@desc Get test result for DSP
+//@route GET /api/tests/:testId
+//@access Private/Admin
+const getTestDSP = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId);
+
+  if (test) {
+    createDspPdf(test);
+    res.json(test);
+  } else {
+    res.status(404);
+    throw new Error('Test not found');
+  }
+});
+
+export { addTestEntry, getTestsForPatient, updateTest, getTests, getTestDSP };

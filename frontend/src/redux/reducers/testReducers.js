@@ -15,6 +15,10 @@ import {
   TEST_LIST_ADMIN_SUCCESS,
   TEST_LIST_ADMIN_FAIL,
   TEST_LIST_ADMIN_RESET,
+  TEST_DSP_REQUEST,
+  TEST_DSP_SUCCESS,
+  TEST_DSP_FAIL,
+  TEST_DSP_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -116,6 +120,29 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
       };
     case TEST_LIST_ADMIN_RESET:
       return { tests: [] };
+    default:
+      return state;
+  }
+};
+
+export const testDSPReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TEST_DSP_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_DSP_SUCCESS:
+      return {
+        loading: false,
+      };
+    case TEST_DSP_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_DSP_RESET:
+      return {};
+
     default:
       return state;
   }

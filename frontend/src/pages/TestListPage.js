@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
-import { getTests } from '../redux/actions/testActions';
+import { getTests, getTestDSP } from '../redux/actions/testActions';
 
 const TestListPage = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
@@ -61,7 +61,11 @@ const TestListPage = ({ history, match }) => {
                   <td>{test.status}</td>
                   <td>{test.labId}</td>
                   <td>
-                    <Button variant='success' className='btn-sm'>
+                    <Button
+                      variant='success'
+                      className='btn-sm'
+                      onClick={() => dispatch(getTestDSP(test._id))}
+                    >
                       DSP
                     </Button>
                   </td>

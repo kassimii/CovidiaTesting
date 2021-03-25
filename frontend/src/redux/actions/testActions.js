@@ -11,6 +11,9 @@ import {
   TEST_LIST_ADMIN_REQUEST,
   TEST_LIST_ADMIN_SUCCESS,
   TEST_LIST_ADMIN_FAIL,
+  TEST_DSP_REQUEST,
+  TEST_DSP_SUCCESS,
+  TEST_DSP_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -145,6 +148,38 @@ export const getTests = (pageNumber = '') => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_LIST_ADMIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getTestDSP = (testId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_DSP_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.get(`/api/tests/dsp/${testId}`, config);
+
+    dispatch({
+      type: TEST_DSP_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_DSP_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
