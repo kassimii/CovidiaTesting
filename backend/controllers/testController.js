@@ -65,10 +65,10 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
 
-//@desc Get test result for Patient
-//@route GET /api/tests/:testId
+//@desc Send test result for Patient
+//@route PUT /api/tests/:testId
 //@access Private/Admin
-const getTestPatientPDF = asyncHandler(async (req, res) => {
+const sendTestPatientPDF = asyncHandler(async (req, res) => {
   const test = await Test.findById(req.params.testId).populate(
     'patient',
     'name surname cnp email'
@@ -76,7 +76,10 @@ const getTestPatientPDF = asyncHandler(async (req, res) => {
 
   if (test) {
     createPatientPdf(test);
-    res.json(test);
+
+    test.sentToPatient = true;
+    const updatedTest = await test.save();
+    res.json(updatedTest);
   } else {
     res.status(404);
     throw new Error('Test not found');
@@ -88,5 +91,5 @@ export {
   getTestsForPatient,
   updateTest,
   getTests,
-  getTestPatientPDF,
+  sendTestPatientPDF,
 };

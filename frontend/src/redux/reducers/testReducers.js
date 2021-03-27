@@ -15,10 +15,10 @@ import {
   TEST_LIST_ADMIN_SUCCESS,
   TEST_LIST_ADMIN_FAIL,
   TEST_LIST_ADMIN_RESET,
-  TEST_DSP_REQUEST,
-  TEST_DSP_SUCCESS,
-  TEST_DSP_FAIL,
-  TEST_DSP_RESET,
+  TEST_PATIENT_PDF_REQUEST,
+  TEST_PATIENT_PDF_SUCCESS,
+  TEST_PATIENT_PDF_FAIL,
+  TEST_PATIENT_PDF_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -120,27 +120,42 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
       };
     case TEST_LIST_ADMIN_RESET:
       return { tests: [] };
+    case TEST_PATIENT_PDF_SUCCESS: {
+      console.log('reducer');
+      const updatedTests = state.tests.map((test) => {
+        if (test._id === action.payload._id)
+          return {
+            ...test,
+            sentToPatient: action.payload.sentToPatient,
+          };
+        else return test;
+      });
+      return {
+        loading: false,
+        tests: updatedTests,
+      };
+    }
     default:
       return state;
   }
 };
 
-export const testDSPReducer = (state = {}, action) => {
+export const testPatientPdfReducer = (state = {}, action) => {
   switch (action.type) {
-    case TEST_DSP_REQUEST:
+    case TEST_PATIENT_PDF_REQUEST:
       return {
         loading: true,
       };
-    case TEST_DSP_SUCCESS:
+    case TEST_PATIENT_PDF_SUCCESS:
       return {
         loading: false,
       };
-    case TEST_DSP_FAIL:
+    case TEST_PATIENT_PDF_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
-    case TEST_DSP_RESET:
+    case TEST_PATIENT_PDF_RESET:
       return {};
 
     default:

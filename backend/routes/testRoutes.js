@@ -5,13 +5,13 @@ import {
   getTestsForPatient,
   updateTest,
   getTests,
-  getTestPatientPDF,
+  sendTestPatientPDF,
 } from '../controllers/testController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 router.route('/').post(protect, addTestEntry).get(protect, admin, getTests);
 router.route('/:patientId').get(protect, getTestsForPatient);
 router.route('/:testId').put(protect, updateTest);
-router.route('/dsp/:testId').get(protect, getTestPatientPDF);
+router.route('/pdf/:testId').put(protect, admin, sendTestPatientPDF);
 
 export default router;

@@ -11,9 +11,9 @@ import {
   TEST_LIST_ADMIN_REQUEST,
   TEST_LIST_ADMIN_SUCCESS,
   TEST_LIST_ADMIN_FAIL,
-  TEST_DSP_REQUEST,
-  TEST_DSP_SUCCESS,
-  TEST_DSP_FAIL,
+  TEST_PATIENT_PDF_REQUEST,
+  TEST_PATIENT_PDF_SUCCESS,
+  TEST_PATIENT_PDF_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -156,10 +156,10 @@ export const getTests = (pageNumber = '') => async (dispatch, getState) => {
   }
 };
 
-export const getTestPatientPDF = (testId) => async (dispatch, getState) => {
+export const sendTestPatientPDF = (testId) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: TEST_DSP_REQUEST,
+      type: TEST_PATIENT_PDF_REQUEST,
     });
 
     const {
@@ -172,14 +172,15 @@ export const getTestPatientPDF = (testId) => async (dispatch, getState) => {
       },
     };
 
-    await axios.get(`/api/tests/dsp/${testId}`, config);
+    const { data } = await axios.put(`/api/tests/pdf/${testId}`, {}, config);
 
     dispatch({
-      type: TEST_DSP_SUCCESS,
+      type: TEST_PATIENT_PDF_SUCCESS,
+      payload: data,
     });
   } catch (error) {
     dispatch({
-      type: TEST_DSP_FAIL,
+      type: TEST_PATIENT_PDF_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -24,6 +24,11 @@ const testSchema = mongoose.Schema(
       required: true,
       default: '-',
     },
+    sentToPatient: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true }
 );
