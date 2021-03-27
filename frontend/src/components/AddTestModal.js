@@ -30,7 +30,7 @@ const AddTestModal = (props) => {
       Nov: '11',
       Dec: '12',
     };
-    return parts[2] + '-' + months[parts[1]] + '-' + parts[3];
+    return parts[2] + '.' + months[parts[1]] + '.' + parts[3];
   };
 
   const onAddHandler = () => {

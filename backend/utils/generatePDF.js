@@ -40,7 +40,7 @@ function generateTitle(doc, testInfo) {
     .text(`Buletin analize`, 70, 150, {
       align: 'center',
     })
-    .text(`NR. 1  Data 05.01.2021`, {
+    .text(`NR. 1  Data ${testInfo.prelevationDate}`, {
       align: 'center',
     })
     .text(`Determinare SARS-CoV2`, {

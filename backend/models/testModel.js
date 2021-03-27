@@ -29,6 +29,11 @@ const testSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    sentToDSP: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true }
 );

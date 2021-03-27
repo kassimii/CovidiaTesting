@@ -65,7 +65,7 @@ const UserListPage = ({ history, match }) => {
         <Col className='text-right'>
           <LinkContainer to={`/admin/utilizatori/adaugare`}>
             <Button className='my-3'>
-              <i className='fas fa-plus' /> Adauga utilizator
+              <i className='fas fa-plus' /> Adaugă utilizator
             </Button>
           </LinkContainer>
         </Col>

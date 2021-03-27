@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -30,6 +31,11 @@ const TestListPage = ({ history, match }) => {
       <Row className='align-items-center'>
         <Col>
           <h1>Teste</h1>
+        </Col>
+        <Col className='text-right'>
+          <Button className='my-3'>
+            <i class='fas fa-file-download' /> DSP
+          </Button>
         </Col>
       </Row>
       {loading ? (
@@ -66,13 +72,15 @@ const TestListPage = ({ history, match }) => {
                         style={{ color: 'green' }}
                       ></i>
                     ) : (
-                      <Button
-                        variant='success'
-                        className='btn-sm'
-                        onClick={() => dispatch(sendTestPatientPDF(test._id))}
-                      >
-                        PACIENT
-                      </Button>
+                      test.status !== '-' && (
+                        <Button
+                          variant='success'
+                          className='btn-sm'
+                          onClick={() => dispatch(sendTestPatientPDF(test._id))}
+                        >
+                          PACIENT
+                        </Button>
+                      )
                     )}
                   </td>
                 </tr>
