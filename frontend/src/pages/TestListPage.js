@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
-import { getTests, getTestDSP } from '../redux/actions/testActions';
+import { getTests, getTestPatientPDF } from '../redux/actions/testActions';
 
 const TestListPage = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
@@ -48,7 +48,6 @@ const TestListPage = ({ history, match }) => {
                 <th>STATUS</th>
                 <th>LAB ID</th>
                 <th></th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -64,13 +63,8 @@ const TestListPage = ({ history, match }) => {
                     <Button
                       variant='success'
                       className='btn-sm'
-                      onClick={() => dispatch(getTestDSP(test._id))}
+                      onClick={() => dispatch(getTestPatientPDF(test._id))}
                     >
-                      DSP
-                    </Button>
-                  </td>
-                  <td>
-                    <Button variant='light' className='btn-sm'>
                       PACIENT
                     </Button>
                   </td>

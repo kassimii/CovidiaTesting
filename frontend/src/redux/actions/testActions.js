@@ -156,7 +156,7 @@ export const getTests = (pageNumber = '') => async (dispatch, getState) => {
   }
 };
 
-export const getTestDSP = (testId) => async (dispatch, getState) => {
+export const getTestPatientPDF = (testId) => async (dispatch, getState) => {
   try {
     dispatch({
       type: TEST_DSP_REQUEST,

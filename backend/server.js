@@ -8,10 +8,6 @@ import patientRoutes from './routes/patientRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import testRoutes from './routes/testRoutes.js';
 
-// import { createDspPdf } from './utils/generatePDF.js';
-
-// createDspPdf();
-
 dotenv.config();
 
 connectDB();

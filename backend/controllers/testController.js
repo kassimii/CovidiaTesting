@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Test from '../models/testModel.js';
-import { createDspPdf } from '../utils/generatePDF.js';
+import { createPatientPdf } from '../utils/generatePDF.js';
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -61,14 +61,21 @@ const getTests = asyncHandler(async (req, res) => {
   res.json({ tests, page, pages: Math.ceil(count / pageSize) });
 });
 
-//@desc Get test result for DSP
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import path from 'path';
+
+//@desc Get test result for Patient
 //@route GET /api/tests/:testId
 //@access Private/Admin
-const getTestDSP = asyncHandler(async (req, res) => {
-  const test = await Test.findById(req.params.testId);
+const getTestPatientPDF = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId).populate(
+    'patient',
+    'name surname cnp email'
+  );
 
   if (test) {
-    createDspPdf(test);
+    createPatientPdf(test);
     res.json(test);
   } else {
     res.status(404);
@@ -76,4 +83,10 @@ const getTestDSP = asyncHandler(async (req, res) => {
   }
 });
 
-export { addTestEntry, getTestsForPatient, updateTest, getTests, getTestDSP };
+export {
+  addTestEntry,
+  getTestsForPatient,
+  updateTest,
+  getTests,
+  getTestPatientPDF,
+};
