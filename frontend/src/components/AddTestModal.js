@@ -45,6 +45,8 @@ const AddTestModal = (props) => {
     props.onClose();
   };
 
+  const dayPicker = { firstDayOfWeek: 1 };
+
   return (
     <>
       <Modal
@@ -64,6 +66,7 @@ const AddTestModal = (props) => {
             format={'dd-MM-yyyy'}
             onDayChange={(date) => setPrelevationDate(date)}
             value={prelevationDate}
+            dayPickerProps={dayPicker}
           />
         </Modal.Body>
         <Modal.Footer>

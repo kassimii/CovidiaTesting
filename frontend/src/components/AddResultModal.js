@@ -47,6 +47,8 @@ const AddResultModal = (props) => {
     props.onClose();
   };
 
+  const dayPicker = { firstDayOfWeek: 1 };
+
   return (
     <>
       <Modal
@@ -66,8 +68,8 @@ const AddResultModal = (props) => {
             format={'dd-MM-yyyy'}
             onDayChange={(date) => setResultDate(date)}
             value={resultDate}
+            dayPickerProps={dayPicker}
           />
-
           <h4>Rezultat</h4>
           <Form.Control
             as='select'
