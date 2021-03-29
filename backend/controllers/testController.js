@@ -1,6 +1,9 @@
 import asyncHandler from 'express-async-handler';
 import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
+import { convertDate } from '../utils/commonFunctions.js';
+import { parse } from 'json2csv';
+import fs from 'fs';
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -61,12 +64,8 @@ const getTests = asyncHandler(async (req, res) => {
   res.json({ tests, page, pages: Math.ceil(count / pageSize) });
 });
 
-import PDFDocument from 'pdfkit';
-import fs from 'fs';
-import path from 'path';
-
 //@desc Send test result for Patient
-//@route PUT /api/tests/:testId
+//@route PUT /api/tests/pdf/:testId
 //@access Private/Admin
 const sendTestPatientPDF = asyncHandler(async (req, res) => {
   const test = await Test.findById(req.params.testId).populate(
@@ -86,10 +85,66 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Get daily test results for DSP
+//@route GET /api/tests/dsp
+//@access Private/Admin
+const getTestsDSP = asyncHandler(async (req, res) => {
+  const tests = await Test.find({}).populate(
+    'patient',
+    'name surname cnp phoneNumber email addressID addressResidence'
+  );
+
+  if (tests) {
+    var today = convertDate(new Date());
+
+    const todaysTests = tests.filter((test) => {
+      return test.resultDate === today;
+    });
+
+    const updatedResidenceTests = todaysTests.map((test) => {
+      if (!test.patient.addressResidence) {
+        test.patient.addressResidence = test.patient.addressID;
+      }
+      return test;
+    });
+
+    const fields = [
+      { label: 'Nume', value: 'patient.name' },
+      { label: 'Prenume', value: 'patient.surname' },
+      { label: 'CNP', value: 'patient.cnp' },
+      { label: 'Nr. telefon', value: 'patient.phoneNumber' },
+      { label: 'Email', value: 'patient.email' },
+      { label: 'Adresa resedinta', value: 'patient.addressResidence' },
+      { label: 'Rezultat test', value: 'status' },
+      { label: 'Data prelevare', value: 'prelevationDate' },
+      { label: 'Data rezultat', value: 'resultDate' },
+      { label: 'ID lab', value: 'labId' },
+    ];
+    const opts = { fields };
+
+    try {
+      const csv = parse(updatedResidenceTests, opts);
+
+      fs.writeFile(`rezultate_${today}.csv`, csv, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    res.status(404);
+    throw new Error('Test not found');
+  }
+});
+
 export {
   addTestEntry,
   getTestsForPatient,
   updateTest,
   getTests,
   sendTestPatientPDF,
+  getTestsDSP,
 };
