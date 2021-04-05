@@ -4,6 +4,7 @@ import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate } from '../utils/commonFunctions.js';
 import { parse } from 'json2csv';
 import fs from 'fs';
+import AWS from 'aws-sdk';
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -25,7 +26,9 @@ const addTestEntry = asyncHandler(async (req, res) => {
 //@route GET /api/tests/:patientId
 //@access Private
 const getTestsForPatient = asyncHandler(async (req, res) => {
-  const tests = await Test.find({ patient: req.params.patientId });
+  const tests = await Test.find({ patient: req.params.patientId }).sort(
+    '-createdAt'
+  );
   res.json(tests);
 });
 
@@ -58,6 +61,7 @@ const getTests = asyncHandler(async (req, res) => {
 
   const tests = await Test.find({})
     .populate('patient', 'id patientCode')
+    .sort('-createdAt')
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
@@ -88,6 +92,19 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
 //@desc Get daily test results for DSP
 //@route GET /api/tests/dsp
 //@access Private/Admin
+
+//AWS UPLOAD
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ID,
+  secretAccessKey: process.env.AWS_SECRET,
+});
+
+// const storage = multer.memoryStorage({
+//   destination: function (req, file, callback) {
+//     callback(null, '');
+//   },
+// });
+
 const getTestsDSP = asyncHandler(async (req, res) => {
   const tests = await Test.find({}).populate(
     'patient',
@@ -124,13 +141,35 @@ const getTestsDSP = asyncHandler(async (req, res) => {
 
     try {
       const csv = parse(updatedResidenceTests, opts);
+      const csvBuffer = Buffer.from(csv);
 
-      fs.writeFile(`rezultate_${today}.csv`, csv, function (err) {
-        if (err) throw err;
-        console.log('Saved!');
+      const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `dsp/rezultate_${today}.csv`,
+        Body: csvBuffer,
+      };
+
+      s3.upload(uploadParams, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        }
       });
 
-      res.sendStatus(200);
+      const downloadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `dsp/rezultate_${today}.csv`,
+      };
+
+      s3.getObject(downloadParams, function (err, data) {
+        if (err) {
+          throw err;
+        }
+
+        fs.writeFileSync(`rezultate/rezultate_${today}.csv`, data.Body);
+
+        const file = `rezultate/rezultate_${today}.csv`;
+        res.download(file);
+      });
     } catch (err) {
       console.error(err);
     }
