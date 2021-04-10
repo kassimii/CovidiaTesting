@@ -71,8 +71,7 @@ const getTests = asyncHandler(async (req, res) => {
 
   const tests = await Test.find({})
     .populate('patient', 'id patientCode')
-    .sort('-prelevationDate')
-    .sort('sentToDSP')
+    .sort({ sentToDSP: 1, prelevationDate: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
@@ -104,18 +103,29 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
 //@route GET /api/tests/dsp
 //@access Private/Admin
 const getCSVForDSP = asyncHandler(async (req, res) => {
-  var today = convertDate(new Date());
+  var today = new Date();
 
-  const todaysTests = await Test.find({ resultDate: today }).populate(
+  const todaysTests = await Test.find({
+    resultDate: {
+      $gte: new Date('2021-04-10T00:00:00.000Z'),
+      $lt: new Date('2021-04-11T00:00:00.000Z'),
+    },
+  }).populate(
     'patient',
     'name surname cnp phoneNumber email addressID addressResidence'
   );
+
+  console.log(todaysTests);
 
   if (todaysTests) {
     const updatedResidenceTests = todaysTests.map((test) => {
       if (!test.patient.addressResidence) {
         test.patient.addressResidence = test.patient.addressID;
       }
+
+      test.prelevationDateConverted = convertDate(test.prelevationDate);
+      test.resultDateConverted = convertDate(test.resultDate);
+
       return test;
     });
 
@@ -127,8 +137,8 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
       { label: 'Email', value: 'patient.email' },
       { label: 'Adresa resedinta', value: 'patient.addressResidence' },
       { label: 'Rezultat test', value: 'status' },
-      { label: 'Data prelevare', value: 'prelevationDate' },
-      { label: 'Data rezultat', value: 'resultDate' },
+      { label: 'Data prelevare', value: 'prelevationDateConverted' },
+      { label: 'Data rezultat', value: 'resultDateConverted' },
       { label: 'ID lab', value: 'labId' },
     ];
     const opts = { fields };
@@ -139,7 +149,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
 
       const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${today}.csv`,
+        Key: `dsp/rezultate_${convertDate(today)}.csv`,
         Body: csvBuffer,
       };
 
@@ -151,7 +161,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
 
       const downloadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${today}.csv`,
+        Key: `dsp/rezultate_${convertDate(today)}.csv`,
       };
 
       const downloadUrl = s3.getSignedUrl('getObject', downloadParams);

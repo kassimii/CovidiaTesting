@@ -211,10 +211,6 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowFirst(doc, 'Timis', startY + 65);
   dataInRowFirst(doc, 'LDBM', startY + 85);
 
-  // const prelevationDateConverted = convertDate(testInfo.prelevationDate);
-
-  console.log(testInfo.prelevationDate);
-
   dataInRowSecond(doc, `${convertDate(testInfo.prelevationDate)}`, startY + 5);
   dataInRowSecond(doc, `${convertDate(testInfo.resultDate)}`, startY + 25);
   dataInRowSecond(doc, 'EXUDAT NAZAL-FARINGAL', startY + 45);
