@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
 
+import { convertDate } from '../utils/commonFunctions.js';
+
 dotenv.config();
 
 const startY = 210;
@@ -40,7 +42,7 @@ function generateTitle(doc, testInfo) {
     .text(`Buletin analize`, 70, 150, {
       align: 'center',
     })
-    .text(`NR. 1  Data ${testInfo.prelevationDate}`, {
+    .text(`NR. 1  Data ${convertDate(testInfo.prelevationDate)}`, {
       align: 'center',
     })
     .text(`Determinare SARS-CoV2`, {
@@ -209,8 +211,12 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowFirst(doc, 'Timis', startY + 65);
   dataInRowFirst(doc, 'LDBM', startY + 85);
 
-  dataInRowSecond(doc, `${testInfo.prelevationDate}`, startY + 5);
-  dataInRowSecond(doc, `${testInfo.resultDate}`, startY + 25);
+  // const prelevationDateConverted = convertDate(testInfo.prelevationDate);
+
+  console.log(testInfo.prelevationDate);
+
+  dataInRowSecond(doc, `${convertDate(testInfo.prelevationDate)}`, startY + 5);
+  dataInRowSecond(doc, `${convertDate(testInfo.resultDate)}`, startY + 25);
   dataInRowSecond(doc, 'EXUDAT NAZAL-FARINGAL', startY + 45);
   dataInRowSecond(doc, 'DA', startY + 65);
   dataInRowSecond(doc, '', startY + 85);
@@ -229,7 +235,9 @@ export function createPatientPdf(testInfo) {
 
   doc.end();
 
-  const invoiceName = `${testInfo.patient.name}_${testInfo.patient.surname}_${testInfo.prelevationDate}.pdf`;
+  const invoiceName = `${testInfo.patient.name}_${
+    testInfo.patient.surname
+  }_${convertDate(testInfo.prelevationDate)}.pdf`;
   const invoicePath = path.join('pdfs', invoiceName);
 
   doc.pipe(fs.createWriteStream(invoicePath));

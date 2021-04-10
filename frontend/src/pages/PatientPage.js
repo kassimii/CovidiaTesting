@@ -11,6 +11,7 @@ import {
 } from '../redux/actions/patientActions';
 import { getTestsForPatient } from '../redux/actions/testActions';
 import { PATIENT_UPDATE_RESET } from '../redux/constants/patientConstants';
+import { convertDate } from '../utils/commonFunctions';
 
 const PatientPage = ({ history, match }) => {
   const patientId = match.params.id;
@@ -282,8 +283,10 @@ const PatientPage = ({ history, match }) => {
                 {tests.map((test) => (
                   <tr key={test._id}>
                     <td>{test._id}</td>
-                    <td>{test.prelevationDate}</td>
-                    <td>{test.resultDate ? test.resultDate : '-'}</td>
+                    <td>{convertDate(test.prelevationDate)}</td>
+                    <td>
+                      {test.resultDate ? convertDate(test.resultDate) : '-'}
+                    </td>
                     <td>{test.labId}</td>
                     <td>{test.status}</td>
                     {userInfo &&

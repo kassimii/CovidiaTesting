@@ -1,6 +1,8 @@
-export function convertDate(str) {
+const convertDate = (str) => {
   str = str.toString();
+  str = str.substring(4, 15);
   let parts = str.split(' ');
+
   let months = {
     Jan: '01',
     Feb: '02',
@@ -15,5 +17,8 @@ export function convertDate(str) {
     Nov: '11',
     Dec: '12',
   };
-  return parts[2] + '.' + months[parts[1]] + '.' + parts[3];
-}
+
+  return parts[1] + '-' + months[parts[0]] + '-' + parts[2];
+};
+
+export { convertDate };

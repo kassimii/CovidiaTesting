@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
+import dateFnsFormat from 'date-fns/format';
+import dateFnsParse from 'date-fns/parse';
 import { addTestResult } from '../redux/actions/testActions';
 
 const AddResultModal = (props) => {
@@ -11,34 +14,12 @@ const AddResultModal = (props) => {
 
   const dispatch = useDispatch();
 
-  const convertDate = (str) => {
-    str = str.toString();
-    let parts = str.split(' ');
-    let months = {
-      Jan: '01',
-      Feb: '02',
-      Mar: '03',
-      Apr: '04',
-      May: '05',
-      Jun: '06',
-      Jul: '07',
-      Aug: '08',
-      Sep: '09',
-      Oct: '10',
-      Nov: '11',
-      Dec: '12',
-    };
-    return parts[2] + '.' + months[parts[1]] + '.' + parts[3];
-  };
-
   const onAddHandler = () => {
-    const resultDateConverted = convertDate(resultDate);
-
     dispatch(
       addTestResult({
         testId: props.currenttest,
         test: {
-          resultDate: resultDateConverted,
+          resultDate: resultDate,
           status: testResult,
         },
       })
@@ -48,6 +29,20 @@ const AddResultModal = (props) => {
   };
 
   const dayPicker = { firstDayOfWeek: 1 };
+
+  function parseDate(str, format, locale) {
+    const parsed = dateFnsParse(str, format, new Date(), { locale });
+    if (DateUtils.isDate(parsed)) {
+      return parsed;
+    }
+    return undefined;
+  }
+
+  function formatDate(date, format, locale) {
+    return dateFnsFormat(date, format, { locale });
+  }
+
+  const FORMAT = 'dd-MM-yyyy';
 
   return (
     <>
@@ -65,10 +60,13 @@ const AddResultModal = (props) => {
         <Modal.Body>
           <h4>Data rezultat</h4>
           <DayPickerInput
-            format={'dd-MM-yyyy'}
             onDayChange={(date) => setResultDate(date)}
             value={resultDate}
             dayPickerProps={dayPicker}
+            formatDate={formatDate}
+            format={FORMAT}
+            parseDate={parseDate}
+            placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
           />
           <h4>Rezultat</h4>
           <Form.Control

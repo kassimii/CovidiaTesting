@@ -13,10 +13,10 @@ const testSchema = mongoose.Schema(
       default: 'qwerty',
     },
     prelevationDate: {
-      type: String,
+      type: Date,
     },
     resultDate: {
-      type: String,
+      type: Date,
     },
     status: {
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],

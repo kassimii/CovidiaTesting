@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,6 +11,7 @@ import {
   generateCSVFileForDSP,
 } from '../redux/actions/testActions';
 import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
+import { convertDate } from '../utils/commonFunctions';
 
 const TestListPage = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
@@ -89,6 +89,7 @@ const TestListPage = ({ history, match }) => {
                 <th>DATA REZULTAT</th>
                 <th>STATUS</th>
                 <th>LAB ID</th>
+                <th>TRIMIS DSP</th>
                 <th></th>
               </tr>
             </thead>
@@ -97,10 +98,20 @@ const TestListPage = ({ history, match }) => {
                 <tr key={test._id}>
                   <td>{test._id}</td>
                   <td>{test.patient.patientCode}</td>
-                  <td>{test.prelevationDate}</td>
-                  <td>{test.resultDate}</td>
+                  <td>{convertDate(test.prelevationDate)}</td>
+                  <td>
+                    {test.resultDate ? convertDate(test.resultDate) : '-'}
+                  </td>
                   <td>{test.status}</td>
                   <td>{test.labId}</td>
+                  <td>
+                    {test.sentToDSP && (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: 'green' }}
+                      ></i>
+                    )}
+                  </td>
                   <td>
                     {test.sentToPatient ? (
                       <i

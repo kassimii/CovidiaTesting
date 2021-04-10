@@ -14,7 +14,7 @@ const clientParams = {
   region: 'eu-central-1',
 };
 
-const s3 = new AWS.S3(clientParams);
+export const s3 = new AWS.S3(clientParams);
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -37,7 +37,7 @@ const addTestEntry = asyncHandler(async (req, res) => {
 //@access Private
 const getTestsForPatient = asyncHandler(async (req, res) => {
   const tests = await Test.find({ patient: req.params.patientId }).sort(
-    '-createdAt'
+    '-prelevationDate'
   );
   res.json(tests);
 });
@@ -71,7 +71,8 @@ const getTests = asyncHandler(async (req, res) => {
 
   const tests = await Test.find({})
     .populate('patient', 'id patientCode')
-    .sort('-createdAt')
+    .sort('-prelevationDate')
+    .sort('sentToDSP')
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
@@ -103,18 +104,14 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
 //@route GET /api/tests/dsp
 //@access Private/Admin
 const getCSVForDSP = asyncHandler(async (req, res) => {
-  const tests = await Test.find({}).populate(
+  var today = convertDate(new Date());
+
+  const todaysTests = await Test.find({ resultDate: today }).populate(
     'patient',
     'name surname cnp phoneNumber email addressID addressResidence'
   );
 
-  if (tests) {
-    var today = convertDate(new Date());
-
-    const todaysTests = tests.filter((test) => {
-      return test.resultDate === today;
-    });
-
+  if (todaysTests) {
     const updatedResidenceTests = todaysTests.map((test) => {
       if (!test.patient.addressResidence) {
         test.patient.addressResidence = test.patient.addressID;
