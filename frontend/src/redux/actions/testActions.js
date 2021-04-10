@@ -14,6 +14,9 @@ import {
   TEST_PATIENT_PDF_REQUEST,
   TEST_PATIENT_PDF_SUCCESS,
   TEST_PATIENT_PDF_FAIL,
+  TEST_DSP_CSV_REQUEST,
+  TEST_DSP_CSV_SUCCESS,
+  TEST_DSP_CSV_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -181,6 +184,39 @@ export const sendTestPatientPDF = (testId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_PATIENT_PDF_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const generateCSVFileForDSP = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_DSP_CSV_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/tests/dsp`, config);
+
+    dispatch({
+      type: TEST_DSP_CSV_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_DSP_CSV_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

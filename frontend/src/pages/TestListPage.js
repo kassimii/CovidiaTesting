@@ -2,10 +2,16 @@ import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
-import { getTests, sendTestPatientPDF } from '../redux/actions/testActions';
+import {
+  getTests,
+  sendTestPatientPDF,
+  generateCSVFileForDSP,
+} from '../redux/actions/testActions';
+import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
 
 const TestListPage = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
@@ -18,24 +24,54 @@ const TestListPage = ({ history, match }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const CSVFile = useSelector((state) => state.CSVFile);
+  const {
+    successToast: successToastCSV,
+    success: successCSV,
+    fileUrl,
+  } = CSVFile;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getTests(pageNumber));
+
+      if (successToastCSV) {
+        toast.success('Fisier CSV generat cu success!', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+
+        dispatch({ type: TEST_DSP_CSV_RESET_SUCCESS, payload: fileUrl });
+      }
     } else {
       history.push('/login');
     }
-  }, [dispatch, history, userInfo, pageNumber]);
+  }, [dispatch, history, userInfo, pageNumber, successToastCSV, fileUrl]);
 
   return (
     <>
+      <ToastContainer />
       <Row className='align-items-center'>
         <Col>
           <h1>Teste</h1>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3'>
-            <i class='fas fa-file-download' /> DSP
+          <Button
+            className='my-3 mx-3'
+            onClick={() => dispatch(generateCSVFileForDSP())}
+          >
+            <i className='far fa-file-excel' /> Generează CSV
           </Button>
+
+          {successCSV && (
+            <Button
+              className='my-3 mx-3'
+              variant='info'
+              onClick={() => window.open(fileUrl, '_blank')}
+            >
+              <i className='fas fa-file-download' /> Descarcă CSV
+            </Button>
+          )}
         </Col>
       </Row>
       {loading ? (

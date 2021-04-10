@@ -3,8 +3,18 @@ import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate } from '../utils/commonFunctions.js';
 import { parse } from 'json2csv';
-import fs from 'fs';
 import AWS from 'aws-sdk';
+
+//AWS UPLOAD
+const clientParams = {
+  credentials: {
+    accessKeyId: process.env.AWS_ID,
+    secretAccessKey: process.env.AWS_SECRET,
+  },
+  region: 'eu-central-1',
+};
+
+const s3 = new AWS.S3(clientParams);
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -89,23 +99,10 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Get daily test results for DSP
+//@desc Generate, upload csv to AWS S3 & send to client
 //@route GET /api/tests/dsp
 //@access Private/Admin
-
-//AWS UPLOAD
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ID,
-  secretAccessKey: process.env.AWS_SECRET,
-});
-
-// const storage = multer.memoryStorage({
-//   destination: function (req, file, callback) {
-//     callback(null, '');
-//   },
-// });
-
-const getTestsDSP = asyncHandler(async (req, res) => {
+const getCSVForDSP = asyncHandler(async (req, res) => {
   const tests = await Test.find({}).populate(
     'patient',
     'name surname cnp phoneNumber email addressID addressResidence'
@@ -160,16 +157,13 @@ const getTestsDSP = asyncHandler(async (req, res) => {
         Key: `dsp/rezultate_${today}.csv`,
       };
 
-      s3.getObject(downloadParams, function (err, data) {
-        if (err) {
-          throw err;
-        }
-
-        fs.writeFileSync(`rezultate/rezultate_${today}.csv`, data.Body);
-
-        const file = `rezultate/rezultate_${today}.csv`;
-        res.download(file);
-      });
+      const downloadUrl = s3.getSignedUrl('getObject', downloadParams);
+      if (downloadUrl) {
+        res.send(downloadUrl);
+      } else {
+        res.status(404);
+        throw new Error('File not found');
+      }
     } catch (err) {
       console.error(err);
     }
@@ -185,5 +179,5 @@ export {
   updateTest,
   getTests,
   sendTestPatientPDF,
-  getTestsDSP,
+  getCSVForDSP,
 };
