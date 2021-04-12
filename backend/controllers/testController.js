@@ -103,19 +103,20 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
 //@route GET /api/tests/dsp
 //@access Private/Admin
 const getCSVForDSP = asyncHandler(async (req, res) => {
-  var today = new Date();
+  var todayBegin = new Date();
+  todayBegin.setUTCHours(0, 0, 0, 0);
+  var todayEnd = new Date();
+  todayEnd.setUTCHours(23, 59, 59, 0);
 
   const todaysTests = await Test.find({
     resultDate: {
-      $gte: new Date('2021-04-10T00:00:00.000Z'),
-      $lt: new Date('2021-04-11T00:00:00.000Z'),
+      $gte: todayBegin,
+      $lt: todayEnd,
     },
   }).populate(
     'patient',
     'name surname cnp phoneNumber email addressID addressResidence'
   );
-
-  console.log(todaysTests);
 
   if (todaysTests) {
     const updatedResidenceTests = todaysTests.map((test) => {
@@ -127,6 +128,13 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
       test.resultDateConverted = convertDate(test.resultDate);
 
       return test;
+    });
+
+    const sentToDspTests = todaysTests.map((test) => {
+      var temp = test;
+      temp.sentToDSP = true;
+
+      return temp;
     });
 
     const fields = [
@@ -149,7 +157,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
 
       const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${convertDate(today)}.csv`,
+        Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
         Body: csvBuffer,
       };
 
@@ -161,7 +169,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
 
       const downloadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${convertDate(today)}.csv`,
+        Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
       };
 
       const downloadUrl = s3.getSignedUrl('getObject', downloadParams);
