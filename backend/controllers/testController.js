@@ -130,12 +130,12 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
       return test;
     });
 
-    const sentToDspTests = todaysTests.map((test) => {
-      var temp = test;
-      temp.sentToDSP = true;
+    // const sentToDspTests = todaysTests.map((test) => {
+    //   var temp = test;
+    //   temp.sentToDSP = true;
 
-      return temp;
-    });
+    //   return temp;
+    // });
 
     const fields = [
       { label: 'Nume', value: 'patient.name' },
@@ -178,6 +178,15 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
       } else {
         res.status(404);
         throw new Error('File not found');
+      }
+
+      try {
+        var updatedTestsToday = await Test.updateMany(
+          { resultDate: { $gte: todayBegin, $lt: todayEnd } },
+          { $set: { sentToDSP: true } }
+        );
+      } catch (err) {
+        console.error(err);
       }
     } catch (err) {
       console.error(err);

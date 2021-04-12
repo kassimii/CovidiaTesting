@@ -89,7 +89,7 @@ const TestListPage = ({ history, match }) => {
                 <th>DATA REZULTAT</th>
                 <th>STATUS</th>
                 <th>LAB ID</th>
-                <th>TRIMIS DSP</th>
+                <th>GENERAT DSP</th>
                 <th></th>
               </tr>
             </thead>

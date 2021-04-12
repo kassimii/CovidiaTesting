@@ -126,7 +126,6 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
     case TEST_LIST_ADMIN_RESET:
       return { tests: [] };
     case TEST_PATIENT_PDF_SUCCESS: {
-      console.log('reducer');
       const updatedTests = state.tests.map((test) => {
         if (test._id === action.payload._id)
           return {
