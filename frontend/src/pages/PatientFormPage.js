@@ -17,7 +17,7 @@ const PatientFormPage = ({ history }) => {
   );
 
   const [addressResidence, setAddressResidence] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [message] = useState(null);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;

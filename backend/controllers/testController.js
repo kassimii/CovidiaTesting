@@ -1,20 +1,21 @@
 import asyncHandler from 'express-async-handler';
+import { parse } from 'json2csv';
 import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate } from '../utils/commonFunctions.js';
-import { parse } from 'json2csv';
-import AWS from 'aws-sdk';
+import { s3 } from '../config/aws.js';
+// import AWS from 'aws-sdk';
 
 //AWS UPLOAD
-const clientParams = {
-  credentials: {
-    accessKeyId: process.env.AWS_ID,
-    secretAccessKey: process.env.AWS_SECRET,
-  },
-  region: 'eu-central-1',
-};
+// const clientParams = {
+//   credentials: {
+//     accessKeyId: process.env.AWS_ID,
+//     secretAccessKey: process.env.AWS_SECRET,
+//   },
+//   region: 'eu-central-1',
+// };
 
-export const s3 = new AWS.S3(clientParams);
+// export const s3 = new AWS.S3(clientParams);
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -108,92 +109,97 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
   var todayEnd = new Date();
   todayEnd.setUTCHours(23, 59, 59, 0);
 
-  const todaysTests = await Test.find({
+  const todaysSentTests = await Test.countDocuments({
     resultDate: {
       $gte: todayBegin,
       $lt: todayEnd,
     },
-  }).populate(
-    'patient',
-    'name surname cnp phoneNumber email addressID addressResidence'
-  );
+    sentToDSP: false,
+  });
 
-  if (todaysTests) {
-    const updatedResidenceTests = todaysTests.map((test) => {
-      if (!test.patient.addressResidence) {
-        test.patient.addressResidence = test.patient.addressID;
-      }
+  if (todaysSentTests !== 0) {
+    const todaysTests = await Test.find({
+      resultDate: {
+        $gte: todayBegin,
+        $lt: todayEnd,
+      },
+    }).populate(
+      'patient',
+      'name surname cnp phoneNumber email addressID addressResidence'
+    );
 
-      test.prelevationDateConverted = convertDate(test.prelevationDate);
-      test.resultDateConverted = convertDate(test.resultDate);
-
-      return test;
-    });
-
-    // const sentToDspTests = todaysTests.map((test) => {
-    //   var temp = test;
-    //   temp.sentToDSP = true;
-
-    //   return temp;
-    // });
-
-    const fields = [
-      { label: 'Nume', value: 'patient.name' },
-      { label: 'Prenume', value: 'patient.surname' },
-      { label: 'CNP', value: 'patient.cnp' },
-      { label: 'Nr. telefon', value: 'patient.phoneNumber' },
-      { label: 'Email', value: 'patient.email' },
-      { label: 'Adresa resedinta', value: 'patient.addressResidence' },
-      { label: 'Rezultat test', value: 'status' },
-      { label: 'Data prelevare', value: 'prelevationDateConverted' },
-      { label: 'Data rezultat', value: 'resultDateConverted' },
-      { label: 'ID lab', value: 'labId' },
-    ];
-    const opts = { fields };
-
-    try {
-      const csv = parse(updatedResidenceTests, opts);
-      const csvBuffer = Buffer.from(csv);
-
-      const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
-        Body: csvBuffer,
-      };
-
-      s3.upload(uploadParams, (error, data) => {
-        if (error) {
-          res.status(500).send(error);
+    if (todaysTests) {
+      const updatedResidenceTests = todaysTests.map((test) => {
+        if (!test.patient.addressResidence) {
+          test.patient.addressResidence = test.patient.addressID;
         }
+
+        test.prelevationDateConverted = convertDate(test.prelevationDate);
+        test.resultDateConverted = convertDate(test.resultDate);
+
+        return test;
       });
 
-      const downloadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
-      };
-
-      const downloadUrl = s3.getSignedUrl('getObject', downloadParams);
-      if (downloadUrl) {
-        res.send(downloadUrl);
-      } else {
-        res.status(404);
-        throw new Error('File not found');
-      }
+      const fields = [
+        { label: 'Nume', value: 'patient.name' },
+        { label: 'Prenume', value: 'patient.surname' },
+        { label: 'CNP', value: 'patient.cnp' },
+        { label: 'Nr. telefon', value: 'patient.phoneNumber' },
+        { label: 'Email', value: 'patient.email' },
+        { label: 'Adresa resedinta', value: 'patient.addressResidence' },
+        { label: 'Rezultat test', value: 'status' },
+        { label: 'Data prelevare', value: 'prelevationDateConverted' },
+        { label: 'Data rezultat', value: 'resultDateConverted' },
+        { label: 'ID lab', value: 'labId' },
+      ];
+      const opts = { fields };
 
       try {
-        var updatedTestsToday = await Test.updateMany(
-          { resultDate: { $gte: todayBegin, $lt: todayEnd } },
-          { $set: { sentToDSP: true } }
-        );
+        const csv = parse(updatedResidenceTests, opts);
+        const csvBuffer = Buffer.from(csv);
+
+        const uploadParams = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
+          Body: csvBuffer,
+        };
+
+        s3.upload(uploadParams, (error, data) => {
+          if (error) {
+            res.status(500).send(error);
+          }
+        });
+
+        const downloadParams = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `dsp/rezultate_${convertDate(todayBegin)}.csv`,
+        };
+
+        const downloadUrl = s3.getSignedUrl('getObject', downloadParams);
+        if (downloadUrl) {
+          res.send(downloadUrl);
+        } else {
+          res.status(404);
+          throw new Error('File not found');
+        }
+
+        try {
+          var updatedTestsToday = await Test.updateMany(
+            { resultDate: { $gte: todayBegin, $lt: todayEnd } },
+            { $set: { sentToDSP: true } }
+          );
+        } catch (err) {
+          console.error(err);
+        }
       } catch (err) {
         console.error(err);
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      res.status(404);
+      throw new Error('Test not found');
     }
   } else {
-    res.status(404);
-    throw new Error('Test not found');
+    res.send('Already generated');
   }
 });
 
