@@ -12,22 +12,12 @@ const startY = 210;
 
 function generateHeader(doc) {
   doc
-    // .image('logo.png')
+    .image('backend/pdf_utils/pics/logo.png', 35, 45, { width: 200 })
     .fillColor('#444444')
-    .fontSize(8)
-    .font('Helvetica')
-    .text('UNIVERSITATEA', {
-      align: 'left',
-    })
-    .text('DE MEDICINA SI FARMACIE', {
-      align: 'left',
-    })
-    .text('VICTOR BABES TIMISOARA', {
-      align: 'left',
-    })
     .moveDown()
-    .font('Helvetica-Oblique')
-    .text('Laborator de Diagnostic Biochimic si Molecular', 200, 65, {
+    .fontSize(10)
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Italic.otf')
+    .text('Laborator de Diagnostic Biochimic și Molecular', 200, 65, {
       align: 'right',
     })
     .text('Disciplina de Biochimie', 200, 80, { align: 'right' })
@@ -37,9 +27,9 @@ function generateHeader(doc) {
 function generateTitle(doc, testInfo) {
   doc
     .moveDown()
-    .font('Helvetica')
-    .fontSize(12)
-    .text(`Buletin analize`, 70, 150, {
+    .font('backend/pdf_utils/fonts/aileron/Aileron-SemiBold.otf')
+    .fontSize(14)
+    .text(`Buletin analize`, 70, 130, {
       align: 'center',
     })
     .text(`NR. 1  Data ${convertDate(testInfo.prelevationDate)}`, {
@@ -54,12 +44,15 @@ function textInRowFirst(doc, text, heigth) {
   doc.y = heigth;
   doc.x = 50;
   doc.fillColor('black');
-  doc.font('Helvetica-Bold').fontSize(10).text(text, {
-    paragraphGap: 5,
-    indent: 5,
-    align: 'justify',
-    columns: 1,
-  });
+  doc
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
+    .fontSize(10)
+    .text(text, {
+      paragraphGap: 5,
+      indent: 5,
+      align: 'justify',
+      columns: 1,
+    });
   return doc;
 }
 
@@ -67,12 +60,15 @@ function textInRowSecond(doc, text, heigth) {
   doc.y = heigth;
   doc.x = 275;
   doc.fillColor('black');
-  doc.font('Helvetica-Bold').fontSize(10).text(text, {
-    paragraphGap: 5,
-    indent: 5,
-    align: 'justify',
-    columns: 1,
-  });
+  doc
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
+    .fontSize(10)
+    .text(text, {
+      paragraphGap: 5,
+      indent: 5,
+      align: 'justify',
+      columns: 1,
+    });
   return doc;
 }
 
@@ -80,12 +76,15 @@ function dataInRowFirst(doc, text, heigth) {
   doc.y = heigth;
   doc.x = 130;
   doc.fillColor('black');
-  doc.font('Helvetica').fontSize(10).text(text, {
-    paragraphGap: 5,
-    indent: 5,
-    align: 'justify',
-    columns: 1,
-  });
+  doc
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
+    .fontSize(10)
+    .text(text, {
+      paragraphGap: 5,
+      indent: 5,
+      align: 'justify',
+      columns: 1,
+    });
   return doc;
 }
 
@@ -93,9 +92,12 @@ function dataInRowSecond(doc, text, heigth) {
   doc.y = heigth;
   doc.x = 440;
   doc.fillColor('black');
-  doc.font('Helvetica').fontSize(10).text(text, {
-    width: 130,
-  });
+  doc
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
+    .fontSize(10)
+    .text(text, {
+      width: 130,
+    });
   return doc;
 }
 
@@ -130,14 +132,14 @@ function generateTable(doc) {
   textInRowFirst(doc, 'Nume', startY + 5);
   textInRowFirst(doc, 'Prenume', startY + 25);
   textInRowFirst(doc, 'CNP', startY + 45);
-  textInRowFirst(doc, 'Judet', startY + 65);
+  textInRowFirst(doc, 'Județ', startY + 65);
   textInRowFirst(doc, 'Unitate', startY + 85);
 
-  textInRowSecond(doc, 'Data recoltare proba', startY + 5);
-  textInRowSecond(doc, 'Data emitere rezultat', startY + 25);
-  textInRowSecond(doc, 'Tip proba', startY + 45);
-  textInRowSecond(doc, 'Personal Consortiu Universitar', startY + 65);
-  textInRowSecond(doc, 'Observatii(CI/Pasaport)', startY + 85);
+  textInRowSecond(doc, 'Dată recoltare probă', startY + 5);
+  textInRowSecond(doc, 'Dată emitere rezultat', startY + 25);
+  textInRowSecond(doc, 'Tip probă', startY + 45);
+  textInRowSecond(doc, 'Personal Consorțiu Universitar', startY + 65);
+  textInRowSecond(doc, 'Observații(CI/Pasaport)', startY + 85);
 
   doc.moveDown();
 }
@@ -146,32 +148,32 @@ function generateTestInfo(doc) {
   doc.x = 70;
   doc
     .moveDown()
-    .fontSize(10)
-    .font('Helvetica-Bold')
+    .fontSize(12)
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
     .text('Metoda - ', { continued: true })
-    .font('Helvetica-Oblique')
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Italic.otf')
     .text('Real-time PCR: ', { continued: true })
-    .font('Helvetica')
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
     .text(
-      'reactie de polimerizare in lant cu detectie in timp real a fluorescentei produsului PCR acumulat'
+      'reacție de polimerizare în lanț cu detecie în timp real a fluoreșcenței produsului PCR acumulat'
     )
     .moveDown();
 
   doc
     .moveDown()
-    .fontSize(10)
-    .font('Helvetica-Bold')
+    .fontSize(12)
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
     .text('Interpretarea rezultatelor:')
-    .font('Helvetica')
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
     .text('Negativ', { continued: true })
-    .text('= nu se detecteaza prezenta SARS-CoV2 (negativ)', 120)
+    .text('= nu se detectează prezența SARS-CoV2 (negativ)', 120)
     .text('Pozitiv', { continued: true })
     .text(
-      '= virusul SARS-CoV2 este detectat in materialul biologic recoltat',
+      '= virusul SARS-CoV2 este detectat în materialul biologic recoltat',
       125
     )
     .text('Neconcludent', { continued: true })
-    .text('= este necesara repetarea recoltarii si a testarii', 93)
+    .text('= este necesară repetarea recoltării și a testării', 85)
     .moveDown();
 }
 
@@ -179,8 +181,8 @@ function generateResult(doc, testResult) {
   var res = testResult.toUpperCase();
   doc
     .moveDown()
-    .fontSize(12)
-    .font('Helvetica-Bold')
+    .fontSize(14)
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
     .text(`Rezultat: ${res}`)
     .moveDown();
 }
@@ -188,17 +190,17 @@ function generateResult(doc, testResult) {
 function generateFooter(doc) {
   doc
     .fontSize(8)
-    .font('Helvetica-Oblique')
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Italic.otf')
     .fillColor('gray')
     .text(
-      'Rezultatul reprezinta statusul viral la momentul recoltarii. Un rezultat negativ sau neconcludent nu exclude posibilitatea unei infectii cu SARS-CoV2. In cazul în care exista o simptomatologie sugestiva si un rezultat PCR ARN SARS-CoV2 nedetectabil (negativ), se recomanda repetarea recoltarii si a testarii . De asemenea, in cazul unui rezultat neconcludent este necesara repetarea testului.',
+      'Rezultatul reprezintă statusul viral la momentul recoltării. Un rezultat negativ sau neconcludent nu exclude posibilitatea unei infecții cu SARS-CoV2. În cazul în care există o simptomatologie sugestivă și un rezultat PCR ARN SARS-CoV2 nedetectabil (negativ), se recomandă repetarea recoltării și a testării. De asemenea, în cazul unui rezultat neconcludent este necesară repetarea testului.',
       40,
       660,
       { align: 'justify', width: 530 }
     )
     .moveDown()
     .text(
-      'Rezultatele incercarilor se refera numai la produsul supus analizei. Rezultatele acestui buletin nu pot fi reproduse fara acordul  laboratorului.  Raspunderea  asupra  corectitudinii  informatiilor  declarate  de  pacient/apartinatori  revine exclusiv acestuia/acestora.',
+      'Rezultatele încercarilor se referă numai la produsul supus analizei. Rezultatele acestui buletin nu pot fi reproduse fără acordul  laboratorului.  Răspunderea  asupra  corectitudinii  informațiilor  declarate  de  pacient/aparținători  revine exclusiv acestuia/acestora.',
 
       { align: 'justify', width: 530 }
     );
@@ -218,6 +220,14 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowSecond(doc, '', startY + 85);
 }
 
+function insertDoctorStamp(doc) {
+  doc
+    .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
+    .fontSize(12)
+    .text('Executat: ', 100, 580, { continued: true })
+    .image('backend/pdf_utils/pics/parafa.jpg', 160, 550, { width: 100 });
+}
+
 export function createPatientPdf(testInfo) {
   const doc = new PDFDocument();
 
@@ -228,6 +238,7 @@ export function createPatientPdf(testInfo) {
   generateResult(doc, testInfo.status);
   generateFooter(doc);
   insertDataIntoTable(doc, testInfo);
+  insertDoctorStamp(doc);
 
   doc.end();
 
@@ -238,27 +249,27 @@ export function createPatientPdf(testInfo) {
 
   doc.pipe(fs.createWriteStream(invoicePath));
 
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: `${process.env.TRANSPORTER_EMAIL}`,
-      pass: `${process.env.TRANSPORTER_PASS}`,
-    },
-  });
+  // var transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: `${process.env.TRANSPORTER_EMAIL}`,
+  //     pass: `${process.env.TRANSPORTER_PASS}`,
+  //   },
+  // });
 
-  var mailOptions = {
-    from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
-    to: `${testInfo.patient.email}`,
-    subject: 'Rezultate test PCR',
-    text: 'Atașat aveți buletinul de analize.',
-    attachments: [{ filename: invoiceName, path: invoicePath }],
-  };
+  // var mailOptions = {
+  //   from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+  //   to: `${testInfo.patient.email}`,
+  //   subject: 'Rezultate test PCR',
+  //   text: 'Atașat aveți buletinul de analize.',
+  //   attachments: [{ filename: invoiceName, path: invoicePath }],
+  // };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  // transporter.sendMail(mailOptions, function (error, info) {
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
 }

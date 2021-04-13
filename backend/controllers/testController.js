@@ -4,18 +4,6 @@ import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate } from '../utils/commonFunctions.js';
 import { s3 } from '../config/aws.js';
-// import AWS from 'aws-sdk';
-
-//AWS UPLOAD
-// const clientParams = {
-//   credentials: {
-//     accessKeyId: process.env.AWS_ID,
-//     secretAccessKey: process.env.AWS_SECRET,
-//   },
-//   region: 'eu-central-1',
-// };
-
-// export const s3 = new AWS.S3(clientParams);
 
 //@desc Create new test entry
 //@route POST /api/tests
