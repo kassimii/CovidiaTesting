@@ -17,6 +17,9 @@ import {
   TEST_DSP_CSV_REQUEST,
   TEST_DSP_CSV_SUCCESS,
   TEST_DSP_CSV_FAIL,
+  TEST_VERIFY_REQUEST,
+  TEST_VERIFY_SUCCESS,
+  TEST_VERIFY_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -217,6 +220,39 @@ export const generateCSVFileForDSP = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_DSP_CSV_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const verifyTodaysTests = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_VERIFY_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/tests/verifytests`, config);
+
+    dispatch({
+      type: TEST_VERIFY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_VERIFY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

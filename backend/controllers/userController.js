@@ -169,6 +169,7 @@ const createUser = asyncHandler(async (req, res) => {
     name,
     email,
     password: randomPassword,
+    isAdmin,
     isPrelevationWorker,
     isLabWorker,
   });

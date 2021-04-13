@@ -9,6 +9,7 @@ import {
   getTests,
   sendTestPatientPDF,
   generateCSVFileForDSP,
+  verifyTodaysTests,
 } from '../redux/actions/testActions';
 import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
 import { convertDate } from '../utils/commonFunctions';
@@ -24,6 +25,9 @@ const TestListPage = ({ history, match }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const verifyTests = useSelector((state) => state.verifyTests);
+  const { status: statusTests } = verifyTests;
+
   const CSVFile = useSelector((state) => state.CSVFile);
   const {
     successToast: successToastCSV,
@@ -33,6 +37,7 @@ const TestListPage = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
+      dispatch(verifyTodaysTests());
       dispatch(getTests(pageNumber));
 
       if (successToastCSV) {
@@ -56,12 +61,14 @@ const TestListPage = ({ history, match }) => {
           <h1>Teste</h1>
         </Col>
         <Col className='text-right'>
-          <Button
-            className='my-3 mx-3'
-            onClick={() => dispatch(generateCSVFileForDSP())}
-          >
-            <i className='far fa-file-excel' /> Generează CSV
-          </Button>
+          {(!statusTests || statusTests === {}) && (
+            <Button
+              className='my-3 mx-3'
+              onClick={() => dispatch(generateCSVFileForDSP())}
+            >
+              <i className='far fa-file-excel' /> Generează CSV
+            </Button>
+          )}
 
           {successCSV && (
             <Button

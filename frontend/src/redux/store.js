@@ -23,6 +23,7 @@ import {
   testListAdminReducer,
   testPatientPdfReducer,
   CSVFileReducer,
+  verifyTestsReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -42,6 +43,7 @@ const reducer = combineReducers({
   testListAdmin: testListAdminReducer,
   testPatientPdf: testPatientPdfReducer,
   CSVFile: CSVFileReducer,
+  verifyTests: verifyTestsReducer,
 });
 
 const initialState = {};

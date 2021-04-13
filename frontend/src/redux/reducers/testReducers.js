@@ -24,6 +24,10 @@ import {
   TEST_DSP_CSV_FAIL,
   TEST_DSP_CSV_RESET,
   TEST_DSP_CSV_RESET_SUCCESS,
+  TEST_VERIFY_REQUEST,
+  TEST_VERIFY_SUCCESS,
+  TEST_VERIFY_FAIL,
+  TEST_VERIFY_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -189,6 +193,29 @@ export const CSVFileReducer = (state = { fileUrl: {} }, action) => {
       return {};
     case TEST_DSP_CSV_RESET_SUCCESS:
       return { loading: false, success: true, fileUrl: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const verifyTestsReducer = (state = { status: {} }, action) => {
+  switch (action.type) {
+    case TEST_VERIFY_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_VERIFY_SUCCESS:
+      return {
+        loading: false,
+        status: action.payload,
+      };
+    case TEST_VERIFY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_VERIFY_RESET:
+      return {};
     default:
       return state;
   }
