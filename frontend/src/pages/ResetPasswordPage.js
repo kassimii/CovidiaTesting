@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
-import { resetPassword } from '../redux/actions/userActions';
+import { resetPassword, verifyResetLink } from '../redux/actions/userActions';
 
 const ResetPasswordPage = ({ history, match }) => {
   const userId = match.params.userId;
@@ -21,15 +21,23 @@ const ResetPasswordPage = ({ history, match }) => {
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { error: resetError, success: resetSuccess } = userResetPassword;
 
+  const userVerifyResetLink = useSelector((state) => state.userVerifyResetLink);
+  const {
+    error: resetLinkError,
+    success: resetLinkSuccess,
+  } = userVerifyResetLink;
+
   useEffect(() => {
     if (userInfo) {
       history.push('/');
     }
 
+    dispatch(verifyResetLink(userId, token));
+
     if (resetSuccess) {
       history.push('/login');
     }
-  }, [history, userInfo, resetSuccess]);
+  }, [history, userInfo, resetSuccess, dispatch, token, userId]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -41,36 +49,46 @@ const ResetPasswordPage = ({ history, match }) => {
   };
 
   return (
-    <FormContainer>
-      <h1>Setați o nouă parolă</h1>
-      {message && <Message variant='danger'>{message}</Message>}
-      {resetError && <Message variant='danger'>A apărut o eroare</Message>}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId='password'>
-          <Form.Control
-            type='password'
-            placeholder='Parolă nouă'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className='my-3'
-          ></Form.Control>
-        </Form.Group>
+    <>
+      {resetLinkError && (
+        <Message variant='danger'>
+          Linkul de resetare a parolei a expirat
+        </Message>
+      )}
 
-        <Form.Group controlId='confirmPassword'>
-          <Form.Control
-            type='password'
-            placeholder='Repetă parola'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className='my-3'
-          ></Form.Control>
-        </Form.Group>
+      {resetLinkSuccess && (
+        <FormContainer>
+          <h1>Setați o nouă parolă</h1>
+          {message && <Message variant='danger'>{message}</Message>}
+          {resetError && <Message variant='danger'>A apărut o eroare</Message>}
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId='password'>
+              <Form.Control
+                type='password'
+                placeholder='Parolă nouă'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='my-3'
+              ></Form.Control>
+            </Form.Group>
 
-        <Button type='submit' variant='dark'>
-          Schimbați parola
-        </Button>
-      </Form>
-    </FormContainer>
+            <Form.Group controlId='confirmPassword'>
+              <Form.Control
+                type='password'
+                placeholder='Repetă parola'
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className='my-3'
+              ></Form.Control>
+            </Form.Group>
+
+            <Button type='submit' variant='dark'>
+              Schimbați parola
+            </Button>
+          </Form>
+        </FormContainer>
+      )}
+    </>
   );
 };
 

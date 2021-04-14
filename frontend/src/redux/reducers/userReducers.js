@@ -34,6 +34,10 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
   USER_RESET_PASSWORD_RESET,
+  USER_VERIFY_RESET_LINK_REQUEST,
+  USER_VERIFY_RESET_LINK_SUCCESS,
+  USER_VERIFY_RESET_LINK_FAIL,
+  USER_VERIFY_RESET_LINK_RESET,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -170,6 +174,21 @@ export const userResetPasswordReducer = (state = {}, action) => {
     case USER_RESET_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
     case USER_RESET_PASSWORD_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userVerifyResetLinkReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_VERIFY_RESET_LINK_REQUEST:
+      return { loading: true };
+    case USER_VERIFY_RESET_LINK_SUCCESS:
+      return { loading: false, success: true };
+    case USER_VERIFY_RESET_LINK_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_VERIFY_RESET_LINK_RESET:
       return {};
     default:
       return state;

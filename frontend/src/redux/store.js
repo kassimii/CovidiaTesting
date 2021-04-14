@@ -17,6 +17,7 @@ import {
   userCreateReducer,
   userForgotPasswordReducer,
   userResetPasswordReducer,
+  userVerifyResetLinkReducer,
 } from './reducers/userReducers';
 import {
   testCreateReducer,
@@ -41,6 +42,7 @@ const reducer = combineReducers({
   userCreate: userCreateReducer,
   userForgotPassword: userForgotPasswordReducer,
   userResetPassword: userResetPasswordReducer,
+  userVerifyResetLink: userVerifyResetLinkReducer,
   testCreate: testCreateReducer,
   testList: testListReducer,
   testUpdate: testUpdateReducer,

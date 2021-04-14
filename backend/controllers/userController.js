@@ -248,7 +248,7 @@ const sendResetPasswordLink = asyncHandler(async (req, res) => {
       from: `CovidTesting <${process.env.TRANSPORTER_EMAIL}>`,
       to: user[0].email,
       subject: 'Resetarea parolei',
-      text: `Accesați linkul pentru a reseta parola: ${resetLink}`,
+      html: `<p>Pentru a reseta parola apăsați aici: <a href=${resetLink}>Resetare parolă</a></p> `,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -301,6 +301,27 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
+//verify if reset password link is still available
+const verifyResetLink = asyncHandler(async (req, res) => {
+  const { userId, token } = req.body;
+  const user = await User.findById(userId);
+
+  if (user) {
+    const resetSecret = process.env.JWT_SECRET + user.password;
+
+    try {
+      const payload = jwt.verify(token, resetSecret);
+      res.sendStatus(200);
+    } catch (error) {
+      res.send(error.message);
+      return;
+    }
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
 export {
   authUser,
   getUserProfile,
@@ -312,4 +333,5 @@ export {
   createUser,
   sendResetPasswordLink,
   resetPassword,
+  verifyResetLink,
 };

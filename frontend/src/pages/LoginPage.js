@@ -28,7 +28,7 @@ const LoginPage = ({ history }) => {
     return function resetState() {
       dispatch({ type: USER_RESET_PASSWORD_RESET });
     };
-  }, [history, userInfo]);
+  }, [history, userInfo, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

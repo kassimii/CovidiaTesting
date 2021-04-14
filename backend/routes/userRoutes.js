@@ -11,9 +11,11 @@ import {
   createUser,
   sendResetPasswordLink,
   resetPassword,
+  verifyResetLink,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
+router.post('/verify-reset-link', verifyResetLink);
 router
   .route('/')
   .get(protect, admin, getUsers)

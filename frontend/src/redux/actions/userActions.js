@@ -29,6 +29,9 @@ import {
   USER_RESET_PASSWORD_REQUEST,
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
+  USER_VERIFY_RESET_LINK_REQUEST,
+  USER_VERIFY_RESET_LINK_SUCCESS,
+  USER_VERIFY_RESET_LINK_FAIL,
 } from '../constants/userConstants';
 import { PATIENT_LIST_RESET } from '../constants/patientConstants';
 import axios from 'axios';
@@ -336,6 +339,45 @@ export const resetPassword = (userId, token, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_RESET_PASSWORD_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const verifyResetLink = (userId, token) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_VERIFY_RESET_LINK_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/users/verify-reset-link`,
+      { userId, token },
+      config
+    );
+
+    if (data === 'OK') {
+      dispatch({
+        type: USER_VERIFY_RESET_LINK_SUCCESS,
+      });
+    } else {
+      dispatch({
+        type: USER_VERIFY_RESET_LINK_FAIL,
+        payload: data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: USER_VERIFY_RESET_LINK_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
