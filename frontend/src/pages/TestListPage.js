@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
@@ -45,11 +46,9 @@ const TestListPage = ({ history, match }) => {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
         });
-      }
 
-      return function resetState() {
-        dispatch({ type: TEST_DSP_CSV_RESET_SUCCESS });
-      };
+        dispatch({ type: TEST_DSP_CSV_RESET_SUCCESS, payload: fileUrl });
+      }
     } else {
       history.push('/login');
     }
@@ -63,7 +62,7 @@ const TestListPage = ({ history, match }) => {
           <h1>Teste</h1>
         </Col>
         <Col className='text-right'>
-          {(!statusTests || statusTests === {}) && (
+          {statusTests !== 'No tests today' && (
             <Button
               className='my-3 mx-3'
               onClick={() => dispatch(generateCSVFileForDSP())}

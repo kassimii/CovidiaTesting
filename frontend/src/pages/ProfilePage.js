@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -25,19 +23,12 @@ const ProfilePage = ({ location, history }) => {
   const { loading, error, userInfo } = userLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
+  const { success: successUpdate } = userUpdateProfile;
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (success) {
-        toast.success('Profile updated!', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-
-        dispatch({ type: USER_UPDATE_PROFILE_RESET });
-      }
       if (!userInfo.name) {
         dispatch(getUserDetails('profile'));
       } else {
@@ -45,7 +36,11 @@ const ProfilePage = ({ location, history }) => {
         setEmail(userInfo.email);
       }
     }
-  }, [dispatch, history, userInfo, success]);
+
+    setTimeout(function () {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+    }, 20000);
+  }, [dispatch, history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -61,52 +56,52 @@ const ProfilePage = ({ location, history }) => {
       <h2 className='py-3'>User profile</h2>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
+      {successUpdate && <Message variant='success'>Profil actualizat!</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Nume</Form.Label>
           <Form.Control
             type='name'
-            placeholder='Enter name'
+            placeholder='Introduceti numele'
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='email'>
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Enter email'
+            placeholder='Introduceti adresa de email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Parola</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Enter password'
+            placeholder='Parola noua'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>Confirmare parola</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Confirm Password'
+            placeholder='Repeta parola'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primar'>
+        <Button type='submit' variant='dark'>
           Update
         </Button>
-        <ToastContainer />
       </Form>
     </FormContainer>
   );

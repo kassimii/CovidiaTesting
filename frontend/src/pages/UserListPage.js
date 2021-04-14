@@ -87,8 +87,8 @@ const UserListPage = ({ history, match }) => {
                 <th>NUME</th>
                 <th>EMAIL</th>
                 <th>ADMIN</th>
-                <th>LAB WORKER</th>
-                <th>PRELEVATION WORKER</th>
+                <th>PRELEVARE</th>
+                <th>LABORATOR</th>
                 <th></th>
               </tr>
             </thead>
@@ -109,14 +109,6 @@ const UserListPage = ({ history, match }) => {
                     )}
                   </td>
                   <td>
-                    {user.isLabWorker && (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
-                    )}
-                  </td>
-                  <td>
                     {user.isPrelevationWorker && (
                       <i
                         className='fas fa-check'
@@ -124,6 +116,15 @@ const UserListPage = ({ history, match }) => {
                       ></i>
                     )}
                   </td>
+                  <td>
+                    {user.isLabWorker && (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: 'green' }}
+                      ></i>
+                    )}
+                  </td>
+
                   <td>
                     <LinkContainer
                       to={`/admin/utilizatori/${user._id}/editare`}

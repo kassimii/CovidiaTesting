@@ -47,39 +47,40 @@ const AddUserPage = ({ match, history }) => {
   return (
     <>
       <Link to='/admin/utilizatori' className='btn btn-light my-3'>
-        Go Back
+        Înapoi
       </Link>
 
       <FormContainer>
-        <h1>Adaugare utilizator</h1>
+        <h1>Adăugare utilizator</h1>
         {loadingCreate && <Loader />}
         {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
 
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nume</Form.Label>
             <Form.Control
               type='name'
-              placeholder='Enter name'
+              placeholder='Introduceti nume'
               value={name}
               onChange={(e) => setName(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='email'>
-            <Form.Label>Email Address</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type='email'
-              placeholder='Enter email'
+              placeholder='Introduceti adresa de email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='isAdmin'>
+            <Form.Label>Rol utilizator</Form.Label>
             <Form.Check
               type='checkbox'
-              label='Is Admin'
+              label='Admin'
               checked={isAdmin}
               onChange={(e) => setIsAdmin(e.target.checked)}
             ></Form.Check>
@@ -88,7 +89,7 @@ const AddUserPage = ({ match, history }) => {
           <Form.Group controlId='isPrelevationWorker'>
             <Form.Check
               type='checkbox'
-              label='Is Prelevation Worker'
+              label='Departament Prelevare'
               checked={isPrelevationWorker}
               onChange={(e) => setIsPrelevationWorker(e.target.checked)}
             ></Form.Check>
@@ -97,13 +98,13 @@ const AddUserPage = ({ match, history }) => {
           <Form.Group controlId='isLabWorker'>
             <Form.Check
               type='checkbox'
-              label='Is Lab Worker'
+              label='Laborator'
               checked={isLabWorker}
               onChange={(e) => setIsLabWorker(e.target.checked)}
             ></Form.Check>
           </Form.Group>
 
-          <Button type='submit' variant='primar'>
+          <Button type='submit' variant='dark'>
             Salvare
           </Button>
         </Form>
