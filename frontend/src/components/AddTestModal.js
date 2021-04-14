@@ -16,11 +16,15 @@ const AddTestModal = (props) => {
   const patientDetails = useSelector((state) => state.patientDetails);
   const { patient } = patientDetails;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const onAddHandler = () => {
     dispatch(
       createTestEntry({
         patient: patient._id,
         prelevationDate: prelevationDate,
+        collectedBy: userInfo._id,
       })
     );
 

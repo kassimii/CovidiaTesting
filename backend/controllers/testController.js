@@ -9,11 +9,12 @@ import { s3 } from '../config/aws.js';
 //@route POST /api/tests
 //@access Private
 const addTestEntry = asyncHandler(async (req, res) => {
-  const { prelevationDate, patient } = req.body;
+  const { prelevationDate, patient, collectedBy } = req.body;
 
   const test = new Test({
     patient,
     prelevationDate,
+    collectedBy,
   });
 
   const createdTest = await test.save();
@@ -40,6 +41,7 @@ const updateTest = asyncHandler(async (req, res) => {
   if (test) {
     test.resultDate = req.body.resultDate;
     test.status = req.body.status;
+    test.resultBy = req.body.resultBy;
 
     const updatedTest = await test.save();
     res.json(updatedTest);
@@ -180,7 +182,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
 });
 
 //verify function - counts tests from db and sends results to frontend
-const verifyTodaysGeneratedTests = asyncHandler(async (req, res) => {
+const verifyTodaysTests = asyncHandler(async (req, res) => {
   var todayBegin = new Date();
   todayBegin.setUTCHours(0, 0, 0, 0);
   var todayEnd = new Date(todayBegin.getTime());
@@ -197,19 +199,6 @@ const verifyTodaysGeneratedTests = asyncHandler(async (req, res) => {
     res.send('No tests today');
     return;
   }
-
-  const todaysNotGeneratedTests = await Test.countDocuments({
-    resultDate: {
-      $gte: todayBegin,
-      $lt: todayEnd,
-    },
-    sentToDSP: false,
-  });
-
-  if (todaysNotGeneratedTests === 0) {
-    res.send('All tests generated');
-    return;
-  }
 });
 
 export {
@@ -219,5 +208,5 @@ export {
   getTests,
   sendTestPatientPDF,
   getCSVForDSP,
-  verifyTodaysGeneratedTests,
+  verifyTodaysTests,
 };

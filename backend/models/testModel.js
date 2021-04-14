@@ -15,8 +15,16 @@ const testSchema = mongoose.Schema(
     prelevationDate: {
       type: Date,
     },
+    collectedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
     resultDate: {
       type: Date,
+    },
+    resultBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
     },
     status: {
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],

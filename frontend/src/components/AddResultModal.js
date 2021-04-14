@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { DateUtils } from 'react-day-picker';
@@ -14,6 +14,9 @@ const AddResultModal = (props) => {
 
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const onAddHandler = () => {
     dispatch(
       addTestResult({
@@ -21,6 +24,7 @@ const AddResultModal = (props) => {
         test: {
           resultDate: resultDate,
           status: testResult,
+          resultBy: userInfo._id,
         },
       })
     );
