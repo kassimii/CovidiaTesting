@@ -82,7 +82,7 @@ const getPatients = asyncHandler(async (req, res) => {
 //@route GET /api/patients/:id
 //@access Private
 const getPatientById = asyncHandler(async (req, res) => {
-  const patient = await Patient.findById(req.params.id).select('-password');
+  const patient = await Patient.findById(req.params.id);
   if (patient) {
     res.json(patient);
   } else {

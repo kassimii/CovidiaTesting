@@ -12,6 +12,8 @@ import UserEditPage from './pages/UserEditPage';
 import AddUserPage from './pages/AddUserPage';
 import PatientPage from './pages/PatientPage';
 import TestListPage from './pages/TestListPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -51,7 +53,12 @@ function App() {
             path='/pacienti/cautare/:keyword'
             component={PatientListPage}
           />
+          <Route path='/parola' component={ForgotPasswordPage} />
           <Route path='/profil' component={ProfilePage} />
+          <Route
+            path='/resetare-parola/:userId/:token'
+            component={ResetPasswordPage}
+          />
         </Container>
       </main>
       <Footer />

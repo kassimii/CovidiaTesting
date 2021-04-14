@@ -45,9 +45,11 @@ const TestListPage = ({ history, match }) => {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
         });
-
-        dispatch({ type: TEST_DSP_CSV_RESET_SUCCESS, payload: fileUrl });
       }
+
+      return function resetState() {
+        dispatch({ type: TEST_DSP_CSV_RESET_SUCCESS });
+      };
     } else {
       history.push('/login');
     }

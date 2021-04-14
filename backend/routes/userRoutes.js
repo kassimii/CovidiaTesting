@@ -9,6 +9,8 @@ import {
   getUserById,
   updateUser,
   createUser,
+  sendResetPasswordLink,
+  resetPassword,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -26,5 +28,7 @@ router
   .delete(protect, admin, deleteUser)
   .get(protect, admin, getUserById)
   .put(protect, admin, updateUser);
+router.post('/forgot-password', sendResetPasswordLink);
+router.post('/reset-password/:userId/:token', resetPassword);
 
 export default router;

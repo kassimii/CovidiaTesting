@@ -3,22 +3,20 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
-import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { login } from '../redux/actions/userActions';
-import { USER_RESET_PASSWORD_RESET } from '../redux/constants/userConstants';
+import { sendResetPasswordLink } from '../redux/actions/userActions';
+import { USER_FORGOT_PASSWORD_RESET } from '../redux/constants/userConstants';
 
-const LoginPage = ({ history }) => {
+const ForgotPasswordPage = ({ history }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const { userInfo } = userLogin;
 
-  const userResetPassword = useSelector((state) => state.userResetPassword);
-  const { success: resetSuccess } = userResetPassword;
+  const userForgotPassword = useSelector((state) => state.userForgotPassword);
+  const { error: resetError, success: resetSuccess } = userForgotPassword;
 
   useEffect(() => {
     if (userInfo) {
@@ -26,24 +24,26 @@ const LoginPage = ({ history }) => {
     }
 
     return function resetState() {
-      dispatch({ type: USER_RESET_PASSWORD_RESET });
+      dispatch({ type: USER_FORGOT_PASSWORD_RESET });
     };
-  }, [history, userInfo]);
+  }, [history, userInfo, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(sendResetPasswordLink(email));
   };
 
   return (
     <FormContainer>
-      <h1>Login</h1>
-      {error && <Message variant='danger'>{error}</Message>}
+      <h1>Modificare parolă</h1>
+      {resetError && <Message variant='danger'>A apărut o eroare</Message>}
       {resetSuccess && (
-        <Message variant='success'>Parola a fost resetată cu succes!</Message>
+        <Message variant='success'>Verificați-vă emailul!</Message>
       )}
-      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
+        <p>
+          Veți primi un link de resetare a parolei pe adresa de mail introdusă.
+        </p>
         <Form.Group controlId='email'>
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -53,23 +53,14 @@ const LoginPage = ({ history }) => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId='password'>
-          <Form.Label>Parola</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Introduceti parola'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
 
         <Button type='submit' variant='dark'>
-          Login
+          Resetează
         </Button>
 
         <Row className='py-3'>
           <Col>
-            <Link to={`/parola`}>Parolă uitată?</Link>
+            <Link to={`/login`}>Anulare</Link>
           </Col>
         </Row>
       </Form>
@@ -77,4 +68,4 @@ const LoginPage = ({ history }) => {
   );
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;
