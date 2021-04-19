@@ -31,7 +31,7 @@ const PatientListPage = ({ history, match }) => {
 
   return (
     <>
-      <h1 className='my-3'>Pacienti</h1>
+      <h1 className='my-3'>Pacienți</h1>
       <SearchBox history={history} />
       {loading ? (
         <Loader />

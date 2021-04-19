@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
+import TestInfoModal from '../components/TestInfoModal';
 import {
   getTests,
   sendTestPatientPDF,
@@ -14,8 +15,12 @@ import {
 } from '../redux/actions/testActions';
 import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
 import { convertDate } from '../utils/commonFunctions';
+import '../index.css';
 
 const TestListPage = ({ history, match }) => {
+  const [testInfoShow, setTestInfoShow] = useState(false);
+  const [currentTest, setCurrentTest] = useState('');
+
   const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
@@ -88,6 +93,11 @@ const TestListPage = ({ history, match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
+          <TestInfoModal
+            show={testInfoShow}
+            onClose={() => setTestInfoShow(false)}
+            test={currentTest}
+          />
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
@@ -103,7 +113,13 @@ const TestListPage = ({ history, match }) => {
             </thead>
             <tbody>
               {tests.map((test) => (
-                <tr key={test._id}>
+                <tr
+                  key={test._id}
+                  onClick={() => {
+                    setCurrentTest(test);
+                    setTestInfoShow(true);
+                  }}
+                >
                   <td>{test._id}</td>
                   <td>{test.patient.patientCode}</td>
                   <td>{convertDate(test.prelevationDate)}</td>

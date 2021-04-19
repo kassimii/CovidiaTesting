@@ -8,6 +8,7 @@ import {
   sendTestPatientPDF,
   getCSVForDSP,
   verifyTodaysTests,
+  downloadPdf,
 } from '../controllers/testController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -16,6 +17,9 @@ router.route('/dsp').get(protect, admin, getCSVForDSP);
 router.route('/verifytests').get(protect, admin, verifyTodaysTests);
 router.route('/:patientId').get(protect, getTestsForPatient);
 router.route('/:testId').put(protect, updateTest);
-router.route('/pdf/:testId').put(protect, admin, sendTestPatientPDF);
+router
+  .route('/pdf/:testId')
+  .put(protect, admin, sendTestPatientPDF)
+  .get(protect, admin, downloadPdf);
 
 export default router;

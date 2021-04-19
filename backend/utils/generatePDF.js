@@ -1,10 +1,9 @@
-import fs from 'fs';
-import path from 'path';
 import dotenv from 'dotenv';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
+import { s3 } from '../config/aws.js';
 
-import { convertDate } from '../utils/commonFunctions.js';
+import { convertDate, generatePdfName } from '../utils/commonFunctions.js';
 
 dotenv.config();
 
@@ -242,34 +241,45 @@ export function createPatientPdf(testInfo) {
 
   doc.end();
 
-  const invoiceName = `${testInfo.patient.name}_${
-    testInfo.patient.surname
-  }_${convertDate(testInfo.prelevationDate)}.pdf`;
-  const invoicePath = path.join('pdfs', invoiceName);
+  const pdfName = generatePdfName(testInfo);
 
-  doc.pipe(fs.createWriteStream(invoicePath));
+  try {
+    const uploadParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `pacienti/${pdfName}`,
+      Body: doc,
+    };
 
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: `${process.env.TRANSPORTER_EMAIL}`,
-      pass: `${process.env.TRANSPORTER_PASS}`,
-    },
-  });
+    s3.upload(uploadParams, (error, data) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
 
-  var mailOptions = {
-    from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
-    to: `${testInfo.patient.email}`,
-    subject: 'Rezultate test PCR',
-    text: 'Atașat aveți buletinul de analize.',
-    attachments: [{ filename: invoiceName, path: invoicePath }],
-  };
+  // var transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: `${process.env.TRANSPORTER_EMAIL}`,
+  //     pass: `${process.env.TRANSPORTER_PASS}`,
+  //   },
+  // });
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  // var mailOptions = {
+  //   from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+  //   to: `${testInfo.patient.email}`,
+  //   subject: 'Rezultate test PCR',
+  //   text: 'Atașat aveți buletinul de analize.',
+  //   attachments: [{ filename: invoiceName, path: invoicePath }],
+  // };
+
+  // transporter.sendMail(mailOptions, function (error, info) {
+  //   if (error) {
+  //     throw new Error(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
 }

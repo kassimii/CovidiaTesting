@@ -106,7 +106,7 @@ const PatientPage = ({ history, match }) => {
             className='btn btn-light my-3'
             onClick={() => history.goBack()}
           >
-            Go Back
+            Înapoi
           </Button>
         </Col>
         <Col>
@@ -276,7 +276,7 @@ const PatientPage = ({ history, match }) => {
                   <th>DATA REZULTAT</th>
                   <th>ID LAB</th>
                   <th>STATUS</th>
-                  <th></th>
+                  {userInfo && userInfo.isLabWorker && <th></th>}
                 </tr>
               </thead>
               <tbody>
@@ -289,29 +289,20 @@ const PatientPage = ({ history, match }) => {
                     </td>
                     <td>{test.labId}</td>
                     <td>{test.status}</td>
-                    {userInfo &&
-                      (userInfo.isLabWorker ? (
-                        <td>
-                          <Button
-                            className='btn-sm'
-                            variant='light'
-                            onClick={() => {
-                              setAddResultModalShow(true);
-                              setCurrentTest(test._id);
-                            }}
-                          >
-                            Add result
-                          </Button>
-                        </td>
-                      ) : (
-                        userInfo.isPrelevationWorker && (
-                          <td>
-                            <Button className='btn-sm' variant='light'>
-                              Edit
-                            </Button>
-                          </td>
-                        )
-                      ))}
+                    {userInfo && userInfo.isLabWorker && !test.resultDate && (
+                      <td>
+                        <Button
+                          className='btn-sm'
+                          variant='light'
+                          onClick={() => {
+                            setAddResultModalShow(true);
+                            setCurrentTest(test._id);
+                          }}
+                        >
+                          Add result
+                        </Button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

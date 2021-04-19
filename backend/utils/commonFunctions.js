@@ -21,4 +21,10 @@ const convertDate = (str) => {
   return parts[1] + '-' + months[parts[0]] + '-' + parts[2];
 };
 
-export { convertDate };
+const generatePdfName = (test) => {
+  return `${test.patient.name}_${test.patient.surname}_${convertDate(
+    test.prelevationDate
+  )}.pdf`;
+};
+
+export { convertDate, generatePdfName };

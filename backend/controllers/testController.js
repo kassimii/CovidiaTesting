@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import { parse } from 'json2csv';
 import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
-import { convertDate } from '../utils/commonFunctions.js';
+import { convertDate, generatePdfName } from '../utils/commonFunctions.js';
 import { s3 } from '../config/aws.js';
 
 //@desc Create new test entry
@@ -79,7 +79,12 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
   );
 
   if (test) {
-    createPatientPdf(test);
+    try {
+      createPatientPdf(test);
+    } catch (err) {
+      res.send(err);
+      return;
+    }
 
     test.sentToPatient = true;
     const updatedTest = await test.save();
@@ -201,6 +206,33 @@ const verifyTodaysTests = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Download patent pdf
+//@route GET /api/tests/download-pdf/:testId
+//@access Private/Admin
+const downloadPdf = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId).populate(
+    'patient',
+    'name surname cnp email'
+  );
+
+  if (test) {
+    const pdfName = generatePdfName(test);
+
+    const downloadParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `pacienti/${pdfName}`,
+    };
+
+    const downloadUrl = s3.getSignedUrl('getObject', downloadParams);
+    if (downloadUrl) {
+      res.send(downloadUrl);
+    } else {
+      res.status(404);
+      throw new Error('File not found');
+    }
+  }
+});
+
 export {
   addTestEntry,
   getTestsForPatient,
@@ -209,4 +241,5 @@ export {
   sendTestPatientPDF,
   getCSVForDSP,
   verifyTodaysTests,
+  downloadPdf,
 };

@@ -8,7 +8,7 @@ import FormContainer from '../components/FormContainer';
 import { login } from '../redux/actions/userActions';
 import { USER_RESET_PASSWORD_RESET } from '../redux/constants/userConstants';
 
-const LoginPage = ({ history }) => {
+const LoginPage = ({ location, history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,15 +20,17 @@ const LoginPage = ({ history }) => {
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { success: resetSuccess } = userResetPassword;
 
+  const redirect = location.search ? location.search.split('=')[1] : '/';
+
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
+      history.push(redirect);
     }
 
     return function resetState() {
       dispatch({ type: USER_RESET_PASSWORD_RESET });
     };
-  }, [history, userInfo, dispatch]);
+  }, [history, userInfo, redirect, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
