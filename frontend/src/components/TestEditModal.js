@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   FormControl,
@@ -14,7 +14,6 @@ import 'react-day-picker/lib/style.css';
 import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 
-import { convertDate } from '../utils/commonFunctions';
 import { editTest } from '../redux/actions/testActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,55 +92,65 @@ const TestEditModal = (props) => {
         </Modal.Header>
 
         <Modal.Body className='mx-3'>
-          <InputLabel className={classes.inputLabel}>Dată prelevare</InputLabel>
-          <DayPickerInput
-            onDayChange={(date) => setPrelevationDate(date)}
-            value={prelevationDate}
-            dayPickerProps={dayPicker}
-            formatDate={formatDate}
-            format={FORMAT}
-            parseDate={parseDate}
-            placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
-          />
+          <Row>
+            <Col>
+              <InputLabel className={classes.inputLabel}>
+                Dată prelevare
+              </InputLabel>
+              <DayPickerInput
+                onDayChange={(date) => setPrelevationDate(date)}
+                value={prelevationDate}
+                dayPickerProps={dayPicker}
+                formatDate={formatDate}
+                format={FORMAT}
+                parseDate={parseDate}
+                placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
+              />
 
-          <InputLabel className={classes.inputLabel}>Dată rezultat</InputLabel>
-          <DayPickerInput
-            onDayChange={(date) => setResultDate(date)}
-            value={resultDate}
-            dayPickerProps={dayPicker}
-            formatDate={formatDate}
-            format={FORMAT}
-            parseDate={parseDate}
-            placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
-          />
-          {!props.test.resultDate ? (
-            <FormHelperText>*necompletat</FormHelperText>
-          ) : (
-            <br />
-          )}
+              <InputLabel className={classes.inputLabel}>
+                Dată rezultat
+              </InputLabel>
+              <DayPickerInput
+                onDayChange={(date) => setResultDate(date)}
+                value={resultDate}
+                dayPickerProps={dayPicker}
+                formatDate={formatDate}
+                format={FORMAT}
+                parseDate={parseDate}
+                placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
+              />
+              {!props.test.resultDate ? (
+                <FormHelperText>*necompletat</FormHelperText>
+              ) : (
+                <br />
+              )}
+            </Col>
 
-          <FormControl variant='outlined' className={classes.formControl}>
-            <InputLabel htmlFor='outlined-age-native-simple'>
-              Rezultat
-            </InputLabel>
-            <Select
-              native
-              value={testResult}
-              onChange={(e) => setTestResult(e.target.value)}
-              label='Rezultat'
-              inputProps={{
-                name: 'rezulat',
-                id: 'outlined-age-native-simple',
-              }}
-            >
-              <option aria-label='None' value='-'>
-                -
-              </option>
-              <option value='Pozitiv'>Pozitiv</option>
-              <option value='Negativ'>Negativ</option>
-              <option value='Neconcludent'>Neconcludent</option>
-            </Select>
-          </FormControl>
+            <Col>
+              <FormControl variant='outlined' className={classes.formControl}>
+                <InputLabel htmlFor='outlined-age-native-simple'>
+                  Rezultat
+                </InputLabel>
+                <Select
+                  native
+                  value={testResult}
+                  onChange={(e) => setTestResult(e.target.value)}
+                  label='Rezultat'
+                  inputProps={{
+                    name: 'rezulat',
+                    id: 'outlined-age-native-simple',
+                  }}
+                >
+                  <option aria-label='None' value='-'>
+                    -
+                  </option>
+                  <option value='Pozitiv'>Pozitiv</option>
+                  <option value='Negativ'>Negativ</option>
+                  <option value='Neconcludent'>Neconcludent</option>
+                </Select>
+              </FormControl>
+            </Col>
+          </Row>
         </Modal.Body>
 
         <Modal.Footer>
