@@ -11,6 +11,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
 import TestInfoModal from '../components/TestInfoModal';
+import TestEditModal from '../components/TestEditModal';
 import {
   getTests,
   sendTestPatientPDF,
@@ -23,6 +24,7 @@ import '../index.css';
 
 const TestListPage = ({ history, match }) => {
   const [testInfoShow, setTestInfoShow] = useState(false);
+  const [testEditShow, setTestEditShow] = useState(false);
   const [currentTest, setCurrentTest] = useState('');
 
   const pageNumber = match.params.pageNumber || 1;
@@ -102,6 +104,11 @@ const TestListPage = ({ history, match }) => {
             onClose={() => setTestInfoShow(false)}
             test={currentTest}
           />
+          <TestEditModal
+            show={testEditShow}
+            onClose={() => setTestEditShow(false)}
+            test={currentTest}
+          />
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
@@ -162,7 +169,12 @@ const TestListPage = ({ history, match }) => {
                     )}
                   </td>
                   <td>
-                    <IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setCurrentTest(test);
+                        setTestEditShow(true);
+                      }}
+                    >
                       <EditIcon />
                     </IconButton>
                   </td>

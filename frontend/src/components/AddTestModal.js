@@ -73,8 +73,8 @@ const AddTestModal = (props) => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onClose}>Inchide</Button>
-          <Button onClick={onAddHandler}>Adauga</Button>
+          <Button onClick={props.onClose}>Închide</Button>
+          <Button onClick={onAddHandler}>Adaugă</Button>
         </Modal.Footer>
       </Modal>
     </>
