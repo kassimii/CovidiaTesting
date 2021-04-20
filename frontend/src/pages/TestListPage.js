@@ -3,6 +3,10 @@ import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
@@ -109,6 +113,7 @@ const TestListPage = ({ history, match }) => {
                 <th>LAB ID</th>
                 <th>GENERAT DSP</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -139,10 +144,11 @@ const TestListPage = ({ history, match }) => {
                   </td>
                   <td>
                     {test.sentToPatient ? (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
+                      <CheckCircleIcon
+                        style={{
+                          color: 'green',
+                        }}
+                      />
                     ) : (
                       test.status !== '-' && (
                         <Button
@@ -154,6 +160,11 @@ const TestListPage = ({ history, match }) => {
                         </Button>
                       )
                     )}
+                  </td>
+                  <td>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
                   </td>
                 </tr>
               ))}

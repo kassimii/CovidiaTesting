@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
@@ -102,26 +107,17 @@ const UserListPage = ({ history, match }) => {
                   </td>
                   <td>
                     {user.isAdmin && (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
+                      <CheckCircleIcon style={{ color: 'green' }} />
                     )}
                   </td>
                   <td>
                     {user.isPrelevationWorker && (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
+                      <CheckCircleIcon style={{ color: 'green' }} />
                     )}
                   </td>
                   <td>
                     {user.isLabWorker && (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
+                      <CheckCircleIcon style={{ color: 'green' }} />
                     )}
                   </td>
 
@@ -129,17 +125,13 @@ const UserListPage = ({ history, match }) => {
                     <LinkContainer
                       to={`/admin/utilizatori/${user._id}/editare`}
                     >
-                      <Button variant='light' className='btn-sm'>
-                        <i className='fas fa-edit'></i>
-                      </Button>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
                     </LinkContainer>
-                    <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(user._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button>
+                    <IconButton onClick={() => deleteHandler(user._id)}>
+                      <DeleteIcon style={{ color: 'red' }} />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
