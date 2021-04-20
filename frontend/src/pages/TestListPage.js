@@ -113,14 +113,15 @@ const TestListPage = ({ history, match }) => {
             </thead>
             <tbody>
               {tests.map((test) => (
-                <tr
-                  key={test._id}
-                  onClick={() => {
-                    setCurrentTest(test);
-                    setTestInfoShow(true);
-                  }}
-                >
-                  <td>{test._id}</td>
+                <tr key={test._id}>
+                  <td
+                    onClick={() => {
+                      setCurrentTest(test);
+                      setTestInfoShow(true);
+                    }}
+                  >
+                    {test._id}
+                  </td>
                   <td>{test.patient.patientCode}</td>
                   <td>{convertDate(test.prelevationDate)}</td>
                   <td>

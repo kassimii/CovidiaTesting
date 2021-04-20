@@ -23,7 +23,7 @@ const convertDate = (str) => {
 
 const generatePdfName = (test) => {
   return `${test.patient.name}_${test.patient.surname}_${convertDate(
-    test.prelevationDate
+    test.resultDate
   )}.pdf`;
 };
 

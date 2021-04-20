@@ -28,6 +28,10 @@ import {
   TEST_VERIFY_SUCCESS,
   TEST_VERIFY_FAIL,
   TEST_VERIFY_RESET,
+  TEST_DOWNLOAD_PDF_REQUEST,
+  TEST_DOWNLOAD_PDF_SUCCESS,
+  TEST_DOWNLOAD_PDF_FAIL,
+  TEST_DOWNLOAD_PDF_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -216,6 +220,30 @@ export const verifyTestsReducer = (state = { status: {} }, action) => {
       };
     case TEST_VERIFY_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const testDownloadPdfReducer = (state = { pdfLink: '' }, action) => {
+  switch (action.type) {
+    case TEST_DOWNLOAD_PDF_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_DOWNLOAD_PDF_SUCCESS:
+      return {
+        loading: false,
+        pdfLink: action.payload,
+      };
+    case TEST_DOWNLOAD_PDF_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_DOWNLOAD_PDF_RESET:
+      return {};
+
     default:
       return state;
   }

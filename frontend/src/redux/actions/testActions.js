@@ -20,6 +20,9 @@ import {
   TEST_VERIFY_REQUEST,
   TEST_VERIFY_SUCCESS,
   TEST_VERIFY_FAIL,
+  TEST_DOWNLOAD_PDF_REQUEST,
+  TEST_DOWNLOAD_PDF_SUCCESS,
+  TEST_DOWNLOAD_PDF_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -253,6 +256,39 @@ export const verifyTodaysTests = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_VERIFY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const downloadPatientPDF = (testId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_DOWNLOAD_PDF_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/tests/pdf/${testId}`, config);
+
+    dispatch({
+      type: TEST_DOWNLOAD_PDF_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_DOWNLOAD_PDF_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

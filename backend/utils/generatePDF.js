@@ -259,27 +259,27 @@ export function createPatientPdf(testInfo) {
     throw new Error(err);
   }
 
-  // var transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: `${process.env.TRANSPORTER_EMAIL}`,
-  //     pass: `${process.env.TRANSPORTER_PASS}`,
-  //   },
-  // });
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: `${process.env.TRANSPORTER_EMAIL}`,
+      pass: `${process.env.TRANSPORTER_PASS}`,
+    },
+  });
 
-  // var mailOptions = {
-  //   from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
-  //   to: `${testInfo.patient.email}`,
-  //   subject: 'Rezultate test PCR',
-  //   text: 'Atașat aveți buletinul de analize.',
-  //   attachments: [{ filename: invoiceName, path: invoicePath }],
-  // };
+  var mailOptions = {
+    from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+    to: `${testInfo.patient.email}`,
+    subject: 'Rezultate test PCR',
+    text: 'Atașat aveți buletinul de analize.',
+    attachments: [{ filename: invoiceName, path: invoicePath }],
+  };
 
-  // transporter.sendMail(mailOptions, function (error, info) {
-  //   if (error) {
-  //     throw new Error(error);
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //   }
-  // });
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      throw new Error(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 }

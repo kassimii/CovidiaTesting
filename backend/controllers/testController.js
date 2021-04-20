@@ -62,6 +62,8 @@ const getTests = asyncHandler(async (req, res) => {
 
   const tests = await Test.find({})
     .populate('patient', 'id patientCode')
+    .populate('collectedBy', 'name')
+    .populate('resultBy', 'name')
     .sort({ sentToDSP: 1, prelevationDate: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
@@ -186,7 +188,7 @@ const getCSVForDSP = asyncHandler(async (req, res) => {
   }
 });
 
-//verify function - counts tests from db and sends results to frontend
+//verify function - verifies if there are any tests results generated today
 const verifyTodaysTests = asyncHandler(async (req, res) => {
   var todayBegin = new Date();
   todayBegin.setUTCHours(0, 0, 0, 0);
@@ -207,7 +209,7 @@ const verifyTodaysTests = asyncHandler(async (req, res) => {
 });
 
 //@desc Download patent pdf
-//@route GET /api/tests/download-pdf/:testId
+//@route GET /api/tests/pdf/:testId
 //@access Private/Admin
 const downloadPdf = asyncHandler(async (req, res) => {
   const test = await Test.findById(req.params.testId).populate(
