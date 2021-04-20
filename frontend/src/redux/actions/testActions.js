@@ -23,6 +23,9 @@ import {
   TEST_DOWNLOAD_PDF_REQUEST,
   TEST_DOWNLOAD_PDF_SUCCESS,
   TEST_DOWNLOAD_PDF_FAIL,
+  TEST_EDIT_REQUEST,
+  TEST_EDIT_SUCCESS,
+  TEST_EDIT_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -75,7 +78,7 @@ export const getTestsForPatient = (patientId) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/tests/${patientId}`, config);
+    const { data } = await axios.get(`/api/tests/patient/${patientId}`, config);
 
     dispatch({
       type: TEST_LIST_SUCCESS,
@@ -289,6 +292,42 @@ export const downloadPatientPDF = (testId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_DOWNLOAD_PDF_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const editTest = (test) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_EDIT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/tests/edit-test/${test.testId}`,
+      test.test,
+      config
+    );
+
+    dispatch({
+      type: TEST_EDIT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_EDIT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

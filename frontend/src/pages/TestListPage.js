@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Table, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { IconButton } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import { makeStyles } from '@material-ui/core/styles';
+import { IconButton, Button } from '@material-ui/core';
+import { Edit, NoteAdd, GetApp } from '@material-ui/icons';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import Message from '../components/Message';
@@ -22,7 +23,15 @@ import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
 import { convertDate } from '../utils/commonFunctions';
 import '../index.css';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
 const TestListPage = ({ history, match }) => {
+  const classes = useStyles();
+
   const [testInfoShow, setTestInfoShow] = useState(false);
   const [testEditShow, setTestEditShow] = useState(false);
   const [currentTest, setCurrentTest] = useState('');
@@ -75,20 +84,24 @@ const TestListPage = ({ history, match }) => {
         <Col className='text-right'>
           {statusTests !== 'No tests today' && (
             <Button
-              className='my-3 mx-3'
+              variant='contained'
+              startIcon={<NoteAdd />}
+              className={classes.button}
               onClick={() => dispatch(generateCSVFileForDSP())}
             >
-              <i className='far fa-file-excel' /> Generează CSV
+              Generează CSV
             </Button>
           )}
 
           {successCSV && (
             <Button
-              className='my-3 mx-3'
-              variant='info'
+              variant='contained'
+              color='secondary'
+              startIcon={<GetApp />}
+              className={classes.button}
               onClick={() => window.open(fileUrl, '_blank')}
             >
-              <i className='fas fa-file-download' /> Descarcă CSV
+              Descarcă CSV
             </Button>
           )}
         </Col>
@@ -143,10 +156,11 @@ const TestListPage = ({ history, match }) => {
                   <td>{test.labId}</td>
                   <td>
                     {test.sentToDSP && (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
+                      <CheckCircleIcon
+                        style={{
+                          color: 'green',
+                        }}
+                      />
                     )}
                   </td>
                   <td>
@@ -159,7 +173,8 @@ const TestListPage = ({ history, match }) => {
                     ) : (
                       test.status !== '-' && (
                         <Button
-                          variant='success'
+                          variant='contained'
+                          color='primary'
                           className='btn-sm'
                           onClick={() => dispatch(sendTestPatientPDF(test._id))}
                         >
@@ -175,7 +190,7 @@ const TestListPage = ({ history, match }) => {
                         setTestEditShow(true);
                       }}
                     >
-                      <EditIcon />
+                      <Edit />
                     </IconButton>
                   </td>
                 </tr>

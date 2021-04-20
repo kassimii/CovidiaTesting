@@ -32,6 +32,10 @@ import {
   TEST_DOWNLOAD_PDF_SUCCESS,
   TEST_DOWNLOAD_PDF_FAIL,
   TEST_DOWNLOAD_PDF_RESET,
+  TEST_EDIT_REQUEST,
+  TEST_EDIT_SUCCESS,
+  TEST_EDIT_FAIL,
+  TEST_EDIT_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = {}, action) => {
@@ -147,6 +151,22 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
         tests: updatedTests,
       };
     }
+    case TEST_EDIT_SUCCESS: {
+      const updatedTests = state.tests.map((test) => {
+        if (test._id === action.payload._id)
+          return {
+            ...test,
+            status: action.payload.status,
+            resultDate: action.payload.resultDate,
+            prelevationDate: action.payload.prelevationDate,
+          };
+        else return test;
+      });
+      return {
+        loading: false,
+        tests: updatedTests,
+      };
+    }
     default:
       return state;
   }
@@ -244,6 +264,29 @@ export const testDownloadPdfReducer = (state = { pdfLink: '' }, action) => {
     case TEST_DOWNLOAD_PDF_RESET:
       return {};
 
+    default:
+      return state;
+  }
+};
+
+export const testEditReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TEST_EDIT_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_EDIT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case TEST_EDIT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_EDIT_RESET:
+      return {};
     default:
       return state;
   }

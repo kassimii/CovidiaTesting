@@ -235,6 +235,25 @@ const downloadPdf = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Edit test
+//@route PUT /api/tests/:testId
+//@access Private/Admin
+const editTest = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId);
+
+  if (test) {
+    test.prelevationDate = req.body.prelevationDate || test.prelevationDate;
+    test.resultDate = req.body.resultDate || test.resultDate;
+    test.status = req.body.status || test.status;
+
+    const updatedTest = await test.save();
+    res.json(updatedTest);
+  } else {
+    res.status(404);
+    throw new Error('Test not found');
+  }
+});
+
 export {
   addTestEntry,
   getTestsForPatient,
@@ -244,4 +263,5 @@ export {
   getCSVForDSP,
   verifyTodaysTests,
   downloadPdf,
+  editTest,
 };

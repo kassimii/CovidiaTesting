@@ -28,6 +28,7 @@ import {
   CSVFileReducer,
   verifyTestsReducer,
   testDownloadPdfReducer,
+  testEditReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -52,6 +53,7 @@ const reducer = combineReducers({
   CSVFile: CSVFileReducer,
   verifyTests: verifyTestsReducer,
   testDownloadPdf: testDownloadPdfReducer,
+  testEdit: testEditReducer,
 });
 
 const initialState = {};

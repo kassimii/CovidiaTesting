@@ -15,6 +15,7 @@ import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 
 import { convertDate } from '../utils/commonFunctions';
+import { editTest } from '../redux/actions/testActions';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -41,9 +42,8 @@ const TestEditModal = (props) => {
 
   useEffect(() => {
     if (props.test) {
-      setPrelevationDate(convertDate(props.test.prelevationDate));
-      if (props.test.resultDate)
-        setResultDate(convertDate(props.test.resultDate));
+      setPrelevationDate(new Date(props.test.prelevationDate));
+      if (props.test.resultDate) setResultDate(new Date(props.test.resultDate));
       else setResultDate(new Date());
       setTestResult(props.test.status);
     }
@@ -64,6 +64,21 @@ const TestEditModal = (props) => {
   }
 
   const FORMAT = 'dd-MM-yyyy';
+
+  const onUpdateHandler = () => {
+    dispatch(
+      editTest({
+        testId: props.test._id,
+        test: {
+          prelevationDate: prelevationDate,
+          resultDate: resultDate,
+          status: testResult,
+        },
+      })
+    );
+
+    props.onClose();
+  };
 
   return (
     <>
@@ -96,7 +111,7 @@ const TestEditModal = (props) => {
             dayPickerProps={dayPicker}
             formatDate={formatDate}
             format={FORMAT}
-            // parseDate={parseDate}
+            parseDate={parseDate}
             placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
           />
           {!props.test.resultDate ? (
@@ -133,6 +148,7 @@ const TestEditModal = (props) => {
           <Button variant='outline-secondary' onClick={props.onClose}>
             Închide
           </Button>
+          <Button onClick={onUpdateHandler}>Adaugă</Button>
         </Modal.Footer>
       </Modal>
     </>
