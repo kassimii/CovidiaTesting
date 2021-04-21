@@ -26,6 +26,10 @@ const testSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    testReportNumber: {
+      type: Number,
+      required: true,
+    },
     status: {
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],
       type: String,

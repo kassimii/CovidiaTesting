@@ -272,6 +272,7 @@ const PatientPage = ({ history, match }) => {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>NR.</th>
                   <th>DATA RECOLTARE</th>
                   <th>DATA REZULTAT</th>
                   <th>ID LAB</th>
@@ -283,6 +284,7 @@ const PatientPage = ({ history, match }) => {
                 {tests.map((test) => (
                   <tr key={test._id}>
                     <td>{test._id}</td>
+                    <td>{test.testReportNumber}</td>
                     <td>{convertDate(test.prelevationDate)}</td>
                     <td>
                       {test.resultDate ? convertDate(test.resultDate) : '-'}

@@ -22,7 +22,7 @@ const AddResultModal = (props) => {
       addTestResult({
         testId: props.currenttest,
         test: {
-          resultDate: resultDate,
+          resultDate,
           status: testResult,
           resultBy: userInfo._id,
         },

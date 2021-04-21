@@ -9,12 +9,13 @@ import { s3 } from '../config/aws.js';
 //@route POST /api/tests
 //@access Private
 const addTestEntry = asyncHandler(async (req, res) => {
-  const { prelevationDate, patient, collectedBy } = req.body;
+  const { prelevationDate, patient, collectedBy, testReportNumber } = req.body;
 
   const test = new Test({
     patient,
     prelevationDate,
     collectedBy,
+    testReportNumber,
   });
 
   const createdTest = await test.save();
@@ -26,9 +27,10 @@ const addTestEntry = asyncHandler(async (req, res) => {
 //@route GET /api/tests/:patientId
 //@access Private
 const getTestsForPatient = asyncHandler(async (req, res) => {
-  const tests = await Test.find({ patient: req.params.patientId }).sort(
-    '-prelevationDate'
-  );
+  const tests = await Test.find({ patient: req.params.patientId }).sort({
+    testReportNumber: -1,
+    prelevationDate: -1,
+  });
   res.json(tests);
 });
 
@@ -64,7 +66,7 @@ const getTests = asyncHandler(async (req, res) => {
     .populate('patient', 'id patientCode')
     .populate('collectedBy', 'name')
     .populate('resultBy', 'name')
-    .sort({ sentToDSP: 1, prelevationDate: -1 })
+    .sort({ testReportNumber: -1, sentToDSP: 1, prelevationDate: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 

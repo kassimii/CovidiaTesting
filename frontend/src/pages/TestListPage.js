@@ -184,6 +184,7 @@ const TestListPage = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID TEST</th>
+                <th>NR.</th>
                 <th>COD UTILIZATOR</th>
                 <th>DATA RECOLTARE</th>
                 <th>DATA REZULTAT</th>
@@ -205,6 +206,7 @@ const TestListPage = ({ history, match }) => {
                   >
                     {test._id}
                   </td>
+                  <td>{test.testReportNumber}</td>
                   <td>{test.patient.patientCode}</td>
                   <td>{convertDate(test.prelevationDate)}</td>
                   <td>
