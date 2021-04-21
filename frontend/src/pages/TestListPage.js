@@ -4,7 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Button } from '@material-ui/core';
+import {
+  IconButton,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+} from '@material-ui/core';
 import { Edit, NoteAdd, GetApp } from '@material-ui/icons';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
@@ -26,6 +33,17 @@ import '../index.css';
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  formControl: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    minWidth: 170,
+  },
+  inputLabel: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -35,6 +53,7 @@ const TestListPage = ({ history, match }) => {
   const [testInfoShow, setTestInfoShow] = useState(false);
   const [testEditShow, setTestEditShow] = useState(false);
   const [currentTest, setCurrentTest] = useState('');
+  const [doctor, setDoctor] = useState('-');
 
   const pageNumber = match.params.pageNumber || 1;
 
@@ -48,6 +67,9 @@ const TestListPage = ({ history, match }) => {
 
   const verifyTests = useSelector((state) => state.verifyTests);
   const { status: statusTests } = verifyTests;
+
+  const testEdit = useSelector((state) => state.testEdit);
+  const { success: successTestEdit } = testEdit;
 
   const CSVFile = useSelector((state) => state.CSVFile);
   const {
@@ -72,7 +94,15 @@ const TestListPage = ({ history, match }) => {
     } else {
       history.push('/login');
     }
-  }, [dispatch, history, userInfo, pageNumber, successToastCSV, fileUrl]);
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    pageNumber,
+    successToastCSV,
+    fileUrl,
+    successTestEdit,
+  ]);
 
   return (
     <>
@@ -80,6 +110,34 @@ const TestListPage = ({ history, match }) => {
       <Row className='align-items-center'>
         <Col>
           <h1>Teste</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FormControl
+            required
+            variant='outlined'
+            className={classes.formControl}
+          >
+            <InputLabel htmlFor='doctor-native-required'>Medic</InputLabel>
+            <Select
+              native
+              value={doctor}
+              onChange={(e) => setDoctor(e.target.value)}
+              label='Medic'
+              inputProps={{
+                name: 'medic',
+                id: 'doctor-native-required',
+              }}
+            >
+              <option aria-label='None' value='-'>
+                Alegeți un medic
+              </option>
+              <option value='1'>Doctor 1</option>
+              <option value='2'>Doctor 2</option>
+            </Select>
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
         </Col>
         <Col className='text-right'>
           {statusTests !== 'No tests today' && (
@@ -171,12 +229,15 @@ const TestListPage = ({ history, match }) => {
                         }}
                       />
                     ) : (
-                      test.status !== '-' && (
+                      test.status !== '-' &&
+                      doctor !== '-' && (
                         <Button
                           variant='contained'
                           color='primary'
                           className='btn-sm'
-                          onClick={() => dispatch(sendTestPatientPDF(test._id))}
+                          onClick={() =>
+                            dispatch(sendTestPatientPDF(test._id, doctor))
+                          }
                         >
                           PACIENT
                         </Button>

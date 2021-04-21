@@ -219,15 +219,20 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowSecond(doc, '', startY + 85);
 }
 
-function insertDoctorStamp(doc) {
+function insertDoctorStamp(doc, doctorStamp) {
+  const doctorStampImage =
+    doctorStamp === 1
+      ? 'backend/pdf_utils/pics/doctor-1.jpg'
+      : 'backend/pdf_utils/pics/doctor-2.jpg';
+
   doc
     .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
     .fontSize(12)
     .text('Executat: ', 100, 580, { continued: true })
-    .image('backend/pdf_utils/pics/parafa.jpg', 160, 550, { width: 100 });
+    .image(doctorStampImage, 160, 540, { width: 100 });
 }
 
-export function createPatientPdf(testInfo) {
+export function createPatientPdf(testInfo, doctorStamp) {
   const doc = new PDFDocument();
 
   generateHeader(doc);
@@ -237,7 +242,7 @@ export function createPatientPdf(testInfo) {
   generateResult(doc, testInfo.status);
   generateFooter(doc);
   insertDataIntoTable(doc, testInfo);
-  insertDoctorStamp(doc);
+  insertDoctorStamp(doc, doctorStamp);
 
   doc.end();
 
@@ -259,27 +264,27 @@ export function createPatientPdf(testInfo) {
     throw new Error(err);
   }
 
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: `${process.env.TRANSPORTER_EMAIL}`,
-      pass: `${process.env.TRANSPORTER_PASS}`,
-    },
-  });
+  // var transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: `${process.env.TRANSPORTER_EMAIL}`,
+  //     pass: `${process.env.TRANSPORTER_PASS}`,
+  //   },
+  // });
 
-  var mailOptions = {
-    from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
-    to: `${testInfo.patient.email}`,
-    subject: 'Rezultate test PCR',
-    text: 'Atașat aveți buletinul de analize.',
-    attachments: [{ filename: invoiceName, path: invoicePath }],
-  };
+  // var mailOptions = {
+  //   from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+  //   to: `${testInfo.patient.email}`,
+  //   subject: 'Rezultate test PCR',
+  //   text: 'Atașat aveți buletinul de analize.',
+  //   attachments: [{ filename: invoiceName, path: invoicePath }],
+  // };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      throw new Error(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  // transporter.sendMail(mailOptions, function (error, info) {
+  //   if (error) {
+  //     throw new Error(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
 }

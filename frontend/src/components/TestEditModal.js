@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     minWidth: 170,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
   inputLabel: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),

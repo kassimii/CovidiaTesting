@@ -75,6 +75,7 @@ const getTests = asyncHandler(async (req, res) => {
 //@route PUT /api/tests/pdf/:testId
 //@access Private/Admin
 const sendTestPatientPDF = asyncHandler(async (req, res) => {
+  const { doctor } = req.body;
   const test = await Test.findById(req.params.testId).populate(
     'patient',
     'name surname cnp email'
@@ -82,7 +83,7 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
 
   if (test) {
     try {
-      createPatientPdf(test);
+      createPatientPdf(test, doctor);
     } catch (err) {
       res.send(err);
       return;

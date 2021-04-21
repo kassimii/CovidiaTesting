@@ -168,7 +168,10 @@ export const getTests = (pageNumber = '') => async (dispatch, getState) => {
   }
 };
 
-export const sendTestPatientPDF = (testId) => async (dispatch, getState) => {
+export const sendTestPatientPDF = (testId, doctor) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({
       type: TEST_PATIENT_PDF_REQUEST,
@@ -184,7 +187,11 @@ export const sendTestPatientPDF = (testId) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/tests/pdf/${testId}`, {}, config);
+    const { data } = await axios.put(
+      `/api/tests/pdf/${testId}`,
+      { doctor },
+      config
+    );
 
     dispatch({
       type: TEST_PATIENT_PDF_SUCCESS,
