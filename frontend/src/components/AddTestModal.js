@@ -77,7 +77,6 @@ const AddTestModal = (props) => {
           <h4>Data prelevare</h4>
           <DayPickerInput
             onDayChange={(date) => setPrelevationDate(date)}
-            value={prelevationDate}
             dayPickerProps={dayPicker}
             formatDate={formatDate}
             format={FORMAT}
@@ -88,7 +87,6 @@ const AddTestModal = (props) => {
           <Input
             type='number'
             placeholder='0'
-            value={testReportNumber}
             onChange={(e) => setTestReportNumber(e.target.value)}
           />
         </Modal.Body>

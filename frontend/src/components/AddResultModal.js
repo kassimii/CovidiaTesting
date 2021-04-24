@@ -65,7 +65,6 @@ const AddResultModal = (props) => {
           <h4>Data rezultat</h4>
           <DayPickerInput
             onDayChange={(date) => setResultDate(date)}
-            value={resultDate}
             dayPickerProps={dayPicker}
             formatDate={formatDate}
             format={FORMAT}

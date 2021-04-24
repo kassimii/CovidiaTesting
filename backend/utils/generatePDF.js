@@ -31,9 +31,14 @@ function generateTitle(doc, testInfo) {
     .text(`Buletin analize`, 70, 130, {
       align: 'center',
     })
-    .text(`NR. 1  Data ${convertDate(testInfo.prelevationDate)}`, {
-      align: 'center',
-    })
+    .text(
+      `NR. ${testInfo.testReportNumber}  Data ${convertDate(
+        testInfo.resultDate
+      )}`,
+      {
+        align: 'center',
+      }
+    )
     .text(`Determinare SARS-CoV2`, {
       align: 'center',
     });
@@ -221,7 +226,7 @@ function insertDataIntoTable(doc, testInfo) {
 
 function insertDoctorStamp(doc, doctorStamp) {
   const doctorStampImage =
-    doctorStamp === 1
+    doctorStamp === '1'
       ? 'backend/pdf_utils/pics/doctor-1.jpg'
       : 'backend/pdf_utils/pics/doctor-2.jpg';
 

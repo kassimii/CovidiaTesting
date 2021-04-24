@@ -214,7 +214,7 @@ export const CSVFileReducer = (state = { fileUrl: {} }, action) => {
         error: action.payload,
       };
     case TEST_DSP_CSV_RESET:
-      return {};
+      return { fileUrl: {} };
     case TEST_DSP_CSV_RESET_SUCCESS:
       return { loading: false, success: true, fileUrl: action.payload };
     default:
@@ -239,13 +239,13 @@ export const verifyTestsReducer = (state = { status: {} }, action) => {
         error: action.payload,
       };
     case TEST_VERIFY_RESET:
-      return {};
+      return { status: {} };
     default:
       return state;
   }
 };
 
-export const testDownloadPdfReducer = (state = { pdfLink: '' }, action) => {
+export const testDownloadPdfReducer = (state = { pdfLink: {} }, action) => {
   switch (action.type) {
     case TEST_DOWNLOAD_PDF_REQUEST:
       return {
@@ -262,7 +262,7 @@ export const testDownloadPdfReducer = (state = { pdfLink: '' }, action) => {
         error: action.payload,
       };
     case TEST_DOWNLOAD_PDF_RESET:
-      return {};
+      return { pdfLink: {} };
 
     default:
       return state;

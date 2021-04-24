@@ -1,18 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { downloadPatientPDF } from '../redux/actions/testActions';
 
 const TestInfoModal = (props) => {
-  const dispatch = useDispatch();
-
   const testDownloadPdf = useSelector((state) => state.testDownloadPdf);
   const { loading: loadingPDF, error: errorPDF, pdfLink } = testDownloadPdf;
 
   const downloadHandler = () => {
-    dispatch(downloadPatientPDF(props.test._id));
     if (pdfLink) {
       window.open(pdfLink, '_blank');
     }

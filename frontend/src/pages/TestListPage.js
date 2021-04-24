@@ -25,8 +25,12 @@ import {
   sendTestPatientPDF,
   generateCSVFileForDSP,
   verifyTodaysTests,
+  downloadPatientPDF,
 } from '../redux/actions/testActions';
-import { TEST_DSP_CSV_RESET_SUCCESS } from '../redux/constants/testConstants';
+import {
+  TEST_DSP_CSV_RESET_SUCCESS,
+  TEST_DOWNLOAD_PDF_RESET,
+} from '../redux/constants/testConstants';
 import { convertDate } from '../utils/commonFunctions';
 import '../index.css';
 
@@ -172,7 +176,10 @@ const TestListPage = ({ history, match }) => {
         <>
           <TestInfoModal
             show={testInfoShow}
-            onClose={() => setTestInfoShow(false)}
+            onClose={() => {
+              setTestInfoShow(false);
+              dispatch({ type: TEST_DOWNLOAD_PDF_RESET });
+            }}
             test={currentTest}
           />
           <TestEditModal
@@ -200,6 +207,7 @@ const TestListPage = ({ history, match }) => {
                 <tr key={test._id}>
                   <td
                     onClick={() => {
+                      dispatch(downloadPatientPDF(test._id));
                       setCurrentTest(test);
                       setTestInfoShow(true);
                     }}

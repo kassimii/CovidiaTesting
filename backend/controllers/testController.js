@@ -27,10 +27,9 @@ const addTestEntry = asyncHandler(async (req, res) => {
 //@route GET /api/tests/:patientId
 //@access Private
 const getTestsForPatient = asyncHandler(async (req, res) => {
-  const tests = await Test.find({ patient: req.params.patientId }).sort({
-    testReportNumber: -1,
-    prelevationDate: -1,
-  });
+  const tests = await Test.find({ patient: req.params.patientId }).sort(
+    '-prelevationDate'
+  );
   res.json(tests);
 });
 
@@ -66,7 +65,7 @@ const getTests = asyncHandler(async (req, res) => {
     .populate('patient', 'id patientCode')
     .populate('collectedBy', 'name')
     .populate('resultBy', 'name')
-    .sort({ testReportNumber: -1, sentToDSP: 1, prelevationDate: -1 })
+    .sort({ sentToDSP: 1, prelevationDate: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
