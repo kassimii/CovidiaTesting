@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { parse } from 'json2csv';
+import nodemailer from 'nodemailer';
 import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate, generatePdfName } from '../utils/commonFunctions.js';
@@ -75,6 +76,21 @@ const getTests = asyncHandler(async (req, res) => {
 //@desc Send test result for Patient
 //@route PUT /api/tests/pdf/:testId
 //@access Private/Admin
+function getS3PdfFile(bucket, key) {
+  return new Promise(function (resolve, reject) {
+    s3.getObject(
+      {
+        Bucket: bucket,
+        Key: key,
+      },
+      function (err, data) {
+        if (err) return reject(err);
+        else return resolve(data);
+      }
+    );
+  });
+}
+
 const sendTestPatientPDF = asyncHandler(async (req, res) => {
   const { doctor } = req.body;
   const test = await Test.findById(req.params.testId).populate(
@@ -83,16 +99,49 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
   );
 
   if (test) {
-    try {
-      createPatientPdf(test, doctor);
-    } catch (err) {
-      res.send(err);
-      return;
-    }
+    createPatientPdf(test, doctor)
+      .then(function (data) {
+        const pdfName = generatePdfName(test);
 
-    test.sentToPatient = true;
-    const updatedTest = await test.save();
-    res.json(updatedTest);
+        getS3PdfFile(process.env.AWS_BUCKET_NAME, data.Key)
+          .then(async function (fileData) {
+            var transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: `${process.env.TRANSPORTER_EMAIL}`,
+                pass: `${process.env.TRANSPORTER_PASS}`,
+              },
+            });
+            var mailOptions = {
+              from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+              to: `${test.patient.email}`,
+              subject: 'Rezultate test PCR',
+              text: 'Atașat aveți buletinul de analize.',
+              attachments: [{ filename: pdfName, content: fileData.Body }],
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                return res.send(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            });
+
+            test.sentToPatient = true;
+            const updatedTest = await test.save();
+            res.json(updatedTest);
+          })
+          .catch(function (error) {
+            console.log(error);
+            console.log('Error getting attachment from S3');
+            return res.status(404).send(error);
+          });
+      })
+      .catch(function (error) {
+        console.log(error);
+        console.log('Error uploading file to S3');
+        return res.status(404).send(error);
+      });
   } else {
     res.status(404);
     throw new Error('Test not found');

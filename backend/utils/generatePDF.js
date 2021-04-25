@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import PDFDocument from 'pdfkit';
-import nodemailer from 'nodemailer';
 import { s3 } from '../config/aws.js';
 
 import { convertDate, generatePdfName } from '../utils/commonFunctions.js';
@@ -237,7 +236,7 @@ function insertDoctorStamp(doc, doctorStamp) {
     .image(doctorStampImage, 160, 540, { width: 100 });
 }
 
-export function createPatientPdf(testInfo, doctorStamp) {
+export async function createPatientPdf(testInfo, doctorStamp) {
   const doc = new PDFDocument();
 
   generateHeader(doc);
@@ -260,36 +259,13 @@ export function createPatientPdf(testInfo, doctorStamp) {
       Body: doc,
     };
 
-    s3.upload(uploadParams, (error, data) => {
-      if (error) {
-        console.log(error);
-      }
+    return new Promise(function (resolve, reject) {
+      s3.upload(uploadParams, function (err, data) {
+        if (err) return reject(err);
+        else return resolve(data);
+      });
     });
   } catch (err) {
     throw new Error(err);
   }
-
-  // var transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: `${process.env.TRANSPORTER_EMAIL}`,
-  //     pass: `${process.env.TRANSPORTER_PASS}`,
-  //   },
-  // });
-
-  // var mailOptions = {
-  //   from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
-  //   to: `${testInfo.patient.email}`,
-  //   subject: 'Rezultate test PCR',
-  //   text: 'Atașat aveți buletinul de analize.',
-  //   attachments: [{ filename: invoiceName, path: invoicePath }],
-  // };
-
-  // transporter.sendMail(mailOptions, function (error, info) {
-  //   if (error) {
-  //     throw new Error(error);
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //   }
-  // });
 }

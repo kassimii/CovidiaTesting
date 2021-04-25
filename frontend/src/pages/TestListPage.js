@@ -207,7 +207,9 @@ const TestListPage = ({ history, match }) => {
                 <tr key={test._id}>
                   <td
                     onClick={() => {
-                      dispatch(downloadPatientPDF(test._id));
+                      if (test.status !== '-' && test.sentToPatient === true) {
+                        dispatch(downloadPatientPDF(test._id));
+                      }
                       setCurrentTest(test);
                       setTestInfoShow(true);
                     }}
