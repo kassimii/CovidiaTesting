@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { Form, Button } from 'react-bootstrap';
+import { TextField } from '@material-ui/core';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import axios from 'axios';
@@ -16,8 +17,9 @@ const PatientFormPage = ({ history }) => {
     false
   );
 
-  const [addressResidence, setAddressResidence] = useState(null);
-  const [message] = useState(null);
+  const [addressResidence, setAddressResidence] = useState('');
+  const [message, setMessage] = useState('');
+  const [emptyFieldError, setEmptyFieldError] = useState({});
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -28,8 +30,23 @@ const PatientFormPage = ({ history }) => {
     }
   }, [history, userInfo]);
 
+  const validateForm = () => {
+    let temp = {};
+    temp.cnp = cnp.length === 13 ? '' : 'Introduceți un CNP valid';
+    temp.phoneNumber =
+      phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
+    temp.email = /$^|.+@+..+/.test(email)
+      ? ''
+      : 'Adresa de email nu este validă';
+
+    setEmptyFieldError({ ...temp });
+
+    return Object.values(temp).every((x) => x === '');
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
     const patient = {
       name,
       surname,
@@ -48,75 +65,99 @@ const PatientFormPage = ({ history }) => {
     };
 
     const makePostRequest = async () => {
-      const { data } = await axios.post('/api/patients', patient, config);
-      history.push(`/pacienti/detalii/${data._id}`);
+      try {
+        const { data } = await axios.post('/api/patients', patient, config);
+        history.push(`/pacienti/detalii/${data._id}`);
+      } catch (error) {
+        setMessage(error);
+      }
     };
 
-    makePostRequest();
+    if (validateForm()) makePostRequest();
   };
 
   return (
     <FormContainer>
       <h1>Date pacient</h1>
-      {message && <Message variant='danger'>{message}</Message>}
+      {message && <Message variant='danger'>A apărut o problemă!</Message>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Nume</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Introduceti nume'
+          <TextField
+            required
+            variant='outlined'
+            label='Nume'
+            fullWidth
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
+
         <Form.Group controlId='surname'>
-          <Form.Label>Prenume</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Introduceti prenume'
+          <TextField
+            required
+            variant='outlined'
+            label='Prenume'
+            fullWidth
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group controlId='cnp'>
-          <Form.Label>CNP</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Introduceti CNP'
+          <TextField
+            required
+            variant='outlined'
+            label='CNP'
+            fullWidth
             value={cnp}
             onChange={(e) => setCnp(e.target.value)}
-          ></Form.Control>
+            {...(emptyFieldError.cnp && {
+              error: true,
+              helperText: emptyFieldError.cnp,
+            })}
+          />
         </Form.Group>
 
         <Form.Group controlId='addressID'>
-          <Form.Label>Adresa</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Introduceti adresa'
+          <TextField
+            required
+            variant='outlined'
+            label='Adresa'
+            fullWidth
             value={addressID}
             onChange={(e) => setAddressID(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group controlId='phoneNumber'>
-          <Form.Label>Numar de telefon</Form.Label>
-          <Form.Control
-            placeholder='Introduceti numarul de telefon'
+          <TextField
+            required
+            variant='outlined'
+            label='Număr de telefon'
+            fullWidth
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-          ></Form.Control>
+            {...(emptyFieldError.phoneNumber && {
+              error: true,
+              helperText: emptyFieldError.phoneNumber,
+            })}
+          />
         </Form.Group>
 
         <Form.Group controlId='email'>
-          <Form.Label>Adresa email</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Introduceti adresa email'
+          <TextField
+            variant='outlined'
+            label='Adresă email'
+            fullWidth
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
+            {...(emptyFieldError.email && {
+              error: true,
+              helperText: emptyFieldError.email,
+            })}
+          />
         </Form.Group>
+
         <Form.Group controlId='formBasicCheckbox'>
           <Form.Check
             type='checkbox'
@@ -129,13 +170,13 @@ const PatientFormPage = ({ history }) => {
         </Form.Group>
         {differentResidenceAddress && (
           <Form.Group controlId='addressResidence'>
-            <Form.Label>Adresa de domiciliu</Form.Label>
-            <Form.Control
-              type='text'
-              placeholder='Introduceti adresa de domiciliu'
+            <TextField
+              variant='outlined'
+              label='Adresa de domiciliu'
+              fullWidth
               value={addressResidence}
               onChange={(e) => setAddressResidence(e.target.value)}
-            ></Form.Control>
+            />
           </Form.Group>
         )}
 
