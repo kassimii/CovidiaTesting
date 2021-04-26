@@ -33,7 +33,16 @@ import {
   USER_VERIFY_RESET_LINK_SUCCESS,
   USER_VERIFY_RESET_LINK_FAIL,
 } from '../constants/userConstants';
-import { PATIENT_LIST_RESET } from '../constants/patientConstants';
+import {
+  PATIENT_LIST_RESET,
+  PATIENT_DETAILS_RESET,
+} from '../constants/patientConstants';
+import {
+  TEST_CREATE_RESET,
+  TEST_LIST_RESET,
+  TEST_LIST_ADMIN_RESET,
+  TEST_DSP_CSV_RESET,
+} from '../constants/testConstants';
 import axios from 'axios';
 
 export const login = (email, password) => async (dispatch) => {
@@ -75,9 +84,13 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: PATIENT_LIST_RESET });
+  dispatch({ type: PATIENT_DETAILS_RESET });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
-  dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: TEST_CREATE_RESET });
+  dispatch({ type: TEST_LIST_RESET });
+  dispatch({ type: TEST_LIST_ADMIN_RESET });
+  dispatch({ type: TEST_DSP_CSV_RESET });
 };
 
 export const getUserDetails = (id) => async (dispatch, getState) => {

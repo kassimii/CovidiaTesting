@@ -38,7 +38,7 @@ import {
   TEST_EDIT_RESET,
 } from '../constants/testConstants';
 
-export const testCreateReducer = (state = {}, action) => {
+export const testCreateReducer = (state = { test: {} }, action) => {
   switch (action.type) {
     case TEST_CREATE_REQUEST:
       return { loading: true };
@@ -47,7 +47,7 @@ export const testCreateReducer = (state = {}, action) => {
     case TEST_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case TEST_CREATE_RESET:
-      return {};
+      return { test: {} };
     default:
       return state;
   }
