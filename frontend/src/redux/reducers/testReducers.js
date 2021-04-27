@@ -36,6 +36,10 @@ import {
   TEST_EDIT_SUCCESS,
   TEST_EDIT_FAIL,
   TEST_EDIT_RESET,
+  TEST_PATIENT_SMS_REQUEST,
+  TEST_PATIENT_SMS_SUCCESS,
+  TEST_PATIENT_SMS_FAIL,
+  TEST_PATIENT_SMS_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = { test: {} }, action) => {
@@ -167,6 +171,20 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
         tests: updatedTests,
       };
     }
+    case TEST_PATIENT_SMS_SUCCESS: {
+      const updatedTests = state.tests.map((test) => {
+        if (test._id === action.payload._id)
+          return {
+            ...test,
+            sentToPatientSMS: action.payload.sentToPatientSMS,
+          };
+        else return test;
+      });
+      return {
+        loading: false,
+        tests: updatedTests,
+      };
+    }
     default:
       return state;
   }
@@ -287,6 +305,30 @@ export const testEditReducer = (state = {}, action) => {
       };
     case TEST_EDIT_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const testPatientSMSReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TEST_PATIENT_SMS_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_PATIENT_SMS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case TEST_PATIENT_SMS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_PATIENT_SMS_RESET:
+      return {};
+
     default:
       return state;
   }

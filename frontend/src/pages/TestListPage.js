@@ -12,7 +12,7 @@ import {
   Select,
   FormHelperText,
 } from '@material-ui/core';
-import { Edit, NoteAdd, GetApp } from '@material-ui/icons';
+import { Edit, NoteAdd, GetApp, RemoveCircleOutline } from '@material-ui/icons';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import Message from '../components/Message';
@@ -240,8 +240,7 @@ const TestListPage = ({ history, match }) => {
                           color: 'green',
                         }}
                       />
-                    ) : (
-                      test.patient.email &&
+                    ) : test.patient.email ? (
                       test.status !== '-' &&
                       doctor !== '-' && (
                         <Button
@@ -255,6 +254,12 @@ const TestListPage = ({ history, match }) => {
                           TRIMITE
                         </Button>
                       )
+                    ) : (
+                      <RemoveCircleOutline
+                        style={{
+                          color: 'red',
+                        }}
+                      />
                     )}
                   </td>
                   <td>

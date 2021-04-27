@@ -10,6 +10,7 @@ import {
   verifyTodaysTests,
   downloadPdf,
   editTest,
+  sendSMSPatient,
 } from '../controllers/testController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -23,5 +24,6 @@ router
   .put(protect, admin, sendTestPatientPDF)
   .get(protect, admin, downloadPdf);
 router.route('/edit-test/:testId').put(protect, admin, editTest);
+router.route('/sms-test-result/:testId').put(protect, admin, sendSMSPatient);
 
 export default router;

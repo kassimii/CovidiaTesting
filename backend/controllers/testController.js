@@ -1,10 +1,14 @@
 import asyncHandler from 'express-async-handler';
 import { parse } from 'json2csv';
 import nodemailer from 'nodemailer';
+import twilio from 'twilio';
 import Test from '../models/testModel.js';
 import { createPatientPdf } from '../utils/generatePDF.js';
 import { convertDate, generatePdfName } from '../utils/commonFunctions.js';
 import { s3 } from '../config/aws.js';
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const clientTwilio = new twilio(accountSid, authToken);
 
 //@desc Create new test entry
 //@route POST /api/tests
@@ -305,6 +309,62 @@ const editTest = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Send SMS test result for Patient
+//@route PUT /api/tests/sms-test-result/:testId
+//@access Private/Admin
+const changeCNP = (cnp) => {
+  let starredCNP = '';
+  starredCNP += cnp.charAt(0) + '*'.repeat(7) + cnp.substring(8, 13);
+  return starredCNP;
+};
+const createMessageBody = (testInfo) => {
+  let messageBody = '';
+  const positiveMessage = 'Stați acasă și contactați medicul de familie!';
+  const negativeMessage =
+    'Respectați în continuare regulile de igienă recomandate de autorități.';
+  const inconclusiveMessage = 'Efectuați un alt test cât mai repede posibil.';
+  messageBody += `Rezultatul testului Covid din data de ${convertDate(
+    testInfo.prelevationDate
+  )}, pentru ${testInfo.patient.surname.charAt(
+    0
+  )}. ${testInfo.patient.name.charAt(0)}. ${changeCNP(
+    testInfo.patient.cnp
+  )}, este ${testInfo.status.toUpperCase()}. `;
+
+  testInfo.status === 'Pozitiv'
+    ? (messageBody += positiveMessage)
+    : testInfo.status === 'Negativ'
+    ? (messageBody += negativeMessage)
+    : (messageBody += inconclusiveMessage);
+
+  return messageBody;
+};
+
+const sendSMSPatient = asyncHandler(async (req, res) => {
+  const test = await Test.findById(req.params.testId).populate(
+    'patient',
+    'name surname cnp phoneNumber'
+  );
+
+  if (test) {
+    const messageBody = createMessageBody(test);
+    clientTwilio.messages
+      .create({
+        body: messageBody,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: test.patient.phoneNumber,
+      })
+      .then(async function () {
+        test.sentToPatientSMS = true;
+        const updatedTest = await test.save();
+        res.json(updatedTest);
+      });
+  } else {
+    res.status(404);
+    throw new Error('Test not found');
+  }
+});
+
 export {
   addTestEntry,
   getTestsForPatient,
@@ -315,4 +375,5 @@ export {
   verifyTodaysTests,
   downloadPdf,
   editTest,
+  sendSMSPatient,
 };

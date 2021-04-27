@@ -26,6 +26,9 @@ import {
   TEST_EDIT_REQUEST,
   TEST_EDIT_SUCCESS,
   TEST_EDIT_FAIL,
+  TEST_PATIENT_SMS_REQUEST,
+  TEST_PATIENT_SMS_SUCCESS,
+  TEST_PATIENT_SMS_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -335,6 +338,43 @@ export const editTest = (test) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_EDIT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const sendPatientSMS = (testId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_PATIENT_SMS_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/tests/sms-test-result/${testId}`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: TEST_PATIENT_SMS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_PATIENT_SMS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

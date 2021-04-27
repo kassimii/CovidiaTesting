@@ -29,6 +29,7 @@ import {
   verifyTestsReducer,
   testDownloadPdfReducer,
   testEditReducer,
+  testPatientSMSReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   verifyTests: verifyTestsReducer,
   testDownloadPdf: testDownloadPdfReducer,
   testEdit: testEditReducer,
+  testPatientSMS: testPatientSMSReducer,
 });
 
 const initialState = {};

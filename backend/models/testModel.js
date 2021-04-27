@@ -41,6 +41,10 @@ const testSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    sentToPatientSMS: {
+      type: Boolean,
+      default: false,
+    },
     sentToDSP: {
       type: Boolean,
       required: true,
