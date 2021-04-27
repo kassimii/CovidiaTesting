@@ -17,6 +17,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phoneNumber: user.phoneNumber,
       isAdmin: user.isAdmin,
       isLabWorker: user.isLabWorker,
       isPrelevationWorker: user.isPrelevationWorker,
@@ -39,6 +40,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phoneNumber: user.phoneNumber,
       isAdmin: user.isAdmin,
       isLabWorker: user.isLabWorker,
       isPrelevationWorker: user.isPrelevationWorker,
@@ -58,6 +60,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -67,6 +70,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      phoneNumber: updatedUser.phoneNumber,
       isAdmin: updatedUser.isAdmin,
       isLabWorker: updatedUser.isLabWorker,
       isPrelevationWorker: updatedUser.isPrelevationWorker,
@@ -132,6 +136,7 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
     user.isAdmin = req.body.isAdmin;
     user.isLabWorker = req.body.isLabWorker;
     user.isPrelevationWorker = req.body.isPrelevationWorker;
@@ -142,6 +147,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      phoneNumber: updatedUser.phoneNumber,
       isAdmin: updatedUser.isAdmin,
       isLabWorker: updatedUser.isLabWorker,
       isPrelevationWorker: updatedUser.isPrelevationWorker,
@@ -156,13 +162,20 @@ const updateUser = asyncHandler(async (req, res) => {
 //@route POST /api/users
 //@access Private/Admin
 const createUser = asyncHandler(async (req, res) => {
-  const { name, email, isAdmin, isPrelevationWorker, isLabWorker } = req.body;
+  const {
+    name,
+    email,
+    phoneNumber,
+    isAdmin,
+    isPrelevationWorker,
+    isLabWorker,
+  } = req.body;
 
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(404);
-    throw new Error('User already exists');
+    throw new Error('Există deja un utilizator cu această adresă de email.');
   }
 
   var randomPassword = Math.random().toString(36).slice(-8);
@@ -170,6 +183,7 @@ const createUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
+    phoneNumber,
     password: randomPassword,
     isAdmin,
     isPrelevationWorker,
@@ -206,6 +220,7 @@ const createUser = asyncHandler(async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
+          phoneNumber: user.phoneNumber,
           isAdmin: user.isAdmin,
           isPrelevationWorker: user.isPrelevationWorker,
           isLabWorker: user.isLabWorker,

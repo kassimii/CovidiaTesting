@@ -63,7 +63,7 @@ const getTests = asyncHandler(async (req, res) => {
   const count = await Test.countDocuments();
 
   const tests = await Test.find({})
-    .populate('patient', 'id patientCode')
+    .populate('patient', 'id patientCode email')
     .populate('collectedBy', 'name')
     .populate('resultBy', 'name')
     .sort({ sentToDSP: 1, prelevationDate: -1 })

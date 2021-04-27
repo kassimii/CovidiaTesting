@@ -36,7 +36,11 @@ const ForgotPasswordPage = ({ history }) => {
   return (
     <FormContainer>
       <h1>Modificare parolă</h1>
-      {resetError && <Message variant='danger'>A apărut o eroare</Message>}
+      {resetError && (
+        <Message variant='danger'>
+          Nu există un utilizator cu această adresă de email.
+        </Message>
+      )}
       {resetSuccess && (
         <Message variant='success'>Verificați-vă emailul!</Message>
       )}

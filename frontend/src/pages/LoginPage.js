@@ -40,7 +40,11 @@ const LoginPage = ({ location, history }) => {
   return (
     <FormContainer>
       <h1>Login</h1>
-      {error && <Message variant='danger'>{error}</Message>}
+      {error && (
+        <Message variant='danger'>
+          Adresa de email sau parola sunt incorecte.
+        </Message>
+      )}
       {resetSuccess && (
         <Message variant='success'>Parola a fost resetată cu succes!</Message>
       )}

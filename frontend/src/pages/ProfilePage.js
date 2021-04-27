@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -13,9 +14,12 @@ import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/userConstants';
 const ProfilePage = ({ location, history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const [emptyFieldError, setEmptyFieldError] = useState({});
 
   const dispatch = useDispatch();
 
@@ -34,6 +38,7 @@ const ProfilePage = ({ location, history }) => {
       } else {
         setName(userInfo.name);
         setEmail(userInfo.email);
+        setPhoneNumber(userInfo.phoneNumber);
       }
     }
 
@@ -42,12 +47,34 @@ const ProfilePage = ({ location, history }) => {
     }, 20000);
   }, [dispatch, history, userInfo]);
 
+  const validateForm = () => {
+    let temp = {};
+    temp.phoneNumber =
+      phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
+    temp.email = /\S+@\S+\.\S+/.test(email)
+      ? ''
+      : 'Adresa de email nu este validă';
+
+    setEmptyFieldError({ ...temp });
+
+    return Object.values(temp).every((x) => x === '');
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
+      if (validateForm())
+        dispatch(
+          updateUserProfile({
+            id: userInfo._id,
+            name,
+            email,
+            phoneNumber,
+            password,
+          })
+        );
     }
   };
 
@@ -60,43 +87,66 @@ const ProfilePage = ({ location, history }) => {
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Nume</Form.Label>
-          <Form.Control
-            type='name'
-            placeholder='Introduceti numele'
+          <TextField
+            required
+            variant='outlined'
+            label='Nume'
+            fullWidth
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group controlId='email'>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Introduceti adresa de email'
+          <TextField
+            required
+            variant='outlined'
+            label='Adresă email'
+            fullWidth
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
+            {...(emptyFieldError.email && {
+              error: true,
+              helperText: emptyFieldError.email,
+            })}
+          />
+        </Form.Group>
+
+        <Form.Group controlId='phoneNumber'>
+          <TextField
+            required
+            variant='outlined'
+            label='Număr de telefon'
+            fullWidth
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            {...(emptyFieldError.phoneNumber && {
+              error: true,
+              helperText: emptyFieldError.phoneNumber,
+            })}
+          />
         </Form.Group>
 
         <Form.Group controlId='password'>
-          <Form.Label>Parola</Form.Label>
-          <Form.Control
+          <TextField
+            variant='outlined'
             type='password'
-            placeholder='Parola noua'
+            label='Parolă nouă'
+            fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group controlId='confirmPassword'>
-          <Form.Label>Confirmare parola</Form.Label>
-          <Form.Control
+          <TextField
+            variant='outlined'
             type='password'
-            placeholder='Repeta parola'
+            label='Confirmă parola'
+            fullWidth
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Button type='submit' variant='dark'>

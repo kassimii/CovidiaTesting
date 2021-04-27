@@ -198,7 +198,7 @@ const TestListPage = ({ history, match }) => {
                 <th>STATUS</th>
                 <th>LAB ID</th>
                 <th>GENERAT DSP</th>
-                <th></th>
+                <th>EMAIL PACIENT</th>
                 <th></th>
               </tr>
             </thead>
@@ -241,6 +241,7 @@ const TestListPage = ({ history, match }) => {
                         }}
                       />
                     ) : (
+                      test.patient.email &&
                       test.status !== '-' &&
                       doctor !== '-' && (
                         <Button
@@ -251,7 +252,7 @@ const TestListPage = ({ history, match }) => {
                             dispatch(sendTestPatientPDF(test._id, doctor))
                           }
                         >
-                          PACIENT
+                          TRIMITE
                         </Button>
                       )
                     )}

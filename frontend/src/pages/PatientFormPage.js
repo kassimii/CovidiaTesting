@@ -35,7 +35,7 @@ const PatientFormPage = ({ history }) => {
     temp.cnp = cnp.length === 13 ? '' : 'Introduceți un CNP valid';
     temp.phoneNumber =
       phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
-    temp.email = /$^|.+@+..+/.test(email)
+    temp.email = /\S+@\S+\.\S+/.test(email)
       ? ''
       : 'Adresa de email nu este validă';
 
