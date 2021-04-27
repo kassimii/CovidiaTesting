@@ -27,4 +27,14 @@ const generatePdfName = (test) => {
   )}.pdf`;
 };
 
-export { convertDate, generatePdfName };
+const generatePrefixPhoneNumber = (phoneNumber) => {
+  let prefixPhoneNumber = phoneNumber;
+
+  prefixPhoneNumber.length === 10
+    ? (prefixPhoneNumber = '+4' + prefixPhoneNumber)
+    : (prefixPhoneNumber = prefixPhoneNumber);
+
+  return prefixPhoneNumber;
+};
+
+export { convertDate, generatePdfName, generatePrefixPhoneNumber };

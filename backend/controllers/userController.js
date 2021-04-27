@@ -1,8 +1,9 @@
 import asyncHandler from 'express-async-handler';
-import generateToken from '../utils/generateToken.js';
-import User from '../models/userModel.js';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
+import User from '../models/userModel.js';
+import generateToken from '../utils/generateToken.js';
+import { generatePrefixPhoneNumber } from '../utils/commonFunctions.js';
 
 //@desc Auth user & get token
 //@route POST /api/users/login
@@ -60,7 +61,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+    user.phoneNumber =
+      generatePrefixPhoneNumber(req.body.phoneNumber) || user.phoneNumber;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -136,7 +138,8 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+    user.phoneNumber =
+      generatePrefixPhoneNumber(req.body.phoneNumber) || user.phoneNumber;
     user.isAdmin = req.body.isAdmin;
     user.isLabWorker = req.body.isLabWorker;
     user.isPrelevationWorker = req.body.isPrelevationWorker;
@@ -183,7 +186,7 @@ const createUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    phoneNumber,
+    phoneNumber: generatePrefixPhoneNumber(phoneNumber),
     password: randomPassword,
     isAdmin,
     isPrelevationWorker,

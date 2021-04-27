@@ -35,9 +35,12 @@ const PatientFormPage = ({ history }) => {
     temp.cnp = cnp.length === 13 ? '' : 'Introduceți un CNP valid';
     temp.phoneNumber =
       phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
-    temp.email = /\S+@\S+\.\S+/.test(email)
-      ? ''
-      : 'Adresa de email nu este validă';
+    temp.email =
+      email !== ''
+        ? /\S+@\S+\.\S+/.test(email)
+          ? ''
+          : 'Adresa de email nu este validă'
+        : '';
 
     setEmptyFieldError({ ...temp });
 
@@ -69,7 +72,9 @@ const PatientFormPage = ({ history }) => {
         const { data } = await axios.post('/api/patients', patient, config);
         history.push(`/pacienti/detalii/${data._id}`);
       } catch (error) {
-        setMessage(error);
+        error.response && error.response.data.message
+          ? setMessage(error.response.data.message)
+          : setMessage(error.message);
       }
     };
 
@@ -79,7 +84,7 @@ const PatientFormPage = ({ history }) => {
   return (
     <FormContainer>
       <h1>Date pacient</h1>
-      {message && <Message variant='danger'>A apărut o problemă!</Message>}
+      {message && <Message variant='danger'>{message}</Message>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
           <TextField

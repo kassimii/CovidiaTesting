@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Patient from '../models/patientModel.js';
+import { generatePrefixPhoneNumber } from '../utils/commonFunctions.js';
 
 //@desc Add new patient
 //@route POST /api/patients
@@ -19,7 +20,7 @@ const addPatient = asyncHandler(async (req, res) => {
 
   if (patientExists) {
     res.status(404);
-    throw new Error('Patient already exists');
+    throw new Error('Pacientul este deja înregistrat!');
   }
 
   const patientCode = Math.random().toString(36).substr(2, 9);
@@ -29,7 +30,7 @@ const addPatient = asyncHandler(async (req, res) => {
     surname,
     cnp,
     addressID,
-    phoneNumber,
+    phoneNumber: generatePrefixPhoneNumber(phoneNumber),
     email,
     addressResidence,
     patientCode,
