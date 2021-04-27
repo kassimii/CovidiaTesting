@@ -48,7 +48,6 @@ const TestInfoModal = (props) => {
           {errorSMS && <Message variant='danger'>A apărut o eroare!</Message>}
           <Row>
             <Col>
-              {' '}
               {props.test && (
                 <>
                   <h6 style={{ display: 'inline' }}>Prelevat: </h6>
@@ -68,30 +67,33 @@ const TestInfoModal = (props) => {
               )}
             </Col>
           </Row>
-          <Row>
-            <InputLabel className='m-3'>Trimite SMS pacient</InputLabel>
-          </Row>
-          <Row className=''>
-            <Col>
-              {loadingSMS ? (
-                <CircularProgress color='secondary' />
-              ) : successSMS || props.test.sentToPatientSMS ? (
-                <DoneAll
-                  style={{
-                    color: 'green',
-                  }}
-                />
-              ) : (
-                <Button
-                  variant='contained'
-                  color='secondary'
-                  onClick={sendSMSPatientHandler}
-                >
-                  Trimite
-                </Button>
-              )}
-            </Col>
-          </Row>
+
+          <>
+            <Row>
+              <InputLabel className='m-3'>Trimite SMS pacient</InputLabel>
+            </Row>
+            <Row className=''>
+              <Col>
+                {loadingSMS ? (
+                  <CircularProgress color='secondary' />
+                ) : successSMS || props.test.sentToPatientSMS ? (
+                  <DoneAll
+                    style={{
+                      color: 'green',
+                    }}
+                  />
+                ) : (
+                  <Button
+                    variant='contained'
+                    color='secondary'
+                    onClick={sendSMSPatientHandler}
+                  >
+                    Trimite
+                  </Button>
+                )}
+              </Col>
+            </Row>
+          </>
         </Modal.Body>
 
         <Modal.Footer>
