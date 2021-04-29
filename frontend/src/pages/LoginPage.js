@@ -8,27 +8,32 @@ import FormContainer from '../components/FormContainer';
 import { login } from '../redux/actions/userActions';
 import { USER_RESET_PASSWORD_RESET } from '../redux/constants/userConstants';
 
-const LoginPage = ({ location, history }) => {
+const LoginPage = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 
   const userFirstStepAuth = useSelector((state) => state.userFirstStepAuth);
-  const { loading, error, userInfo: userInfoFirstStepAuth } = userFirstStepAuth;
+  const {
+    loading,
+    error,
+    success: successFirstStepAuth,
+    userInfo: userInfoFirstStepAuth,
+  } = userFirstStepAuth;
 
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { success: resetSuccess } = userResetPassword;
 
   useEffect(() => {
-    if (userInfoFirstStepAuth) {
+    if (successFirstStepAuth) {
       history.push('/confirmare-autentificare');
     }
 
     return function resetState() {
       dispatch({ type: USER_RESET_PASSWORD_RESET });
     };
-  }, [history, userInfoFirstStepAuth, dispatch]);
+  }, [history, successFirstStepAuth, dispatch, userInfoFirstStepAuth]);
 
   const submitHandler = (e) => {
     e.preventDefault();
