@@ -42,7 +42,6 @@ export const patientDetailsReducer = (state = { patient: {} }, action) => {
     case PATIENT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
     case PATIENT_DETAILS_RESET:
-      console.log('here');
       return { patient: {} };
     default:
       return state;

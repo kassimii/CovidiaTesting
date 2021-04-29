@@ -47,10 +47,6 @@ const ForgotPasswordPage = ({ history }) => {
     return Object.values(temp).every((x) => x === '');
   };
 
-  const recaptchaLoaded = () => {
-    console.log('reCAPTCHA successfully loaded');
-  };
-
   const verifyCallback = (response) => {
     if (response) {
       setIsHuman(true);
@@ -104,7 +100,9 @@ const ForgotPasswordPage = ({ history }) => {
         <Recaptcha
           sitekey={REACT_APP_RECAPTCHA_SITE_KEY}
           render='explicit'
-          onloadCallback={recaptchaLoaded}
+          onloadCallback={() => {
+            console.log('reCAPTCHA successfully loaded');
+          }}
           verifyCallback={verifyCallback}
         />
 

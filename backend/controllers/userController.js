@@ -1,19 +1,60 @@
 import asyncHandler from 'express-async-handler';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
+import duo_web from '@duosecurity/duo_web';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import { generatePrefixPhoneNumber } from '../utils/commonFunctions.js';
 
-//@desc Auth user & get token
+//@desc Verify email and password at login
 //@route POST /api/users/login
 //@access Public
-const authUser = asyncHandler(async (req, res) => {
+const verifyEmailPassword = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
+    const sig_request = duo_web.sign_request(
+      process.env.DUO_IKEY,
+      process.env.DUO_SKEY,
+      process.env.DUO_AKEY,
+      email
+    );
+
+    res.json({
+      // _id: user._id,
+      // name: user.name,
+      email: user.email,
+      // phoneNumber: user.phoneNumber,
+      // isAdmin: user.isAdmin,
+      // isLabWorker: user.isLabWorker,
+      // isPrelevationWorker: user.isPrelevationWorker,
+      // token: generateToken(user._id),
+      sig_request,
+    });
+  } else {
+    res.status(401);
+    throw new Error('Invalid email or password');
+  }
+});
+
+//@desc Verifies if user confirmed identity via Duo
+//@route POST /api/users/login/duo-confirmation
+//@access Public
+const authUser = asyncHandler(async (req, res) => {
+  const { sigResponse, email } = req.body;
+
+  let authenticated_username = duo_web.verify_response(
+    process.env.DUO_IKEY,
+    process.env.DUO_SKEY,
+    process.env.DUO_AKEY,
+    sigResponse
+  );
+
+  const user = await User.findOne({ email });
+
+  if (authenticated_username) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -26,7 +67,7 @@ const authUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Confirmation not valid.');
   }
 });
 
@@ -341,6 +382,7 @@ const verifyResetLink = asyncHandler(async (req, res) => {
 });
 
 export {
+  verifyEmailPassword,
   authUser,
   getUserProfile,
   updateUserProfile,

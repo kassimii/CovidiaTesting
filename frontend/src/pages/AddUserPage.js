@@ -45,7 +45,11 @@ const AddUserPage = ({ match, history }) => {
   const validateForm = () => {
     let temp = {};
     temp.phoneNumber =
-      phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
+      phoneNumber !== ''
+        ? phoneNumber.length > 9
+          ? ''
+          : 'Introduceți un număr de telefon corect'
+        : '';
     temp.email = /\S+@\S+\.\S+/.test(email)
       ? ''
       : 'Adresa de email nu este validă';
@@ -110,7 +114,6 @@ const AddUserPage = ({ match, history }) => {
 
           <Form.Group controlId='phoneNumber'>
             <TextField
-              required
               variant='outlined'
               label='Număr de telefon'
               fullWidth

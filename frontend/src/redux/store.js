@@ -8,6 +8,7 @@ import {
   patientDetailsReducer,
 } from './reducers/patientReducers';
 import {
+  userFirstStepAuthReducer,
   userLoginReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
@@ -36,6 +37,7 @@ const reducer = combineReducers({
   patientList: patientListReducer,
   patientDetails: patientDetailsReducer,
   patientUpdate: patientUpdateReducer,
+  userFirstStepAuth: userFirstStepAuthReducer,
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,

@@ -14,23 +14,21 @@ const LoginPage = ({ location, history }) => {
 
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const userFirstStepAuth = useSelector((state) => state.userFirstStepAuth);
+  const { loading, error, userInfo: userInfoFirstStepAuth } = userFirstStepAuth;
 
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { success: resetSuccess } = userResetPassword;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/';
-
   useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
+    if (userInfoFirstStepAuth) {
+      history.push('/confirmare-autentificare');
     }
 
     return function resetState() {
       dispatch({ type: USER_RESET_PASSWORD_RESET });
     };
-  }, [history, userInfo, redirect, dispatch]);
+  }, [history, userInfoFirstStepAuth, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

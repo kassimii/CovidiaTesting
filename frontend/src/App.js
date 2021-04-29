@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import PatientFormPage from './pages/PatientFormPage';
 import PatientListPage from './pages/PatientListPage';
 import LoginPage from './pages/LoginPage';
+import SecondStepAuthPage from './pages/SecondStepAuthPage';
 import ProfilePage from './pages/ProfilePage';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
@@ -40,6 +41,10 @@ function App() {
           <Route
             path='/admin/utilizatori/:id/editare'
             component={UserEditPage}
+          />
+          <Route
+            path='/confirmare-autentificare'
+            component={SecondStepAuthPage}
           />
           <Route path='/login' component={LoginPage} />
           <Route path='/pacienti/adaugare' component={PatientFormPage} exact />

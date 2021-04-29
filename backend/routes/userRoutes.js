@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import {
+  verifyEmailPassword,
   authUser,
   getUserProfile,
   updateUserProfile,
@@ -20,7 +21,8 @@ router
   .route('/')
   .get(protect, admin, getUsers)
   .post(protect, admin, createUser);
-router.post('/login', authUser);
+router.post('/login', verifyEmailPassword);
+router.post('/login/duo-confirmation', authUser);
 router
   .route('/profile')
   .get(protect, getUserProfile)
