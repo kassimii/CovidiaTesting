@@ -2,6 +2,7 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
+  USER_LOGIN_RESET,
   USER_LOGIN_RESET_SUCCESS,
   USER_LOGOUT,
   USER_LOGIN_2FA_REQUEST,
@@ -54,6 +55,8 @@ export const userFirstStepAuthReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_LOGIN_RESET_SUCCESS:
       return { loading: false, success: false, userInfo: action.payload };
+    case USER_LOGIN_RESET:
+      return {};
     default:
       return state;
   }

@@ -2,6 +2,7 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
+  USER_LOGIN_RESET,
   USER_RESET_PASSWORD_RESET,
   USER_LOGOUT,
   USER_LOGIN_2FA_REQUEST,
@@ -120,6 +121,7 @@ export const confirmLogin = (sigResponse, email) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: USER_LOGIN_RESET });
   dispatch({ type: USER_RESET_PASSWORD_RESET });
   dispatch({ type: PATIENT_LIST_RESET });
   dispatch({ type: PATIENT_DETAILS_RESET });
