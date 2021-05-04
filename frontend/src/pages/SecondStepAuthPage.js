@@ -17,7 +17,7 @@ const SecondStepAuthPage = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
+      history.push('/home');
     }
   }, [history, userInfo, dispatch]);
 
@@ -36,12 +36,14 @@ const SecondStepAuthPage = ({ history }) => {
   return (
     <>
       <Row>
-        <Duo
-          style={{ width: 1000, height: 500 }}
-          host={process.env.REACT_APP_DUO_API_HOSTNAME}
-          sigRequest={userInfoFirstStepAuth.sig_request}
-          sigResponseCallback={handle2FAComplete}
-        />
+        {userInfoFirstStepAuth && (
+          <Duo
+            style={{ width: 1000, height: 500 }}
+            host={process.env.REACT_APP_DUO_API_HOSTNAME}
+            sigRequest={userInfoFirstStepAuth.sig_request}
+            sigResponseCallback={handle2FAComplete}
+          />
+        )}
       </Row>
       <Row>
         <Button variant='contained' onClick={cancelLoginHandler}>

@@ -29,7 +29,7 @@ const ResetPasswordPage = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
+      history.push('/home');
     }
 
     dispatch(verifyResetLink(userId, token));

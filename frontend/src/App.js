@@ -15,6 +15,7 @@ import PatientPage from './pages/PatientPage';
 import TestListPage from './pages/TestListPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Header />
       <main className='py-3'>
         <Container>
+          <Route path='/' component={LoginPage} exact />
           <Route path='/admin/teste' component={TestListPage} exact />
           <Route
             path='/admin/teste/pagina/:pageNumber'
@@ -46,6 +48,7 @@ function App() {
             path='/confirmare-autentificare'
             component={SecondStepAuthPage}
           />
+          <Route path='/home' component={HomePage} />
           <Route path='/login' component={LoginPage} />
           <Route path='/pacienti/adaugare' component={PatientFormPage} exact />
           <Route path='/pacienti' component={PatientListPage} exact />

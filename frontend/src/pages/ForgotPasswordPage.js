@@ -27,7 +27,7 @@ const ForgotPasswordPage = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
+      history.push('/home');
     }
 
     return function resetState() {

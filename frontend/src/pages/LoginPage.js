@@ -25,15 +25,28 @@ const LoginPage = ({ history }) => {
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { success: resetSuccess } = userResetPassword;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo: userInfoLogin } = userLogin;
+
   useEffect(() => {
     if (successFirstStepAuth) {
       history.push('/confirmare-autentificare');
     }
 
+    if (userInfoLogin) {
+      history.push('/home');
+    }
+
     return function resetState() {
       dispatch({ type: USER_RESET_PASSWORD_RESET });
     };
-  }, [history, successFirstStepAuth, dispatch, userInfoFirstStepAuth]);
+  }, [
+    history,
+    successFirstStepAuth,
+    dispatch,
+    userInfoFirstStepAuth,
+    userInfoLogin,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
