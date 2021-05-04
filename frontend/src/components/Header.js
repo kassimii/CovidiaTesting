@@ -17,7 +17,7 @@ const Header = () => {
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
-          <LinkContainer to='/'>
+          <LinkContainer to={userInfo ? '/home' : '/'}>
             <Navbar.Brand>
               <i className='fas fa-virus'></i>COVIDTesting
             </Navbar.Brand>
