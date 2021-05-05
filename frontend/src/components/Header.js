@@ -2,9 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Typography } from '@material-ui/core';
+import { useStyles } from '../design/buttonStyles';
 import { logout } from '../redux/actions/userActions';
 
 const Header = () => {
+  const classes = useStyles();
+
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -15,11 +19,13 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar className={classes.navbar} expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to={userInfo ? '/home' : '/'}>
             <Navbar.Brand>
-              <i className='fas fa-virus'></i>COVIDTesting
+              <Typography variant='h6' className={classes.lightLettering}>
+                Covidia
+              </Typography>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -30,7 +36,8 @@ const Header = () => {
                 {userInfo.isPrelevationWorker && (
                   <LinkContainer to='/pacienti/adaugare'>
                     <Nav.Link>
-                      <i className='fas fa-plus-square px-1'></i>Adauga pacient
+                      <i className='fas fa-plus-square px-1'></i>
+                      Adauga pacient
                     </Nav.Link>
                   </LinkContainer>
                 )}
@@ -58,7 +65,8 @@ const Header = () => {
               ) : (
                 <LinkContainer to='/login'>
                   <Nav.Link>
-                    <i className='fas fa-user'></i>Login
+                    <i className='fas fa-user'></i>
+                    Login
                   </Nav.Link>
                 </LinkContainer>
               )}

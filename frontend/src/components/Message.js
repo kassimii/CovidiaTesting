@@ -1,8 +1,23 @@
 import React from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  message: {
+    width: '100%',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 const Message = ({ variant, children }) => {
-  return <Alert variant={variant}>{children}</Alert>;
+  const classes = useStyles();
+
+  return (
+    <Alert severity={variant} className={classes.message}>
+      {children}
+    </Alert>
+  );
 };
 
 Message.defaultProps = {

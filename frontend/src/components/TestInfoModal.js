@@ -4,7 +4,6 @@ import { Modal, Row, Col } from 'react-bootstrap';
 import { Button, InputLabel, CircularProgress } from '@material-ui/core';
 import { DoneAll } from '@material-ui/icons';
 import Message from '../components/Message';
-import Loader from '../components/Loader';
 import { sendPatientSMS } from '../redux/actions/testActions';
 
 const TestInfoModal = (props) => {
@@ -43,7 +42,6 @@ const TestInfoModal = (props) => {
         </Modal.Header>
 
         <Modal.Body className='m-3'>
-          {loadingPDF && <Loader />}
           {errorPDF && <Message variant='danger'>A apărut o eroare!</Message>}
           {errorSMS && <Message variant='danger'>A apărut o eroare!</Message>}
           <Row>
@@ -100,15 +98,21 @@ const TestInfoModal = (props) => {
           <Button variant='outlined' onClick={props.onClose}>
             Inchide
           </Button>
-          {props.test && props.test.resultDate && props.test.sentToPatient && (
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={downloadHandler}
-            >
-              Descarcă PDF
-            </Button>
-          )}
+
+          {props.test &&
+            props.test.resultDate &&
+            props.test.sentToPatient &&
+            (loadingPDF ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={downloadHandler}
+              >
+                Descarcă PDF
+              </Button>
+            ))}
         </Modal.Footer>
       </Modal>
     </>

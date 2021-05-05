@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
+import {
+  TextField,
+  Typography,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Box,
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/buttonStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -9,6 +20,8 @@ import { login } from '../redux/actions/userActions';
 import { USER_RESET_PASSWORD_RESET } from '../redux/constants/userConstants';
 
 const LoginPage = ({ history }) => {
+  const classes = useStyles();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -54,48 +67,74 @@ const LoginPage = ({ history }) => {
   };
 
   return (
-    <FormContainer>
-      <h1>Login</h1>
-      {error && (
-        <Message variant='danger'>
-          Adresa de email sau parola sunt incorecte.
-        </Message>
-      )}
-      {resetSuccess && (
-        <Message variant='success'>Parola a fost resetată cu succes!</Message>
-      )}
-      {loading && <Loader />}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Introduceti email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId='password'>
-          <Form.Label>Parola</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Introduceti parola'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+    <Box display='flex' justifyContent='center' m={1} p={1}>
+      <FormContainer>
+        <Card variant='outlined' className={classes.card}>
+          <Typography variant='h4' gutterBottom>
+            Login
+          </Typography>
+          {error && (
+            <Message variant='error'>
+              Adresa de email sau parola sunt incorecte.
+            </Message>
+          )}
+          {resetSuccess && (
+            <Message variant='success'>
+              Parola a fost resetată cu succes!
+            </Message>
+          )}
+          {loading && <Loader />}
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId='email'>
+              <ThemeProvider theme={theme}>
+                <TextField
+                  required
+                  variant='outlined'
+                  label='Email'
+                  fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </ThemeProvider>
+            </Form.Group>
+            <Form.Group controlId='password'>
+              <ThemeProvider theme={theme}>
+                <TextField
+                  required
+                  variant='outlined'
+                  type='password'
+                  label='Parola'
+                  fullWidth
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </ThemeProvider>
+            </Form.Group>
 
-        <Button type='submit' variant='dark'>
-          Login
-        </Button>
+            <ThemeProvider theme={theme}>
+              <Button
+                type='submit'
+                variant='contained'
+                color='primary'
+                className={classes.button}
+              >
+                Login
+              </Button>
+            </ThemeProvider>
 
-        <Row className='py-3'>
-          <Col>
-            <Link to={`/parola`}>Parolă uitată?</Link>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+            <Row className='py-3'>
+              <Col>
+                <Link to={`/parola`}>
+                  <Typography variant='body2' gutterBottom>
+                    Parolă uitată?
+                  </Typography>
+                </Link>
+              </Col>
+            </Row>
+          </Form>
+        </Card>
+      </FormContainer>
+    </Box>
   );
 };
 
