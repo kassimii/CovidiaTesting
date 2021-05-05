@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -41,6 +41,9 @@ const TestEditModal = (props) => {
 
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     if (props.test) {
       setPrelevationDate(new Date(props.test.prelevationDate));
@@ -75,6 +78,7 @@ const TestEditModal = (props) => {
   const setAdminLogEntryData = () => {
     let adminLogEntry = {
       testId: props.test._id,
+      modifiedBy: userInfo._id,
     };
 
     if (prevPrelevationDate.getTime() !== prelevationDate.getTime()) {

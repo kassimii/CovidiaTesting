@@ -14,6 +14,7 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
     modifiedResultDate,
     prevStatus,
     modifiedStatus,
+    modifiedBy,
   } = req.body;
 
   const test = await Test.findById(testId);
@@ -26,6 +27,7 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
       modifiedResultDate,
       prevStatus,
       modifiedStatus,
+      modifiedBy,
     });
 
     const createdAdminLog = await adminLog.save();
@@ -37,4 +39,13 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
   }
 });
 
-export { addAdminLogEntry };
+//@desc Get all admin log entries
+//@route GET /api/admin-log
+//@access Private Admin
+const getAdminLogEntries = asyncHandler(async (req, res) => {
+  const adminLog = await AdminLog.find({}).populate('modifiedBy', 'id name');
+
+  res.json(adminLog);
+});
+
+export { addAdminLogEntry, getAdminLogEntries };

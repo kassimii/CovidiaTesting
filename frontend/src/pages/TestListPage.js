@@ -108,6 +108,10 @@ const TestListPage = ({ history, match }) => {
     successTestEdit,
   ]);
 
+  const adminLogHandler = () => {
+    history.push('/admin/log');
+  };
+
   return (
     <>
       <ToastContainer />
@@ -142,6 +146,15 @@ const TestListPage = ({ history, match }) => {
             </Select>
             <FormHelperText>Required</FormHelperText>
           </FormControl>
+        </Col>
+        <Col>
+          <Button
+            variant='contained'
+            className={classes.button}
+            onClick={adminLogHandler}
+          >
+            Admin Log
+          </Button>
         </Col>
         <Col className='text-right'>
           {statusTests !== 'No tests today' && (

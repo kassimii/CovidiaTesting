@@ -22,12 +22,15 @@ const adminLogSchema = mongoose.Schema(
     prevStatus: {
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],
       type: String,
-      default: '-',
     },
     modifiedStatus: {
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],
       type: String,
-      default: '-',
+    },
+    modifiedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
   },
   { timestamps: true }

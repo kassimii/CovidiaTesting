@@ -32,7 +32,10 @@ import {
   testEditReducer,
   testPatientSMSReducer,
 } from './reducers/testReducers';
-import { adminLogCreateReducer } from './reducers/adminLogReducers';
+import {
+  adminLogCreateReducer,
+  adminLogListReducer,
+} from './reducers/adminLogReducers';
 
 const reducer = combineReducers({
   patientList: patientListReducer,
@@ -60,6 +63,7 @@ const reducer = combineReducers({
   testEdit: testEditReducer,
   testPatientSMS: testPatientSMSReducer,
   adminLogCreate: adminLogCreateReducer,
+  adminLogList: adminLogListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

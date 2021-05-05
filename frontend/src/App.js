@@ -16,6 +16,7 @@ import TestListPage from './pages/TestListPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import HomePage from './pages/HomePage';
+import AdminLogPage from './pages/AdminLogPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <main className='py-3'>
         <Container>
           <Route path='/' component={LoginPage} exact />
+          <Route path='/admin/log' component={AdminLogPage} />
           <Route path='/admin/teste' component={TestListPage} exact />
           <Route
             path='/admin/teste/pagina/:pageNumber'
