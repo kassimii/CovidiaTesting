@@ -23,7 +23,7 @@ const addPatient = asyncHandler(async (req, res) => {
     throw new Error('Pacientul este deja înregistrat!');
   }
 
-  const patientCode = Math.random().toString(36).substr(2, 9);
+  const patientCode = Math.random().toString(36).substr(2, 8);
 
   const patient = await Patient.create({
     name,
@@ -62,7 +62,7 @@ const getPatients = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
-    ? req.query.keyword.length === 9
+    ? req.query.keyword.length === 8
       ? {
           patientCode: req.query.keyword.toLowerCase(),
         }
