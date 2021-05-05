@@ -15,6 +15,7 @@ import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 
 import { editTest } from '../redux/actions/testActions';
+import { createAdminLogEntry } from '../redux/actions/adminLogActions';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
 const TestEditModal = (props) => {
   const classes = useStyles();
 
+  const [prevPrelevationDate, setPrevPrelevationDate] = useState(new Date());
+  const [prevResultDate, setPrevResultDate] = useState(new Date());
+  const [prevTestResult, setPrevTestResult] = useState('-');
+
   const [prelevationDate, setPrelevationDate] = useState(new Date());
   const [resultDate, setResultDate] = useState(new Date());
   const [testResult, setTestResult] = useState('-');
@@ -39,9 +44,15 @@ const TestEditModal = (props) => {
   useEffect(() => {
     if (props.test) {
       setPrelevationDate(new Date(props.test.prelevationDate));
-      if (props.test.resultDate) setResultDate(new Date(props.test.resultDate));
-      else setResultDate(new Date());
+      setPrevPrelevationDate(new Date(props.test.prelevationDate));
+
+      if (props.test.resultDate) {
+        setResultDate(new Date(props.test.resultDate));
+        setPrevResultDate(new Date(props.test.resultDate));
+      } else setResultDate(new Date());
+
       setTestResult(props.test.status);
+      setPrevTestResult(props.test.status);
     }
   }, [props.test]);
 
@@ -61,6 +72,29 @@ const TestEditModal = (props) => {
 
   const FORMAT = 'dd-MM-yyyy';
 
+  const setAdminLogEntryData = () => {
+    let adminLogEntry = {
+      testId: props.test._id,
+    };
+
+    if (prevPrelevationDate.getTime() !== prelevationDate.getTime()) {
+      adminLogEntry.prevPrelevationDate = prevPrelevationDate;
+      adminLogEntry.modifiedPrelevationDate = prelevationDate;
+    }
+
+    if (prevResultDate.getTime() !== resultDate.getTime()) {
+      adminLogEntry.prevResultDate = prevResultDate;
+      adminLogEntry.modifiedResultDate = resultDate;
+    }
+
+    if (prevTestResult !== testResult) {
+      adminLogEntry.prevStatus = prevTestResult;
+      adminLogEntry.modifiedStatus = testResult;
+    }
+
+    return adminLogEntry;
+  };
+
   const onUpdateHandler = () => {
     dispatch(
       editTest({
@@ -72,6 +106,10 @@ const TestEditModal = (props) => {
         },
       })
     );
+
+    const adminLogEntry = setAdminLogEntryData();
+
+    dispatch(createAdminLogEntry(adminLogEntry));
 
     props.onClose();
   };

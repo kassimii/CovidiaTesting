@@ -7,6 +7,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import patientRoutes from './routes/patientRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import testRoutes from './routes/testRoutes.js';
+import adminLogRoutes from './routes/adminLogRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/patients', patientRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/tests', testRoutes);
+app.use('/api/admin-log', adminLogRoutes);
 
 app.use(notFound);
 

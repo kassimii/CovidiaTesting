@@ -23,14 +23,7 @@ const verifyEmailPassword = asyncHandler(async (req, res) => {
     );
 
     res.json({
-      // _id: user._id,
-      // name: user.name,
       email: user.email,
-      // phoneNumber: user.phoneNumber,
-      // isAdmin: user.isAdmin,
-      // isLabWorker: user.isLabWorker,
-      // isPrelevationWorker: user.isPrelevationWorker,
-      // token: generateToken(user._id),
       sig_request,
     });
   } else {
