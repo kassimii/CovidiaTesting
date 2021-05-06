@@ -25,7 +25,14 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
-  button: {
+  buttonSm: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: '25%',
+    height: 45,
+    fontSize: 18,
+  },
+  buttonMd: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     width: '50%',
@@ -40,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   card: {
+    width: '110%',
     padding: 20,
     backgroundColor: colours.secondaryLight,
     boxShadow: `3px 3px 10px 2px ${colours.primaryDark}`,

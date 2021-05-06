@@ -54,7 +54,7 @@ const MUIHeader = () => {
 
   return (
     <div className={classes.flexDisplay}>
-      <AppBar position='static'>
+      <AppBar position='static' className={classes.navbar}>
         <Toolbar>
           <Menu className={classes.menuButton} />
           <LinkContainer to={userInfo ? '/home' : '/'}>
@@ -70,6 +70,7 @@ const MUIHeader = () => {
                 aria-controls={open ? 'menu-list-grow' : undefined}
                 aria-haspopup='true'
                 startIcon={<ArrowDropDown />}
+                className={classes.lightLettering}
                 onClick={handleToggle}
               >
                 {userInfo.name}
@@ -99,7 +100,9 @@ const MUIHeader = () => {
                           <LinkContainer to='/profil'>
                             <MenuItem onClick={handleClose}>Profil</MenuItem>
                           </LinkContainer>
-                          <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                          <MenuItem onClick={logoutHandler}>
+                            Deconectare
+                          </MenuItem>
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>
@@ -109,7 +112,7 @@ const MUIHeader = () => {
             </div>
           ) : (
             <LinkContainer to='/login'>
-              <Button color='inherit'>Login</Button>
+              <Button color='inherit'>Autentificare</Button>
             </LinkContainer>
           )}
         </Toolbar>

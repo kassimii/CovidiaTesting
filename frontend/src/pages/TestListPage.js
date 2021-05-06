@@ -150,7 +150,7 @@ const TestListPage = ({ history, match }) => {
         <Col>
           <Button
             variant='contained'
-            className={classes.button}
+            className={classes.buttonMd}
             onClick={adminLogHandler}
           >
             Admin Log
@@ -161,7 +161,7 @@ const TestListPage = ({ history, match }) => {
             <Button
               variant='contained'
               startIcon={<NoteAdd />}
-              className={classes.button}
+              className={classes.buttonMd}
               onClick={() => dispatch(generateCSVFileForDSP())}
             >
               Generează CSV
@@ -173,7 +173,7 @@ const TestListPage = ({ history, match }) => {
               variant='contained'
               color='secondary'
               startIcon={<GetApp />}
-              className={classes.button}
+              className={classes.buttonMd}
               onClick={() => window.open(fileUrl, '_blank')}
             >
               Descarcă CSV

@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import { TextField, InputLabel } from '@material-ui/core';
+import { Form, Row, Col } from 'react-bootstrap';
+import {
+  TextField,
+  InputLabel,
+  Typography,
+  Button,
+  Card,
+  Box,
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Recaptcha from 'react-recaptcha';
 import Message from '../components/Message';
@@ -12,6 +21,8 @@ import { USER_FORGOT_PASSWORD_RESET } from '../redux/constants/userConstants';
 const { REACT_APP_RECAPTCHA_SITE_KEY } = process.env;
 
 const ForgotPasswordPage = ({ history }) => {
+  const classes = useStyles();
+
   const [email, setEmail] = useState('');
   const [isHuman, setIsHuman] = useState(false);
   const [message, setMessage] = useState('');
@@ -66,57 +77,77 @@ const ForgotPasswordPage = ({ history }) => {
   };
 
   return (
-    <FormContainer>
-      <h1>Modificare parolă</h1>
-      {message && <Message variant='danger'>{message}</Message>}
-      {resetError && (
-        <Message variant='danger'>
-          Nu există un utilizator cu această adresă de email.
-        </Message>
-      )}
-      {resetSuccess && (
-        <Message variant='success'>Verificați-vă emailul!</Message>
-      )}
-      <Form onSubmit={submitHandler}>
-        <InputLabel>
-          Veți primi un link de resetare a parolei pe adresa de email introdusă.
-        </InputLabel>
+    <Box display='flex' justifyContent='center' m={1} p={1}>
+      <FormContainer>
+        <Card variant='outlined' className={classes.card}>
+          <Typography variant='h4' gutterBottom>
+            Modificare parolă
+          </Typography>
+          {message && <Message variant='error'>{message}</Message>}
+          {resetError && (
+            <Message variant='error'>
+              Nu există un utilizator cu această adresă de email.
+            </Message>
+          )}
+          {resetSuccess && (
+            <Message variant='success'>Verificați-vă emailul!</Message>
+          )}
+          <Form onSubmit={submitHandler}>
+            <InputLabel>
+              Veți primi un link de resetare a parolei pe adresa de email
+              introdusă.
+            </InputLabel>
 
-        <Form.Group controlId='email'>
-          <TextField
-            required
-            variant='outlined'
-            label='Adresă email'
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            {...(emptyFieldError.email && {
-              error: true,
-              helperText: emptyFieldError.email,
-            })}
-          />
-        </Form.Group>
+            <Form.Group controlId='email'>
+              <TextField
+                required
+                variant='outlined'
+                label='Adresă email'
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                {...(emptyFieldError.email && {
+                  error: true,
+                  helperText: emptyFieldError.email,
+                })}
+              />
+            </Form.Group>
 
-        <Recaptcha
-          sitekey={REACT_APP_RECAPTCHA_SITE_KEY}
-          render='explicit'
-          onloadCallback={() => {
-            console.log('reCAPTCHA successfully loaded');
-          }}
-          verifyCallback={verifyCallback}
-        />
+            <div className='mb-3'>
+              <Recaptcha
+                sitekey={REACT_APP_RECAPTCHA_SITE_KEY}
+                render='explicit'
+                onloadCallback={() => {
+                  console.log('reCAPTCHA successfully loaded');
+                }}
+                verifyCallback={verifyCallback}
+              />
+            </div>
 
-        <Button type='submit' variant='dark'>
-          Resetează
-        </Button>
+            <ThemeProvider theme={theme}>
+              <Button
+                type='submit'
+                variant='contained'
+                color='primary'
+                className={classes.buttonMd}
+              >
+                Resetează
+              </Button>
+            </ThemeProvider>
 
-        <Row className='py-3'>
-          <Col>
-            <Link to={`/login`}>Anulare</Link>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+            <Row className='py-3 mx-0.5'>
+              <Col>
+                <Link to={`/login`}>
+                  <Typography variant='body2' gutterBottom>
+                    Anulare
+                  </Typography>
+                </Link>
+              </Col>
+            </Row>
+          </Form>
+        </Card>
+      </FormContainer>
+    </Box>
   );
 };
 

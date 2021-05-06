@@ -108,13 +108,13 @@ const LoginPage = ({ history }) => {
                 type='submit'
                 variant='contained'
                 color='primary'
-                className={classes.button}
+                className={classes.buttonMd}
               >
                 Login
               </Button>
             </ThemeProvider>
 
-            <Row className='py-3'>
+            <Row className='py-3 mx-0.5'>
               <Col>
                 <Link to={`/parola`}>
                   <Typography variant='body2' gutterBottom>

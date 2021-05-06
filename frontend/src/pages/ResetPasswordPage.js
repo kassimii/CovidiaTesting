@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import {
+  TextField,
+  InputLabel,
+  Typography,
+  Button,
+  Card,
+  Box,
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import { resetPassword, verifyResetLink } from '../redux/actions/userActions';
 
 const ResetPasswordPage = ({ history, match }) => {
+  const classes = useStyles();
+
   const userId = match.params.userId;
   const token = match.params.token;
 
@@ -51,42 +63,66 @@ const ResetPasswordPage = ({ history, match }) => {
   return (
     <>
       {resetLinkError && (
-        <Message variant='danger'>
+        <Message variant='error'>
           Linkul de resetare a parolei a expirat
         </Message>
       )}
 
       {resetLinkSuccess && (
-        <FormContainer>
-          <h1>Setați o nouă parolă</h1>
-          {message && <Message variant='danger'>{message}</Message>}
-          {resetError && <Message variant='danger'>A apărut o eroare</Message>}
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId='password'>
-              <Form.Control
-                type='password'
-                placeholder='Parolă nouă'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className='my-3'
-              ></Form.Control>
-            </Form.Group>
+        <Box display='flex' justifyContent='center' m={1} p={1}>
+          <FormContainer>
+            <Card variant='outlined' className={classes.card}>
+              <Typography variant='h4' gutterBottom>
+                Setați o nouă parolă
+              </Typography>
 
-            <Form.Group controlId='confirmPassword'>
-              <Form.Control
-                type='password'
-                placeholder='Repetă parola'
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className='my-3'
-              ></Form.Control>
-            </Form.Group>
+              {message && <Message variant='error'>{message}</Message>}
+              {resetError && (
+                <Message variant='error'>A apărut o eroare</Message>
+              )}
+              <Form onSubmit={submitHandler}>
+                <Form.Group controlId='password'>
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      type='password'
+                      label='Parolă nouă'
+                      fullWidth
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </ThemeProvider>
+                </Form.Group>
 
-            <Button type='submit' variant='dark'>
-              Schimbați parola
-            </Button>
-          </Form>
-        </FormContainer>
+                <Form.Group controlId='confirmPassword'>
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      type='password'
+                      label='Repetă parola'
+                      fullWidth
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                  </ThemeProvider>
+                </Form.Group>
+
+                <ThemeProvider theme={theme}>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    className={classes.buttonMd}
+                  >
+                    Schimbați parola
+                  </Button>
+                </ThemeProvider>
+              </Form>
+            </Card>
+          </FormContainer>
+        </Box>
       )}
     </>
   );
