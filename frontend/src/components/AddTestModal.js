@@ -71,7 +71,7 @@ const AddTestModal = (props) => {
             Detalii test
           </Modal.Title>
         </Modal.Header>
-        {errorMessage && <Message variant='danger'>{errorMessage}</Message>}
+        {errorMessage && <Message variant='error'>{errorMessage}</Message>}
         <Modal.Body>
           <h4>Data prelevare</h4>
           <DayPickerInput

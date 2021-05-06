@@ -23,13 +23,13 @@ const HomePage = ({ history }) => {
         <>
           <Grid
             container
-            spacing={24}
-            style={{ height: window.innerHeight * (4 / 5) }}
+            spacing={1}
+            style={{ height: window.innerHeight * (5 / 6) }}
           >
             <Card className={classes.cardMenu} variant='outlined'>
               <CardContent>
-                <Grid container spacing={24} className={classes.center}>
-                  <Grid item>
+                <Grid container spacing={1} className={classes.center}>
+                  <Grid>
                     {userInfo && userInfo.isPrelevationWorker ? (
                       <Typography variant='h4' gutterBottom>
                         Prelevare
@@ -49,7 +49,7 @@ const HomePage = ({ history }) => {
                 </Grid>
                 {userInfo.isPrelevationWorker && (
                   <LinkContainer to='/pacienti/adaugare'>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={1}>
                       <Grid item className={classes.center}>
                         <Button
                           className={classes.buttonMdSecondaryLight}
@@ -64,7 +64,7 @@ const HomePage = ({ history }) => {
 
                 {(userInfo.isPrelevationWorker || userInfo.isLabWorker) && (
                   <LinkContainer to='/pacienti'>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={1}>
                       <Grid item className={classes.center}>
                         <Button
                           className={classes.buttonMdSecondaryLight}
@@ -80,7 +80,7 @@ const HomePage = ({ history }) => {
                 {userInfo.isAdmin && (
                   <>
                     <LinkContainer to='/admin/utilizatori'>
-                      <Grid container spacing={24}>
+                      <Grid container spacing={1}>
                         <Grid item className={classes.center}>
                           <Button
                             className={classes.buttonMdSecondaryLight}
@@ -92,7 +92,7 @@ const HomePage = ({ history }) => {
                       </Grid>
                     </LinkContainer>
                     <LinkContainer to='/admin/teste'>
-                      <Grid container spacing={24}>
+                      <Grid container spacing={1}>
                         <Grid item className={classes.center}>
                           <Button
                             className={classes.buttonMdSecondaryLight}

@@ -83,7 +83,7 @@ const AddUserPage = ({ match, history }) => {
       <FormContainer>
         <h1>Adăugare utilizator</h1>
         {loadingCreate && <Loader />}
-        {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+        {errorCreate && <Message variant='error'>{errorCreate}</Message>}
 
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>

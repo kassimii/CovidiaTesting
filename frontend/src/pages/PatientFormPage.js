@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
-import { TextField } from '@material-ui/core';
+import { Form } from 'react-bootstrap';
+import {
+  TextField,
+  Button,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import axios from 'axios';
 
 const PatientFormPage = ({ history }) => {
+  const classes = useStyles();
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [cnp, setCnp] = useState('');
@@ -83,18 +93,22 @@ const PatientFormPage = ({ history }) => {
 
   return (
     <FormContainer>
-      <h1>Date pacient</h1>
-      {message && <Message variant='danger'>{message}</Message>}
+      <Typography variant='h4' gutterBottom className='my-3'>
+        Date pacient
+      </Typography>
+      {message && <Message variant='error'>{message}</Message>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <TextField
-            required
-            variant='outlined'
-            label='Nume'
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              required
+              variant='outlined'
+              label='Nume'
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Form.Group controlId='surname'>
@@ -164,13 +178,19 @@ const PatientFormPage = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId='formBasicCheckbox'>
-          <Form.Check
-            type='checkbox'
-            label='Adresa de domiciliu diferita'
-            checked={differentResidenceAddress}
-            onChange={() =>
-              setDifferentResidenceAddress(!differentResidenceAddress)
+          <FormControlLabel
+            value='end'
+            control={
+              <Checkbox
+                checked={differentResidenceAddress}
+                onChange={() =>
+                  setDifferentResidenceAddress(!differentResidenceAddress)
+                }
+                color='primary'
+              />
             }
+            label='Adresa de domiciliu diferită'
+            labelPlacement='end'
           />
         </Form.Group>
         {differentResidenceAddress && (
@@ -185,7 +205,7 @@ const PatientFormPage = ({ history }) => {
           </Form.Group>
         )}
 
-        <Button type='submit' variant='primary' className='py-3 '>
+        <Button type='submit' className={classes.buttonMdPrimaryMedium}>
           Adauga pacient
         </Button>
       </Form>

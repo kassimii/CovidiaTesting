@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
+import { TextField, InputBase } from '@material-ui/core';
+import { theme, useStyles } from '../design/muiStyles';
+import { Search } from '@material-ui/icons';
 import Message from '../components/Message';
 
 const SearchBox = ({ history }) => {
+  const classes = useStyles();
+
   const [keyword, setKeyword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -30,17 +35,21 @@ const SearchBox = ({ history }) => {
 
   return (
     <>
-      {errorMessage && <Message variant='danger'>{errorMessage}</Message>}
+      {errorMessage && <Message variant='error'>{errorMessage}</Message>}
       <Form onSubmit={submitHandler} inline>
-        <Form.Control
-          type='text'
-          name='q'
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder='Cauta pacient'
-        ></Form.Control>
-        <Button type='submit' variant='outline-success' className='p-2'>
-          <i className='fas fa-search'></i>
-        </Button>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <Search />
+          </div>
+          <InputBase
+            placeholder='Căutare...'
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+        </div>
       </Form>
     </>
   );

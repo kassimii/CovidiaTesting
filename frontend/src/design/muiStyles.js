@@ -1,4 +1,4 @@
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles, fade } from '@material-ui/core/styles';
 
 const colours = {
   primaryDark: '#50487d',
@@ -52,6 +52,20 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: colours.secondaryMedium,
     },
   },
+  buttonMdPrimaryMedium: {
+    backgroundColor: colours.primaryMedium,
+    borderRadius: '12px',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: '50%',
+    height: 45,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colours.secondaryLight,
+    '&:hover': {
+      backgroundColor: colours.primaryDark,
+    },
+  },
   center: {
     width: '100%',
     display: 'flex',
@@ -70,16 +84,65 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     width: '30%',
-    padding: 20,
-    marginTop: 30,
+    padding: 30,
+    marginTop: 50,
     backgroundColor: colours.primaryLight,
     boxShadow: `3px 3px 10px 2px ${colours.secondaryDark}`,
+  },
+  cardPatient: {
+    minWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
+    padding: 30,
+    margin: 15,
+    backgroundColor: colours.secondaryLight,
+    boxShadow: `3px 3px 10px 2px ${colours.primaryDark}`,
   },
   navbar: {
     backgroundColor: colours.secondaryDark,
     padding: 20,
     paddingRight: 50,
     paddingLeft: 50,
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(colours.primaryMedium, 0.15),
+    '&:hover': {
+      backgroundColor: fade(colours.primaryDark, 0.25),
+    },
+    width: window.innerHeight,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
   },
   secondaryLightColour: {
     color: colours.secondaryLight,

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Row, Col } from 'react-bootstrap';
+import { Typography } from '@material-ui/core';
 import Patient from '../components/Patient';
 import PatientCode from '../components/PatientCode';
 import Message from '../components/Message';
@@ -31,12 +33,16 @@ const PatientListPage = ({ history, match }) => {
 
   return (
     <>
-      <h1 className='my-3'>Pacienți</h1>
+      <LinkContainer to={`/pacienti`}>
+        <Typography variant='h4' gutterBottom className='my-3'>
+          Pacienți
+        </Typography>
+      </LinkContainer>
       <SearchBox history={history} />
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant='error'>{error}</Message>
       ) : (
         <>
           <Row>

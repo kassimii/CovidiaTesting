@@ -122,7 +122,7 @@ const PatientPage = ({ history, match }) => {
         <Col>
           <Button
             className='btn btn-light my-3'
-            onClick={() => history.goBack()}
+            onClick={() => history.push('/pacienti')}
           >
             Înapoi
           </Button>
@@ -151,12 +151,12 @@ const PatientPage = ({ history, match }) => {
             <h2>Date pacient</h2>
             {loadingUpdate && <Loader />}
             {errorUpdate && (
-              <Message variant='danger'>A apărut o eroare!</Message>
+              <Message variant='error'>A apărut o eroare!</Message>
             )}
             {loading ? (
               <Loader />
             ) : error ? (
-              <Message variant='danger'>A apărut o eroare!</Message>
+              <Message variant='error'>A apărut o eroare!</Message>
             ) : (
               <Form onSubmit={submitHandler}>
                 <Form.Group controlId='name'>
@@ -273,10 +273,10 @@ const PatientPage = ({ history, match }) => {
               <h2>Istoric teste</h2>
             </Col>
             {errorTestCreate && (
-              <Message variant='danger'>{errorTestCreate}</Message>
+              <Message variant='error'>{errorTestCreate}</Message>
             )}
             {errorTestUpdate && (
-              <Message variant='danger'>{errorTestUpdate}</Message>
+              <Message variant='error'>{errorTestUpdate}</Message>
             )}
             {userInfo && userInfo.isPrelevationWorker && (
               <Col className='text-right'>
@@ -307,7 +307,7 @@ const PatientPage = ({ history, match }) => {
           {loadingTests ? (
             <Loader />
           ) : errorTests ? (
-            <Message variant='danger'>{errorTests}</Message>
+            <Message variant='error'>{errorTests}</Message>
           ) : (
             <Table striped bordered hover responsive className='table-sm'>
               <thead>

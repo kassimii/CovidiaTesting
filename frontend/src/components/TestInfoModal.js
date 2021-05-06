@@ -42,8 +42,8 @@ const TestInfoModal = (props) => {
         </Modal.Header>
 
         <Modal.Body className='m-3'>
-          {errorPDF && <Message variant='danger'>A apărut o eroare!</Message>}
-          {errorSMS && <Message variant='danger'>A apărut o eroare!</Message>}
+          {errorPDF && <Message variant='error'>A apărut o eroare!</Message>}
+          {errorSMS && <Message variant='error'>A apărut o eroare!</Message>}
           <Row>
             <Col>
               {props.test && (

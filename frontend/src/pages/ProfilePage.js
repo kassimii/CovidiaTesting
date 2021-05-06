@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { TextField } from '@material-ui/core';
+import { Form } from 'react-bootstrap';
+import { TextField, Typography, Button } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -12,6 +14,8 @@ import {
 import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/userConstants';
 
 const ProfilePage = ({ location, history }) => {
+  const classes = useStyles();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -80,21 +84,25 @@ const ProfilePage = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h2 className='py-3'>User profile</h2>
-      {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
+      <Typography variant='h4' gutterBottom className='my-3'>
+        Profil utilizator
+      </Typography>
+      {message && <Message variant='error'>{message}</Message>}
+      {error && <Message variant='error'>{error}</Message>}
       {successUpdate && <Message variant='success'>Profil actualizat!</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <TextField
-            required
-            variant='outlined'
-            label='Nume'
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              required
+              variant='outlined'
+              label='Nume'
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Form.Group controlId='email'>
@@ -149,8 +157,8 @@ const ProfilePage = ({ location, history }) => {
           />
         </Form.Group>
 
-        <Button type='submit' variant='dark'>
-          Update
+        <Button type='submit' className={classes.buttonMdPrimaryMedium}>
+          Actualizare
         </Button>
       </Form>
     </FormContainer>

@@ -1,31 +1,40 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import {
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 
 const Patient = ({ patient }) => {
+  const classes = useStyles();
+
   return (
-    <div>
-      <Card className='my-3 p-3 rounded'>
-        <Row>
-          <Col xs={9} sm={9} md={9} lg={9}>
-            <Card.Body>
-              <Link to={`/pacienti/detalii/${patient._id}`}>
-                <Card.Title as='div'>
-                  <h4>
-                    {patient.name} {patient.surname}
-                  </h4>
-                </Card.Title>
-              </Link>
-              <Card.Text as='div'>
-                <strong>{patient.cnp}</strong>
-              </Card.Text>
-            </Card.Body>
-          </Col>
-          <Col>
-            <LinkContainer to={`/pacienti/detalii/${patient._id}`}>
+    <div className={classes.center}>
+      <Card className={classes.cardPatient} variant='outlined'>
+        <CardContent className={classes.flexDisplay}>
+          <Typography variant='h6' gutterBottom>
+            {patient.name} {patient.surname}
+          </Typography>
+
+          <Typography variant='subtitle1' gutterBottom>
+            {patient.cnp}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <ThemeProvider theme={theme}>
+            <LinkContainer
+              to={`/pacienti/detalii/${patient._id}`}
+              style={{ height: 45 }}
+            >
               <Button
-                className='btn-block '
+                className='btn-block'
+                color='primary'
+                variant='contained'
                 type='button'
                 xs={3}
                 sm={3}
@@ -35,8 +44,8 @@ const Patient = ({ patient }) => {
                 Editeaza pacient
               </Button>
             </LinkContainer>
-          </Col>
-        </Row>
+          </ThemeProvider>
+        </CardActions>
       </Card>
     </div>
   );

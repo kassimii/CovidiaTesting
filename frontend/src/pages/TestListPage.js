@@ -184,7 +184,7 @@ const TestListPage = ({ history, match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant='error'>{error}</Message>
       ) : (
         <>
           <TestInfoModal
