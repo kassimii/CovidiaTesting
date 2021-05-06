@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
+import MUIHeader from './components/MUIHeader';
 import Footer from './components/Footer';
 import PatientFormPage from './pages/PatientFormPage';
 import PatientListPage from './pages/PatientListPage';
@@ -21,7 +22,7 @@ import AdminLogPage from './pages/AdminLogPage';
 function App() {
   return (
     <Router>
-      <Header />
+      <MUIHeader />
       <main className='py-3'>
         <Container>
           <Route path='/' component={LoginPage} exact />

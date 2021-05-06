@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Typography } from '@material-ui/core';
-import { useStyles } from '../design/buttonStyles';
+import { useStyles } from '../design/muiStyles';
 import { logout } from '../redux/actions/userActions';
 
 const Header = () => {

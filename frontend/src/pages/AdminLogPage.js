@@ -38,6 +38,7 @@ const AdminLogPage = ({ history }) => {
   const { loading, error, adminLog } = adminLogList;
 
   useEffect(() => {
+    console.log('here');
     if (userInfo && userInfo.isAdmin) {
       dispatch(getAdminLogList());
     } else {
@@ -57,7 +58,7 @@ const AdminLogPage = ({ history }) => {
         {loading ? (
           <CircularProgress />
         ) : error ? (
-          <Message variant='danger'>A apărut o eroare!</Message>
+          <Message variant='error'>A apărut o eroare!</Message>
         ) : (
           <Paper className={classes.root}>
             <Table className={classes.table} aria-label='simple table'>
@@ -70,12 +71,13 @@ const AdminLogPage = ({ history }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {adminLog.map((adminLogEntry) => (
-                  <TableRowCustom
-                    key={adminLogEntry._id}
-                    adminLogEntry={adminLogEntry}
-                  />
-                ))}
+                {adminLog &&
+                  adminLog.map((adminLogEntry) => (
+                    <TableRowCustom
+                      key={adminLogEntry._id}
+                      adminLogEntry={adminLogEntry}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </Paper>

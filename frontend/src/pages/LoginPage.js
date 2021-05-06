@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Row, Col } from 'react-bootstrap';
-import {
-  TextField,
-  Typography,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Box,
-} from '@material-ui/core';
+import { TextField, Typography, Button, Card, Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { theme, useStyles } from '../design/buttonStyles';
+import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';

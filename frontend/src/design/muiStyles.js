@@ -4,8 +4,8 @@ const colours = {
   primaryDark: '#50487d',
   primaryMedium: '#603f83ff',
   primaryLight: '#745085',
-  secondaryDark: '#babdbe',
-  secondaryMedium: '#e5e5e5',
+  secondaryDark: '#555555',
+  secondaryMedium: '#777777',
   secondaryLight: '#f8f8f8',
 };
 
@@ -45,10 +45,23 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: `3px 3px 10px 2px ${colours.primaryDark}`,
   },
   navbar: {
-    backgroundColor: colours.primaryDark,
+    backgroundColor: colours.secondaryDark,
   },
   lightLettering: {
     color: colours.secondaryLight,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  alignRight: {
+    display: 'flex',
+    justifyContent: 'right',
+  },
+  flexDisplay: {
+    flexGrow: 1,
   },
 }));
 
