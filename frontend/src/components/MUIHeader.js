@@ -14,7 +14,7 @@ import {
   MenuItem,
   MenuList,
 } from '@material-ui/core';
-import { Menu, ArrowDropDown } from '@material-ui/icons';
+import { Menu, ArrowDropDown, Person } from '@material-ui/icons';
 import { logout } from '../redux/actions/userActions';
 
 const MUIHeader = () => {
@@ -54,11 +54,15 @@ const MUIHeader = () => {
 
   return (
     <div className={classes.flexDisplay}>
-      <AppBar position='static' className={classes.navbar}>
-        <Toolbar>
+      <AppBar position='static'>
+        <Toolbar className={classes.navbar}>
           <Menu className={classes.menuButton} />
-          <LinkContainer to={userInfo ? '/home' : '/'}>
-            <Typography variant='h6' className={classes.title} color='inherit'>
+          <LinkContainer to={userInfo ? '/home' : '/login'}>
+            <Typography
+              variant='h6'
+              className={classes.navbarTitle}
+              color='inherit'
+            >
               Covidia
             </Typography>
           </LinkContainer>
@@ -69,11 +73,17 @@ const MUIHeader = () => {
                 ref={anchorRef}
                 aria-controls={open ? 'menu-list-grow' : undefined}
                 aria-haspopup='true'
-                startIcon={<ArrowDropDown />}
-                className={classes.lightLettering}
+                startIcon={
+                  <ArrowDropDown className={classes.secondaryLightColour} />
+                }
                 onClick={handleToggle}
               >
-                {userInfo.name}
+                <Typography
+                  variant='body2'
+                  className={classes.secondaryLightColour}
+                >
+                  {userInfo.name}
+                </Typography>
               </Button>
               <Popper
                 open={open}
@@ -112,7 +122,9 @@ const MUIHeader = () => {
             </div>
           ) : (
             <LinkContainer to='/login'>
-              <Button color='inherit'>Autentificare</Button>
+              <Button color='inherit' startIcon={<Person />}>
+                Autentificare
+              </Button>
             </LinkContainer>
           )}
         </Toolbar>

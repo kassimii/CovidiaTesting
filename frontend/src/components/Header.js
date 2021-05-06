@@ -23,7 +23,7 @@ const Header = () => {
         <Container>
           <LinkContainer to={userInfo ? '/home' : '/'}>
             <Navbar.Brand>
-              <Typography variant='h6' className={classes.lightLettering}>
+              <Typography variant='h6' className={classes.secondaryLightColour}>
                 Covidia
               </Typography>
             </Navbar.Brand>

@@ -39,6 +39,19 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     fontSize: 18,
   },
+  buttonMdSecondaryLight: {
+    backgroundColor: colours.secondaryLight,
+    borderRadius: '12px',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: '150%',
+    height: 45,
+    fontSize: 16,
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: colours.secondaryMedium,
+    },
+  },
   center: {
     width: '100%',
     display: 'flex',
@@ -52,14 +65,30 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: colours.secondaryLight,
     boxShadow: `3px 3px 10px 2px ${colours.primaryDark}`,
   },
+  cardMenu: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
+    padding: 20,
+    marginTop: 30,
+    backgroundColor: colours.primaryLight,
+    boxShadow: `3px 3px 10px 2px ${colours.secondaryDark}`,
+  },
   navbar: {
     backgroundColor: colours.secondaryDark,
+    padding: 20,
+    paddingRight: 50,
+    paddingLeft: 50,
   },
-  lightLettering: {
+  secondaryLightColour: {
     color: colours.secondaryLight,
   },
-  title: {
+  navbarTitle: {
     flexGrow: 1,
+  },
+  title: {
+    margin: 20,
   },
   menuButton: {
     marginRight: theme.spacing(2),
