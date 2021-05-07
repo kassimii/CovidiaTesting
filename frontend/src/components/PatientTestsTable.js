@@ -14,27 +14,31 @@ import {
 import { useStyles } from '../design/muiStyles';
 import { convertDate } from '../utils/commonFunctions';
 const columns = [
-  { id: '_id', label: 'Id' },
-  { id: 'testReportNumber', label: 'Nr.' },
+  { id: '_id', label: 'Id', minWidth: 200 },
+  { id: 'testReportNumber', label: 'Nr.', align: 'center', minWidth: 50 },
   {
     id: 'prelevationDate',
     label: 'Dată prelevare',
     align: 'center',
+    minWidth: 150,
   },
   {
     id: 'resultDate',
     label: 'Dată rezultat',
     align: 'center',
+    minWidth: 140,
   },
   {
     id: 'labId',
     label: 'Id Lab',
     align: 'center',
+    minWidth: 70,
   },
   {
     id: 'status',
     label: 'Rezultat',
     align: 'center',
+    minWidth: 120,
   },
 ];
 
