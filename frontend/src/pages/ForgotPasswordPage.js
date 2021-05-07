@@ -13,6 +13,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Recaptcha from 'react-recaptcha';
+import Loader from '../components/Loader';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import { sendResetPasswordLink } from '../redux/actions/userActions';
@@ -34,7 +35,11 @@ const ForgotPasswordPage = ({ history }) => {
   const { userInfo } = userLogin;
 
   const userForgotPassword = useSelector((state) => state.userForgotPassword);
-  const { error: resetError, success: resetSuccess } = userForgotPassword;
+  const {
+    loading: resetLoading,
+    error: resetError,
+    success: resetSuccess,
+  } = userForgotPassword;
 
   useEffect(() => {
     if (userInfo) {
@@ -83,6 +88,7 @@ const ForgotPasswordPage = ({ history }) => {
           <Typography variant='h4' gutterBottom>
             Modificare parolă
           </Typography>
+          {resetLoading && <Loader />}
           {message && <Message variant='error'>{message}</Message>}
           {resetError && (
             <Message variant='error'>

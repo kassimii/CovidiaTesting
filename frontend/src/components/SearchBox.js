@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
-import { TextField, InputBase } from '@material-ui/core';
-import { theme, useStyles } from '../design/muiStyles';
+import { Form } from 'react-bootstrap';
+import { InputBase } from '@material-ui/core';
+import { useStyles } from '../design/muiStyles';
 import { Search } from '@material-ui/icons';
 import Message from '../components/Message';
 
