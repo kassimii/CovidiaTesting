@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Table } from 'react-bootstrap';
-import { TextField } from '@material-ui/core';
+import { Form } from 'react-bootstrap';
+import {
+  TextField,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+} from '@material-ui/core';
+import { Add } from '@material-ui/icons';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import PatientTestsTable from '../components/PatientTestsTable';
 import AddTestModal from '../components/AddTestModal';
 import AddResultModal from '../components/AddResultModal';
 import {
@@ -12,9 +25,10 @@ import {
 } from '../redux/actions/patientActions';
 import { getTestsForPatient } from '../redux/actions/testActions';
 import { PATIENT_UPDATE_RESET } from '../redux/constants/patientConstants';
-import { convertDate } from '../utils/commonFunctions';
 
 const PatientPage = ({ history, match }) => {
+  const classes = useStyles();
+
   const patientId = match.params.id;
 
   const [name, setName] = useState('');
@@ -118,37 +132,46 @@ const PatientPage = ({ history, match }) => {
 
   return (
     <>
-      <Row>
-        <Col>
+      <Grid container className={classes.patientPageHeader}>
+        <Grid item xs={2} sm={2}>
           <Button
-            className='btn btn-light my-3'
+            className={classes.buttonBack}
             onClick={() => history.push('/pacienti')}
           >
             Înapoi
           </Button>
-        </Col>
-        <Col>
-          <Card className='my-3 p-3 rounded'>
-            <Col>
-              <Card.Header>
-                <Row>
-                  <Col>
-                    <h6>Cod pacient</h6>
-                  </Col>
-                  <Col>
-                    <h6>{patient.patientCode}</h6>
-                  </Col>
-                </Row>
-              </Card.Header>
-            </Col>
-          </Card>
-        </Col>
-      </Row>
+        </Grid>
+        <Grid item>
+          <Paper elevation={15} className={classes.cardPatientCode}>
+            <Box p={1}>
+              <Typography
+                variant='h5'
+                gutterBottom
+                className={classes.secondaryLightColour}
+                style={{ fontWeight: 600, paddingRight: '30px' }}
+                display='inline'
+              >
+                Cod pacient
+              </Typography>
+              <Typography
+                variant='h6'
+                gutterBottom
+                className={classes.secondaryLightColour}
+                display='inline'
+              >
+                {patient.patientCode}
+              </Typography>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
 
-      <Row>
+      <Grid container>
         {userInfo && userInfo.isPrelevationWorker && (
-          <Col md={3}>
-            <h2>Date pacient</h2>
+          <Grid item className='mx-3'>
+            <Typography variant='h5' gutterBottom className='mb-3'>
+              Date pacient
+            </Typography>
             {loadingUpdate && <Loader />}
             {errorUpdate && (
               <Message variant='error'>A apărut o eroare!</Message>
@@ -160,14 +183,16 @@ const PatientPage = ({ history, match }) => {
             ) : (
               <Form onSubmit={submitHandler}>
                 <Form.Group controlId='name'>
-                  <TextField
-                    required
-                    variant='outlined'
-                    label='Nume'
-                    fullWidth
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      label='Nume'
+                      fullWidth
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='surname'>
@@ -237,13 +262,21 @@ const PatientPage = ({ history, match }) => {
                 </Form.Group>
 
                 <Form.Group controlId='formBasicCheckbox'>
-                  <Form.Check
-                    type='checkbox'
-                    label='Adresa de domiciliu diferita'
-                    checked={differentResidenceAddress}
-                    onChange={() =>
-                      setDifferentResidenceAddress(!differentResidenceAddress)
+                  <FormControlLabel
+                    value='end'
+                    control={
+                      <Checkbox
+                        checked={differentResidenceAddress}
+                        onChange={() =>
+                          setDifferentResidenceAddress(
+                            !differentResidenceAddress
+                          )
+                        }
+                        color='primary'
+                      />
                     }
+                    label='Adresa de domiciliu diferită'
+                    labelPlacement='end'
                   />
                 </Form.Group>
 
@@ -259,19 +292,24 @@ const PatientPage = ({ history, match }) => {
                   </Form.Group>
                 )}
 
-                <Button type='submit' variant='primary' className='py-3'>
-                  Update
-                </Button>
+                <div className='mb-5'>
+                  <Button
+                    type='submit'
+                    className={classes.buttonMdPrimaryMedium}
+                  >
+                    Actualizare
+                  </Button>
+                </div>
               </Form>
             )}
-          </Col>
+          </Grid>
         )}
 
-        <Col>
-          <Row>
-            <Col>
-              <h2>Istoric teste</h2>
-            </Col>
+        <Grid item className='mx-4'>
+          <Grid container justify='space-between' className='mb-3 px-1'>
+            <Grid item>
+              <Typography variant='h5'>Istoric teste</Typography>
+            </Grid>
             {errorTestCreate && (
               <Message variant='error'>{errorTestCreate}</Message>
             )}
@@ -279,80 +317,49 @@ const PatientPage = ({ history, match }) => {
               <Message variant='error'>{errorTestUpdate}</Message>
             )}
             {userInfo && userInfo.isPrelevationWorker && (
-              <Col className='text-right'>
+              <Grid item>
                 <Button
-                  className='my-3'
+                  className={classes.buttonMdSecondaryMedium}
+                  startIcon={<Add />}
                   onClick={() => setAddTestModalShow(true)}
                 >
-                  <i className='fas fa-plus' /> Adauga test
+                  Adaugă test
                 </Button>
-              </Col>
+              </Grid>
             )}
-          </Row>
+          </Grid>
 
-          <AddTestModal
-            show={addTestModalShow}
-            onClose={() => setAddTestModalShow(false)}
-          />
+          <Grid container>
+            {loadingTests ? (
+              <Loader />
+            ) : errorTests ? (
+              <Message variant='error'>{errorTests}</Message>
+            ) : (
+              <div>
+                <PatientTestsTable
+                  tests={tests}
+                  setAddResultModalShow={setAddResultModalShow}
+                  setCurrentTest={setCurrentTest}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
 
-          <AddResultModal
-            show={addResultModalShow}
-            onClose={() => {
-              setAddResultModalShow(false);
-              setCurrentTest('');
-            }}
-            currenttest={currentTest}
-          />
+      <AddTestModal
+        show={addTestModalShow}
+        onClose={() => setAddTestModalShow(false)}
+      />
 
-          {loadingTests ? (
-            <Loader />
-          ) : errorTests ? (
-            <Message variant='error'>{errorTests}</Message>
-          ) : (
-            <Table striped bordered hover responsive className='table-sm'>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>NR.</th>
-                  <th>DATA RECOLTARE</th>
-                  <th>DATA REZULTAT</th>
-                  <th>ID LAB</th>
-                  <th>STATUS</th>
-                  {userInfo && userInfo.isLabWorker && <th></th>}
-                </tr>
-              </thead>
-              <tbody>
-                {tests.map((test) => (
-                  <tr key={test._id}>
-                    <td>{test._id}</td>
-                    <td>{test.testReportNumber}</td>
-                    <td>{convertDate(test.prelevationDate)}</td>
-                    <td>
-                      {test.resultDate ? convertDate(test.resultDate) : '-'}
-                    </td>
-                    <td>{test.labId}</td>
-                    <td>{test.status}</td>
-                    {userInfo && userInfo.isLabWorker && !test.resultDate && (
-                      <td>
-                        <Button
-                          className='btn-sm'
-                          variant='light'
-                          onClick={() => {
-                            setAddResultModalShow(true);
-                            setCurrentTest(test._id);
-                          }}
-                        >
-                          Add result
-                        </Button>
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Col>
-      </Row>
+      <AddResultModal
+        show={addResultModalShow}
+        onClose={() => {
+          setAddResultModalShow(false);
+          setCurrentTest('');
+        }}
+        currenttest={currentTest}
+      />
     </>
   );
 };

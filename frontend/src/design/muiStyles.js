@@ -39,11 +39,9 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     fontSize: 18,
   },
-  buttonMdSecondaryLight: {
+  buttonBack: {
     backgroundColor: colours.secondaryLight,
-    borderRadius: '12px',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    borderRadius: '5px',
     width: '150%',
     height: 45,
     fontSize: 16,
@@ -52,12 +50,40 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: colours.secondaryMedium,
     },
   },
+  buttonMdSecondaryMedium: {
+    backgroundColor: colours.secondaryMedium,
+    color: colours.secondaryLight,
+    borderRadius: '5px',
+    padding: '0 30px',
+    width: 'auto',
+    height: 30,
+    fontSize: 16,
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: colours.secondaryDark,
+    },
+  },
+  buttonTable: {
+    backgroundColor: colours.secondaryLight,
+    color: colours.secondaryDark,
+    borderRadius: '5px',
+    padding: '0 30px',
+    width: 'auto',
+    fontSize: 16,
+    fontWeight: 'bold',
+    boxShadow: `0 0 2px 2px ${colours.secondaryMedium}`,
+    '&:hover': {
+      boxShadow: `0 0 5px 5px ${colours.secondaryDark}`,
+    },
+  },
   buttonMdPrimaryMedium: {
     backgroundColor: colours.primaryMedium,
-    borderRadius: '12px',
+    borderRadius: '5px',
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    width: '50%',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    width: '60%',
     height: 45,
     fontSize: 16,
     fontWeight: 'bold',
@@ -65,13 +91,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: colours.primaryDark,
     },
-  },
-  center: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   card: {
     width: '110%',
@@ -92,13 +111,29 @@ const useStyles = makeStyles((theme) => ({
   cardPatient: {
     minWidth: '100%',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     width: '30%',
     padding: 30,
     margin: 15,
     backgroundColor: colours.secondaryLight,
     boxShadow: `3px 3px 10px 2px ${colours.primaryDark}`,
+  },
+  cardPatientCode: {
+    height: 45,
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 40px',
+    color: colours.secondaryLight,
+    backgroundColor: colours.primaryLight,
+    boxShadow: `3px 3px 10px 2px ${colours.secondaryMedium}`,
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 5px',
+    },
+  },
+  patientTestTablePrelevation: {
+    display: 'block',
+  },
+  patientTestTableLab: {
+    padding: ' 0 5px',
   },
   navbar: {
     backgroundColor: colours.secondaryDark,
@@ -161,6 +196,19 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     marginRight: theme.spacing(1),
     fontSize: 14,
+  },
+  patientPageHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(5),
+  },
+  center: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   alignRight: {
     display: 'flex',
