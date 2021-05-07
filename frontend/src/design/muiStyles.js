@@ -132,8 +132,8 @@ const useStyles = makeStyles((theme) => ({
   patientTestTablePrelevation: {
     display: 'block',
   },
-  patientTestTableLab: {
-    padding: ' 0 5px',
+  patientTestTable: {
+    margin: ' 0 10px',
   },
   navbar: {
     backgroundColor: colours.secondaryDark,

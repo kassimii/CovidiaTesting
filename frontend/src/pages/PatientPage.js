@@ -166,7 +166,7 @@ const PatientPage = ({ history, match }) => {
         </Grid>
       </Grid>
 
-      <Grid container>
+      <Grid container className={classes.patientTestTable}>
         {userInfo && userInfo.isPrelevationWorker && (
           <Grid item className='mx-3'>
             <Typography variant='h5' gutterBottom className='mb-3'>
@@ -306,7 +306,7 @@ const PatientPage = ({ history, match }) => {
         )}
 
         <Grid item className='mx-4'>
-          <Grid container justify='space-between' className='mb-3 px-1'>
+          <Grid container justify='space-between' className='mb-3 ml-3 pr-3'>
             <Grid item>
               <Typography variant='h5'>Istoric teste</Typography>
             </Grid>

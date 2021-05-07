@@ -14,7 +14,7 @@ import {
 import { useStyles } from '../design/muiStyles';
 import { convertDate } from '../utils/commonFunctions';
 const columns = [
-  { id: '_id', label: 'Id', minWidth: 200 },
+  { id: '_id', label: 'Id', minWidth: 220 },
   { id: 'testReportNumber', label: 'Nr.', align: 'center', minWidth: 50 },
   {
     id: 'prelevationDate',
@@ -26,13 +26,13 @@ const columns = [
     id: 'resultDate',
     label: 'Dată rezultat',
     align: 'center',
-    minWidth: 140,
+    minWidth: 150,
   },
   {
     id: 'labId',
     label: 'Id Lab',
     align: 'center',
-    minWidth: 70,
+    minWidth: 80,
   },
   {
     id: 'status',
@@ -66,20 +66,8 @@ const PatientTestsTable = ({
 
   return (
     <>
-      <Paper
-        className={
-          userInfo && userInfo.isPrelevationWorker
-            ? classes.patientTestTablePrelevation
-            : classes.patientTestTableLab
-        }
-      >
-        <TableContainer
-          className={
-            userInfo && userInfo.isPrelevationWorker
-              ? classes.patientTestTablePrelevation
-              : classes.patientTestTableLab
-          }
-        >
+      <Paper>
+        <TableContainer>
           <Table stickyHeader aria-label='sticky table'>
             <TableHead>
               <TableRow>
