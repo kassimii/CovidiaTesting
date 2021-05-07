@@ -133,7 +133,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -147,14 +146,23 @@ const useStyles = makeStyles((theme) => ({
   secondaryLightColour: {
     color: colours.secondaryLight,
   },
-  navbarTitle: {
-    flexGrow: 1,
-  },
   title: {
     margin: 20,
   },
+  navbarTitle: {
+    fontSize: 24,
+    flexGrow: 1,
+  },
+  navbarTitleLoggedIn: { fontSize: 24, marginRight: 10 },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  navbarButton: {
+    color: colours.secondaryLight,
+    padding: 5,
+    margin: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    fontSize: 14,
   },
   alignRight: {
     display: 'flex',
