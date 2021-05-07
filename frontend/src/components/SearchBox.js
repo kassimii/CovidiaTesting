@@ -36,7 +36,7 @@ const SearchBox = ({ history }) => {
   return (
     <>
       {errorMessage && <Message variant='error'>{errorMessage}</Message>}
-      <Form onSubmit={submitHandler} inline>
+      <Form onSubmit={submitHandler} inline className='my-3'>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <Search />

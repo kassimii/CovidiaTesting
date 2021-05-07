@@ -110,13 +110,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(colours.primaryMedium, 0.15),
+    height: '100%',
+    width: 'auto',
     '&:hover': {
       backgroundColor: fade(colours.primaryDark, 0.25),
-    },
-    width: window.innerHeight,
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
     },
   },
   searchIcon: {
@@ -136,6 +133,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
+    fontSize: 24,
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {

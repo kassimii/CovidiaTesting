@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LinkContainer } from 'react-router-bootstrap';
 import { Row, Col } from 'react-bootstrap';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
+import { useStyles } from '../design/muiStyles';
 import Patient from '../components/Patient';
 import PatientCode from '../components/PatientCode';
 import Message from '../components/Message';
@@ -12,6 +12,8 @@ import Paginate from '../components/Paginate';
 import { listPatients } from '../redux/actions/patientActions';
 
 const PatientListPage = ({ history, match }) => {
+  const classes = useStyles();
+
   const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
 
@@ -33,12 +35,24 @@ const PatientListPage = ({ history, match }) => {
 
   return (
     <>
-      <LinkContainer to={`/pacienti`}>
-        <Typography variant='h4' gutterBottom className='my-3'>
-          Pacienți
-        </Typography>
-      </LinkContainer>
-      <SearchBox history={history} />
+      <div>
+        <Grid id='top-row' container justify='space-between'>
+          <Grid item>
+            <Typography
+              variant='h4'
+              gutterBottom
+              className='my-3'
+              onClick={() => history.push('/pacienti')}
+            >
+              Pacienți
+            </Typography>
+          </Grid>
+          <Grid item>
+            <SearchBox history={history} />
+          </Grid>
+        </Grid>
+      </div>
+
       {loading ? (
         <Loader />
       ) : error ? (
