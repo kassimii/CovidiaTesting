@@ -135,6 +135,10 @@ const useStyles = makeStyles((theme) => ({
   patientTestTable: {
     margin: ' 0 10px',
   },
+  testModalHeader: {
+    borderBottom: 'solid',
+    color: colours.primaryMedium,
+  },
   navbar: {
     backgroundColor: colours.secondaryDark,
     padding: 20,
