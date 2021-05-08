@@ -14,6 +14,7 @@ const addPatient = asyncHandler(async (req, res) => {
     phoneNumber,
     email,
     addressResidence,
+    passportId,
   } = req.body;
 
   const patientExists = await Patient.findOne({ cnp });
@@ -33,6 +34,7 @@ const addPatient = asyncHandler(async (req, res) => {
     phoneNumber: generatePrefixPhoneNumber(phoneNumber),
     email,
     addressResidence,
+    passportId,
     patientCode,
   });
 
@@ -46,6 +48,7 @@ const addPatient = asyncHandler(async (req, res) => {
       phoneNumber: patient.phoneNumber,
       email: patient.email,
       addressResidence: patient.addressResidence,
+      passportId: patient.passportId,
       patientCode: patient.patientCode,
     });
   } else {
@@ -104,9 +107,9 @@ const updatePatient = asyncHandler(async (req, res) => {
     patient.cnp = req.body.cnp || patient.cnp;
     patient.addressID = req.body.addressID || patient.addressID;
     patient.phoneNumber = req.body.phoneNumber || patient.phoneNumber;
-    patient.email = req.body.email || patient.email;
-    patient.addressResidence =
-      req.body.addressResidence || patient.addressResidence;
+    patient.email = req.body.email;
+    patient.passportId = req.body.passportId;
+    patient.addressResidence = req.body.addressResidence;
 
     const updatedPatient = await patient.save();
 
@@ -118,6 +121,7 @@ const updatePatient = asyncHandler(async (req, res) => {
       addressID: updatedPatient.addressID,
       phoneNumber: updatedPatient.phoneNumber,
       email: updatedPatient.email,
+      passportId: updatedPatient.passportId,
       addressResidence: updatedPatient.addressResidence,
     });
   } else {

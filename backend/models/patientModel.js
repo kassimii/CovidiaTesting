@@ -29,6 +29,9 @@ const patientSchema = mongoose.Schema(
     addressResidence: {
       type: String,
     },
+    passportId: {
+      type: String,
+    },
     patientCode: {
       type: String,
       required: true,

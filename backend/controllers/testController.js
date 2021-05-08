@@ -99,7 +99,7 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
   const { doctor } = req.body;
   const test = await Test.findById(req.params.testId).populate(
     'patient',
-    'name surname cnp email'
+    'name surname cnp email passportId'
   );
 
   if (test) {

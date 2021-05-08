@@ -37,6 +37,7 @@ const PatientPage = ({ history, match }) => {
   const [addressID, setAddressID] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [passportId, setPassportId] = useState('');
   const [differentResidenceAddress, setDifferentResidenceAddress] = useState(
     false
   );
@@ -78,6 +79,20 @@ const PatientPage = ({ history, match }) => {
       history.push('/login');
     } else {
       if (successUpdate) {
+        setName(patient.name);
+        setSurname(patient.surname);
+        setCnp(patient.cnp);
+        setAddressID(patient.addressID);
+        setPhoneNumber(patient.phoneNumber);
+        setEmail(patient.email);
+        setPassportId(patient.passportId);
+        setAddressResidence(patient.addressResidence);
+        if (patient.addressResidence && patient.addressResidence !== '') {
+          setDifferentResidenceAddress(true);
+        } else {
+          setDifferentResidenceAddress(false);
+        }
+
         dispatch({ type: PATIENT_UPDATE_RESET });
       } else {
         if (!patient.name || patient._id !== patientId) {
@@ -90,6 +105,7 @@ const PatientPage = ({ history, match }) => {
           setAddressID(patient.addressID);
           setPhoneNumber(patient.phoneNumber);
           setEmail(patient.email);
+          setPassportId(patient.passportId);
           setAddressResidence(patient.addressResidence);
           if (patient.addressResidence) {
             setDifferentResidenceAddress(true);
@@ -104,9 +120,12 @@ const PatientPage = ({ history, match }) => {
     temp.cnp = cnp.length === 13 ? '' : 'Introduceți un CNP valid';
     temp.phoneNumber =
       phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
-    temp.email = /\S+@\S+\.\S+/.test(email)
-      ? ''
-      : 'Adresa de email nu este validă';
+    temp.email =
+      email !== ''
+        ? /\S+@\S+\.\S+/.test(email)
+          ? ''
+          : 'Adresa de email nu este validă'
+        : '';
 
     setEmptyFieldError({ ...temp });
 
@@ -115,6 +134,12 @@ const PatientPage = ({ history, match }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const upadtedAddressResidence =
+      !differentResidenceAddress || addressResidence === ''
+        ? ''
+        : addressResidence;
+
     if (validateForm())
       dispatch(
         updatePatient({
@@ -125,7 +150,8 @@ const PatientPage = ({ history, match }) => {
           addressID,
           phoneNumber,
           email,
-          addressResidence,
+          passportId,
+          addressResidence: upadtedAddressResidence,
         })
       );
   };
@@ -261,17 +287,28 @@ const PatientPage = ({ history, match }) => {
                   />
                 </Form.Group>
 
+                <Form.Group controlId='passportId'>
+                  <TextField
+                    variant='outlined'
+                    label='Observații(CI/Pașaport)'
+                    fullWidth
+                    value={passportId}
+                    onChange={(e) => setPassportId(e.target.value)}
+                  />
+                </Form.Group>
+
                 <Form.Group controlId='formBasicCheckbox'>
                   <FormControlLabel
                     value='end'
                     control={
                       <Checkbox
                         checked={differentResidenceAddress}
-                        onChange={() =>
+                        onChange={() => {
                           setDifferentResidenceAddress(
                             !differentResidenceAddress
-                          )
-                        }
+                          );
+                          setAddressResidence('');
+                        }}
                         color='primary'
                       />
                     }

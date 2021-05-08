@@ -10,7 +10,7 @@ const testSchema = mongoose.Schema(
     labId: {
       type: String,
       required: true,
-      default: 'qwerty',
+      default: 'LDBM',
     },
     prelevationDate: {
       type: Date,

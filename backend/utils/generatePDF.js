@@ -214,13 +214,13 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowFirst(doc, `${testInfo.patient.surname}`, startY + 25);
   dataInRowFirst(doc, `${testInfo.patient.cnp}`, startY + 45);
   dataInRowFirst(doc, 'Timis', startY + 65);
-  dataInRowFirst(doc, 'LDBM', startY + 85);
+  dataInRowFirst(doc, `${testInfo.labId}`, startY + 85);
 
   dataInRowSecond(doc, `${convertDate(testInfo.prelevationDate)}`, startY + 5);
   dataInRowSecond(doc, `${convertDate(testInfo.resultDate)}`, startY + 25);
   dataInRowSecond(doc, 'EXUDAT NAZAL-FARINGAL', startY + 45);
   dataInRowSecond(doc, 'DA', startY + 65);
-  dataInRowSecond(doc, '', startY + 85);
+  dataInRowSecond(doc, `${testInfo.patient.passportId}`, startY + 85);
 }
 
 function insertDoctorStamp(doc, doctorStamp) {

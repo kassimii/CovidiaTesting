@@ -23,10 +23,10 @@ const PatientFormPage = ({ history }) => {
   const [addressID, setAddressID] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [passportId, setPassportId] = useState('');
   const [differentResidenceAddress, setDifferentResidenceAddress] = useState(
     false
   );
-
   const [addressResidence, setAddressResidence] = useState('');
   const [message, setMessage] = useState('');
   const [emptyFieldError, setEmptyFieldError] = useState({});
@@ -67,6 +67,7 @@ const PatientFormPage = ({ history }) => {
       addressID,
       phoneNumber,
       email,
+      passportId,
       addressResidence,
     };
 
@@ -174,6 +175,16 @@ const PatientFormPage = ({ history }) => {
               error: true,
               helperText: emptyFieldError.email,
             })}
+          />
+        </Form.Group>
+
+        <Form.Group controlId='passportId'>
+          <TextField
+            variant='outlined'
+            label='Observații(CI/Pașaport)'
+            fullWidth
+            value={passportId}
+            onChange={(e) => setPassportId(e.target.value)}
           />
         </Form.Group>
 

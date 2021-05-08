@@ -32,7 +32,7 @@ const columns = [
     id: 'labId',
     label: 'Id Lab',
     align: 'center',
-    minWidth: 80,
+    minWidth: 70,
   },
   {
     id: 'status',
