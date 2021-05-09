@@ -10,12 +10,7 @@ import {
   InputLabel,
   Select,
   FormHelperText,
-  TextField,
   Typography,
-  Paper,
-  Box,
-  Checkbox,
-  FormControlLabel,
   Grid,
 } from '@material-ui/core';
 import {
@@ -161,7 +156,7 @@ const TestListPage = ({ history, match }) => {
           </ThemeProvider>
         </Grid>
 
-        <Grid item item xs={5} sm={5} md={5} lg={3} xl={3}>
+        <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
           <ThemeProvider theme={theme}>
             <Button
               variant='contained'
@@ -175,7 +170,7 @@ const TestListPage = ({ history, match }) => {
           </ThemeProvider>
         </Grid>
 
-        <Grid item item xs={5} sm={5} md={5} lg={3} xl={3}>
+        <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
           {successCSV && (
             <ThemeProvider theme={theme}>
               <Button

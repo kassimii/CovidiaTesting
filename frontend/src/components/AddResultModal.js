@@ -116,8 +116,8 @@ const AddResultModal = (props) => {
         <Modal.Footer>
           <ThemeProvider theme={theme}>
             <Button
-              variant='contained'
-              color='secondary'
+              variant='outlined'
+              color='primary'
               onClick={onCloseHandler}
               className='mx-1'
             >

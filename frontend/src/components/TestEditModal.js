@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Row, Col } from 'react-bootstrap';
-import { makeStyles } from '@material-ui/core/styles';
+import { Modal } from 'react-bootstrap';
 import {
+  Typography,
+  Button,
   FormControl,
   InputLabel,
   Select,
+  Grid,
   FormHelperText,
 } from '@material-ui/core';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-import dateFnsFormat from 'date-fns/format';
-import dateFnsParse from 'date-fns/parse';
-
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import 'date-fns';
+import locale from 'date-fns/locale/ro';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import { editTest } from '../redux/actions/testActions';
 import { createAdminLogEntry } from '../redux/actions/adminLogActions';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    marginTop: theme.spacing(3),
-    minWidth: 170,
-  },
-  inputLabel: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 const TestEditModal = (props) => {
   const classes = useStyles();
@@ -58,22 +52,6 @@ const TestEditModal = (props) => {
       setPrevTestResult(props.test.status);
     }
   }, [props.test]);
-
-  const dayPicker = { firstDayOfWeek: 1 };
-
-  function parseDate(str, format, locale) {
-    const parsed = dateFnsParse(str, format, new Date(), { locale });
-    if (DateUtils.isDate(parsed)) {
-      return parsed;
-    }
-    return undefined;
-  }
-
-  function formatDate(date, format, locale) {
-    return dateFnsFormat(date, format, { locale });
-  }
-
-  const FORMAT = 'dd-MM-yyyy';
 
   const setAdminLogEntryData = () => {
     let adminLogEntry = {
@@ -125,78 +103,125 @@ const TestEditModal = (props) => {
         size='lg'
         aria-labelledby='contained-modal-title-vcenter'
         centered
+        onExit={props.onClose}
+        onHide={props.onClose}
       >
-        <Modal.Header className='m-1'>
-          <Modal.Title>TEST {props.test._id}</Modal.Title>
+        <Modal.Header closeButton className={classes.testModalHeader}>
+          <Typography variant='h5' display='inline' className='mr-2'>
+            TEST
+          </Typography>
+          <Typography
+            variant='h5'
+            display='inline'
+            style={{ fontStyle: 'italic' }}
+          >
+            {props.test._id}
+          </Typography>
         </Modal.Header>
 
-        <Modal.Body className='mx-3'>
-          <Row>
-            <Col>
-              <InputLabel className={classes.inputLabel}>
-                Dată prelevare
-              </InputLabel>
-              <DayPickerInput
-                onDayChange={(date) => setPrelevationDate(date)}
-                value={prelevationDate}
-                dayPickerProps={dayPicker}
-                formatDate={formatDate}
-                format={FORMAT}
-                parseDate={parseDate}
-                placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
-              />
+        <Modal.Body className='m-3 p-3'>
+          <Grid container justify='space-between'>
+            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+              <Grid container direction='column' className='mb-4'>
+                <InputLabel>Dată prelevare</InputLabel>
 
-              <InputLabel className={classes.inputLabel}>
-                Dată rezultat
-              </InputLabel>
-              <DayPickerInput
-                onDayChange={(date) => setResultDate(date)}
-                value={resultDate}
-                dayPickerProps={dayPicker}
-                formatDate={formatDate}
-                format={FORMAT}
-                parseDate={parseDate}
-                placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
-              />
-              {!props.test.resultDate ? (
-                <FormHelperText>*necompletat</FormHelperText>
-              ) : (
-                <br />
-              )}
-            </Col>
+                <ThemeProvider theme={theme}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      autoOk={true}
+                      variant='inline'
+                      format='dd/MM/yyyy'
+                      id='date-picker-inline-prelevation'
+                      value={prelevationDate}
+                      onChange={(date) => setPrelevationDate(date)}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                      style={{ width: '80%' }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
+              </Grid>
 
-            <Col>
-              <FormControl variant='outlined' className={classes.formControl}>
-                <InputLabel htmlFor='outlined-age-native-simple'>
-                  Rezultat
-                </InputLabel>
-                <Select
-                  native
-                  value={testResult}
-                  onChange={(e) => setTestResult(e.target.value)}
-                  label='Rezultat'
-                  inputProps={{
-                    name: 'rezulat',
-                    id: 'outlined-age-native-simple',
-                  }}
-                >
-                  <option aria-label='None' value='-'>
-                    -
-                  </option>
-                  <option value='Pozitiv'>Pozitiv</option>
-                  <option value='Negativ'>Negativ</option>
-                  <option value='Neconcludent'>Neconcludent</option>
-                </Select>
-              </FormControl>
-            </Col>
-          </Row>
+              <Grid container direction='column'>
+                <InputLabel>Dată rezultat</InputLabel>
+                <ThemeProvider theme={theme}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      autoOk={true}
+                      variant='inline'
+                      format='dd/MM/yyyy'
+                      id='date-picker-inline-result'
+                      value={resultDate}
+                      onChange={(date) => setResultDate(date)}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                      style={{ width: '80%' }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
+                {!props.test.resultDate ? (
+                  <FormHelperText>*necompletat</FormHelperText>
+                ) : (
+                  <br />
+                )}
+              </Grid>
+            </Grid>
+
+            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+              <ThemeProvider theme={theme}>
+                <FormControl variant='outlined' style={{ width: '80%' }}>
+                  <InputLabel htmlFor='outlined-age-native-simple'>
+                    Rezultat
+                  </InputLabel>
+                  <Select
+                    native
+                    value={testResult}
+                    onChange={(e) => setTestResult(e.target.value)}
+                    label='Rezultat'
+                    inputProps={{
+                      name: 'rezulat',
+                      id: 'outlined-age-native-simple',
+                    }}
+                  >
+                    <option aria-label='None' value='-'>
+                      -
+                    </option>
+                    <option value='Pozitiv'>Pozitiv</option>
+                    <option value='Negativ'>Negativ</option>
+                    <option value='Neconcludent'>Neconcludent</option>
+                  </Select>
+                </FormControl>
+              </ThemeProvider>
+            </Grid>
+          </Grid>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant='outline-secondary' onClick={props.onClose}>
-            Închide
-          </Button>
-          <Button onClick={onUpdateHandler}>Adaugă</Button>
+          <ThemeProvider theme={theme}>
+            <Button
+              variant='outlined'
+              color='primary'
+              onClick={props.onClose}
+              className='mx-1'
+            >
+              Închide
+            </Button>
+          </ThemeProvider>
+
+          <ThemeProvider theme={theme}>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={onUpdateHandler}
+              className='mx-1'
+            >
+              Actualizare
+            </Button>
+          </ThemeProvider>
         </Modal.Footer>
       </Modal>
     </>

@@ -67,8 +67,8 @@ const AddTestModal = (props) => {
         size='lg'
         aria-labelledby='contained-modal-title-vcenter'
         centered
-        onExit={props.onClose}
-        onHide={props.onClose}
+        onExit={onCloseHandler}
+        onHide={onCloseHandler}
       >
         <Modal.Header closeButton className={classes.testModalHeader}>
           <Modal.Title id='contained-modal-title-vcenter'>
@@ -115,8 +115,8 @@ const AddTestModal = (props) => {
         <Modal.Footer>
           <ThemeProvider theme={theme}>
             <Button
-              variant='contained'
-              color='secondary'
+              variant='outlined'
+              color='primary'
               onClick={onCloseHandler}
               className='mx-1'
             >
