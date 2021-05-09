@@ -27,7 +27,7 @@ export const adminLogCreateReducer = (
   }
 };
 
-export const adminLogListReducer = (state = { adminLog: {} }, action) => {
+export const adminLogListReducer = (state = { adminLog: [] }, action) => {
   switch (action.type) {
     case ADMIN_LOG_LIST_REQUEST:
       return { loading: true };
@@ -36,7 +36,7 @@ export const adminLogListReducer = (state = { adminLog: {} }, action) => {
     case ADMIN_LOG_LIST_FAIL:
       return { loading: false, error: action.payload };
     case ADMIN_LOG_LIST_RESET:
-      return { adminLog: {} };
+      return { adminLog: [] };
     default:
       return state;
   }

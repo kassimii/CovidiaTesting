@@ -38,6 +38,7 @@ const MUIHeader = ({ history }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const dispatch = useDispatch();
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 

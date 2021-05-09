@@ -41,10 +41,10 @@ const TableRowAdminLog = ({ adminLogEntry }) => {
         <TableCell component='th' scope='row'>
           {adminLogEntry._id}
         </TableCell>
-        <TableCell align='right'>
+        <TableCell align='center'>
           {convertDate(adminLogEntry.createdAt)}
         </TableCell>
-        <TableCell align='right'>{adminLogEntry.modifiedBy.name}</TableCell>
+        <TableCell align='center'>{adminLogEntry.modifiedBy.name}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -57,18 +57,18 @@ const TableRowAdminLog = ({ adminLogEntry }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell></TableCell>
-                    <TableCell align='justify'>Valoare anterioară</TableCell>
-                    <TableCell align='justify'>Modificare</TableCell>
+                    <TableCell align='center'>Valoare anterioară</TableCell>
+                    <TableCell align='center'>Modificare</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {adminLogEntry.prevPrelevationDate && (
                     <TableRow>
                       <TableCell>Dată prelevare</TableCell>
-                      <TableCell>
+                      <TableCell align='center'>
                         {convertDate(adminLogEntry.prevPrelevationDate)}
                       </TableCell>
-                      <TableCell>
+                      <TableCell align='center'>
                         {convertDate(adminLogEntry.modifiedPrelevationDate)}
                       </TableCell>
                     </TableRow>
@@ -76,10 +76,10 @@ const TableRowAdminLog = ({ adminLogEntry }) => {
                   {adminLogEntry.prevResultDate && (
                     <TableRow>
                       <TableCell>Dată rezultat</TableCell>
-                      <TableCell>
+                      <TableCell align='center'>
                         {convertDate(adminLogEntry.prevResultDate)}
                       </TableCell>
-                      <TableCell>
+                      <TableCell align='center'>
                         {convertDate(adminLogEntry.modifiedResultDate)}
                       </TableCell>
                     </TableRow>
@@ -87,8 +87,12 @@ const TableRowAdminLog = ({ adminLogEntry }) => {
                   {adminLogEntry.prevStatus && (
                     <TableRow>
                       <TableCell>Rezultat</TableCell>
-                      <TableCell>{adminLogEntry.prevStatus}</TableCell>
-                      <TableCell>{adminLogEntry.modifiedStatus}</TableCell>
+                      <TableCell align='center'>
+                        {adminLogEntry.prevStatus}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {adminLogEntry.modifiedStatus}
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>

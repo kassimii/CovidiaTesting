@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import {
   TextField,
@@ -13,7 +14,6 @@ import {
 import { Add } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme, useStyles } from '../design/muiStyles';
-import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import TablePatientTests from '../components/TablePatientTests';

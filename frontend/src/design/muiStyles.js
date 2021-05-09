@@ -4,11 +4,13 @@ const colours = {
   primaryDark: '#50487d',
   primaryMedium: '#603f83ff',
   primaryLight: '#745085',
+  primaryUltraLight: '#cc99cc',
   secondaryUltraDark: '#555555',
   secondaryDark: '#777777',
   secondaryMedium: '#cccccc',
   secondaryLight: '#f8f8f8',
   green: '#329932',
+  greenLight: '#b2d8b2',
   red: '#ff5a5a',
 };
 
@@ -115,6 +117,46 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  buttonAdmin: {
+    borderRadius: '5px',
+    marginTop: theme.spacing(0.7),
+    marginBottom: theme.spacing(1),
+    paddingTop: '20px',
+    paddingBottom: '20px',
+    height: 45,
+    width: '95%',
+    fontSize: 16,
+    fontWeight: 'bold',
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
+    '&:hover': {
+      boxShadow: `2px 2px 5px 5px ${colours.secondaryDark}`,
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: 45,
+      width: '80%',
+      fontSize: 14,
+    },
+    [theme.breakpoints.down('md')]: {
+      marginTop: '1px',
+      marginBottom: '1px',
+      paddingTop: '1px',
+      paddingBottom: '1px',
+    },
+  },
+  buttonDownloadCSV: {
+    color: colours.secondaryUltraDark,
+    backgroundColor: colours.secondaryLight,
+    boxShadow: `2px 2px 5px 5px ${colours.secondaryMedium}`,
+    '&:hover': {
+      backgroundColor: colours.secondaryLight,
+      boxShadow: `2px 2px 5px 5px ${colours.secondaryUltraDark}`,
+    },
+  },
+  dropdownAdmin: {
+    marginBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    width: '95%',
+  },
   card: {
     width: '110%',
     padding: 20,
@@ -203,9 +245,16 @@ const useStyles = makeStyles((theme) => ({
   secondaryLightColour: {
     color: colours.secondaryLight,
   },
+  secondaryUltraDarkColour: {
+    color: colours.secondaryUltraDark,
+    '&:hover': {
+      backgroundColor: colours.secondaryMedium,
+    },
+  },
   secondaryMediumColourBg: {
     fontWeight: 'bold',
     backgroundColor: colours.secondaryMedium,
+    color: colours.secondaryUltraDark,
   },
   green: {
     color: colours.green,
@@ -250,6 +299,10 @@ const useStyles = makeStyles((theme) => ({
   },
   flexDisplay: {
     flexGrow: 1,
+  },
+  fullWidth: {
+    width: '100%',
+    overflowX: 'auto',
   },
 }));
 

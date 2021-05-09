@@ -1,30 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Paper,
-  CircularProgress,
-  Button,
-} from '@material-ui/core';
-import TableRowAdminLog from '../components/TableRowAdminLog';
+import { Button, Grid } from '@material-ui/core';
+import { useStyles } from '../design/muiStyles';
+import Loader from '../components/Loader';
 import Message from '../components/Message';
+import TableAdminLog from '../components/TableAdminLog';
 import { getAdminLogList } from '../redux/actions/adminLogActions';
-
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 650,
-  },
-});
 
 const AdminLogPage = ({ history }) => {
   const classes = useStyles();
@@ -38,51 +19,35 @@ const AdminLogPage = ({ history }) => {
   const { loading, error, adminLog } = adminLogList;
 
   useEffect(() => {
-    console.log('here');
     if (userInfo && userInfo.isAdmin) {
       dispatch(getAdminLogList());
     } else {
       history.push('/login');
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, userInfo, history]);
 
   return (
     <>
-      <Row>
-        <Col>
-          <Button onClick={() => history.goBack()}>Înapoi</Button>
-        </Col>
-      </Row>
+      <Grid container className='my-3'>
+        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+          <Button
+            className={classes.buttonBack}
+            onClick={() => history.goBack()}
+          >
+            Înapoi
+          </Button>
+        </Grid>
+      </Grid>
 
-      <Row>
+      <Grid container>
         {loading ? (
-          <CircularProgress />
+          <Loader />
         ) : error ? (
           <Message variant='error'>A apărut o eroare!</Message>
         ) : (
-          <Paper className={classes.root}>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding='checkbox' />
-                  <TableCell>ID TEST</TableCell>
-                  <TableCell align='right'>DATA MODIFICARE</TableCell>
-                  <TableCell align='right'>MODIFICAT DE</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {adminLog &&
-                  adminLog.map((adminLogEntry) => (
-                    <TableRowAdminLog
-                      key={adminLogEntry._id}
-                      adminLogEntry={adminLogEntry}
-                    />
-                  ))}
-              </TableBody>
-            </Table>
-          </Paper>
+          <TableAdminLog adminLog={adminLog} />
         )}
-      </Row>
+      </Grid>
     </>
   );
 };

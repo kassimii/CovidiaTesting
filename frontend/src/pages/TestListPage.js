@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
   Button,
@@ -11,10 +10,24 @@ import {
   InputLabel,
   Select,
   FormHelperText,
+  TextField,
+  Typography,
+  Paper,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
 } from '@material-ui/core';
-import { Edit, NoteAdd, GetApp, RemoveCircleOutline } from '@material-ui/icons';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
+import {
+  Edit,
+  NoteAdd,
+  GetApp,
+  RemoveCircleOutline,
+  CheckCircle,
+  ViewList,
+} from '@material-ui/icons';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
@@ -27,29 +40,12 @@ import {
   verifyTodaysTests,
   downloadPatientPDF,
 } from '../redux/actions/testActions';
+import { getAdminLogList } from '../redux/actions/adminLogActions';
 import {
   TEST_DSP_CSV_RESET_SUCCESS,
   TEST_DOWNLOAD_PDF_RESET,
 } from '../redux/constants/testConstants';
 import { convertDate } from '../utils/commonFunctions';
-import '../index.css';
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
-  formControl: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    minWidth: 170,
-  },
-  inputLabel: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 const TestListPage = ({ history, match }) => {
   const classes = useStyles();
@@ -84,8 +80,8 @@ const TestListPage = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(verifyTodaysTests());
       dispatch(getTests(pageNumber));
+      dispatch(getAdminLogList());
 
       if (successToastCSV) {
         toast.success('Fisier CSV generat cu success!', {
@@ -115,72 +111,87 @@ const TestListPage = ({ history, match }) => {
   return (
     <>
       <ToastContainer />
-      <Row className='align-items-center'>
-        <Col>
-          <h1>Teste</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <FormControl
-            required
-            variant='outlined'
-            className={classes.formControl}
-          >
-            <InputLabel htmlFor='doctor-native-required'>Medic</InputLabel>
-            <Select
-              native
-              value={doctor}
-              onChange={(e) => setDoctor(e.target.value)}
-              label='Medic'
-              inputProps={{
-                name: 'medic',
-                id: 'doctor-native-required',
-              }}
+      <Grid container className='my-4'>
+        <Typography variant='h4' gutterBottom>
+          Teste
+        </Typography>
+      </Grid>
+
+      <Grid container justify='space-around' className='my-4'>
+        <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
+          <ThemeProvider theme={theme}>
+            <FormControl
+              required
+              variant='outlined'
+              className={classes.dropdownAdmin}
             >
-              <option aria-label='None' value='-'>
-                Alegeți un medic
-              </option>
-              <option value='1'>Doctor 1</option>
-              <option value='2'>Doctor 2</option>
-            </Select>
-            <FormHelperText>Required</FormHelperText>
-          </FormControl>
-        </Col>
-        <Col>
-          <Button
-            variant='contained'
-            className={classes.buttonMd}
-            onClick={adminLogHandler}
-          >
-            Admin Log
-          </Button>
-        </Col>
-        <Col className='text-right'>
-          {statusTests !== 'No tests today' && (
+              <InputLabel htmlFor='doctor-native-required'>Medic</InputLabel>
+              <Select
+                native
+                value={doctor}
+                onChange={(e) => setDoctor(e.target.value)}
+                label='Medic'
+                inputProps={{
+                  name: 'medic',
+                  id: 'doctor-native-required',
+                }}
+              >
+                <option aria-label='None' value='-'>
+                  Alegeți un medic
+                </option>
+                <option value='1'>Doctor 1</option>
+                <option value='2'>Doctor 2</option>
+              </Select>
+              <FormHelperText>Required</FormHelperText>
+            </FormControl>
+          </ThemeProvider>
+        </Grid>
+
+        <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
+          <ThemeProvider theme={theme}>
             <Button
               variant='contained'
+              color='secondary'
+              startIcon={<ViewList />}
+              className={`${classes.buttonAdmin} ${classes.secondaryUltraDarkColour}`}
+              onClick={adminLogHandler}
+            >
+              Admin Log
+            </Button>
+          </ThemeProvider>
+        </Grid>
+
+        <Grid item item xs={5} sm={5} md={5} lg={3} xl={3}>
+          <ThemeProvider theme={theme}>
+            <Button
+              variant='contained'
+              color='primary'
               startIcon={<NoteAdd />}
-              className={classes.buttonMd}
+              className={classes.buttonAdmin}
               onClick={() => dispatch(generateCSVFileForDSP())}
             >
               Generează CSV
             </Button>
-          )}
+          </ThemeProvider>
+        </Grid>
 
+        <Grid item item xs={5} sm={5} md={5} lg={3} xl={3}>
           {successCSV && (
-            <Button
-              variant='contained'
-              color='secondary'
-              startIcon={<GetApp />}
-              className={classes.buttonMd}
-              onClick={() => window.open(fileUrl, '_blank')}
-            >
-              Descarcă CSV
-            </Button>
+            <ThemeProvider theme={theme}>
+              <Button
+                variant='contained'
+                color='primary'
+                startIcon={<GetApp />}
+                className={`${classes.buttonAdmin} ${classes.buttonDownloadCSV}`}
+                onClick={() => window.open(fileUrl, '_blank')}
+              >
+                Descarcă CSV
+              </Button>
+            </ThemeProvider>
           )}
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -239,7 +250,7 @@ const TestListPage = ({ history, match }) => {
                   <td>{test.labId}</td>
                   <td>
                     {test.sentToDSP && (
-                      <CheckCircleIcon
+                      <CheckCircle
                         style={{
                           color: 'green',
                         }}
@@ -248,7 +259,7 @@ const TestListPage = ({ history, match }) => {
                   </td>
                   <td>
                     {test.sentToPatient ? (
-                      <CheckCircleIcon
+                      <CheckCircle
                         style={{
                           color: 'green',
                         }}
