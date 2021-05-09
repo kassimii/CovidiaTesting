@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonBack: {
     backgroundColor: colours.secondaryLight,
+    color: colours.secondaryDark,
     borderRadius: '5px',
     width: '150%',
     height: 45,
@@ -91,6 +92,18 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: colours.primaryDark,
     },
+  },
+  buttonHalf: {
+    borderRadius: '5px',
+    marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    height: 45,
+    width: '95%',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   card: {
     width: '110%',

@@ -106,55 +106,63 @@ const ProfilePage = ({ location, history }) => {
         </Form.Group>
 
         <Form.Group controlId='email'>
-          <TextField
-            required
-            variant='outlined'
-            label='Adresă email'
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            {...(emptyFieldError.email && {
-              error: true,
-              helperText: emptyFieldError.email,
-            })}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              required
+              variant='outlined'
+              label='Adresă email'
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              {...(emptyFieldError.email && {
+                error: true,
+                helperText: emptyFieldError.email,
+              })}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Form.Group controlId='phoneNumber'>
-          <TextField
-            required
-            variant='outlined'
-            label='Număr de telefon'
-            fullWidth
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            {...(emptyFieldError.phoneNumber && {
-              error: true,
-              helperText: emptyFieldError.phoneNumber,
-            })}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              required
+              variant='outlined'
+              label='Număr de telefon'
+              fullWidth
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              {...(emptyFieldError.phoneNumber && {
+                error: true,
+                helperText: emptyFieldError.phoneNumber,
+              })}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Form.Group controlId='password'>
-          <TextField
-            variant='outlined'
-            type='password'
-            label='Parolă nouă'
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              variant='outlined'
+              type='password'
+              label='Parolă nouă'
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Form.Group controlId='confirmPassword'>
-          <TextField
-            variant='outlined'
-            type='password'
-            label='Confirmă parola'
-            fullWidth
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <ThemeProvider theme={theme}>
+            <TextField
+              variant='outlined'
+              type='password'
+              label='Confirmă parola'
+              fullWidth
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </ThemeProvider>
         </Form.Group>
 
         <Button type='submit' className={classes.buttonMdPrimaryMedium}>

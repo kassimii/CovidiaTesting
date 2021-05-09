@@ -162,7 +162,7 @@ const PatientPage = ({ history, match }) => {
         <Grid item xs={2} sm={2}>
           <Button
             className={classes.buttonBack}
-            onClick={() => history.push('/pacienti')}
+            onClick={() => history.goBack()}
           >
             Înapoi
           </Button>
@@ -213,6 +213,7 @@ const PatientPage = ({ history, match }) => {
                     <TextField
                       required
                       variant='outlined'
+                      color='primary'
                       label='Nume'
                       fullWidth
                       value={name}
@@ -222,79 +223,91 @@ const PatientPage = ({ history, match }) => {
                 </Form.Group>
 
                 <Form.Group controlId='surname'>
-                  <TextField
-                    required
-                    variant='outlined'
-                    label='Prenume'
-                    fullWidth
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      label='Prenume'
+                      fullWidth
+                      value={surname}
+                      onChange={(e) => setSurname(e.target.value)}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='cnp'>
-                  <TextField
-                    required
-                    variant='outlined'
-                    label='CNP'
-                    fullWidth
-                    value={cnp}
-                    onChange={(e) => setCnp(e.target.value)}
-                    {...(emptyFieldError.cnp && {
-                      error: true,
-                      helperText: emptyFieldError.cnp,
-                    })}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      label='CNP'
+                      fullWidth
+                      value={cnp}
+                      onChange={(e) => setCnp(e.target.value)}
+                      {...(emptyFieldError.cnp && {
+                        error: true,
+                        helperText: emptyFieldError.cnp,
+                      })}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='addressID'>
-                  <TextField
-                    required
-                    variant='outlined'
-                    label='Adresa'
-                    fullWidth
-                    value={addressID}
-                    onChange={(e) => setAddressID(e.target.value)}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      label='Adresa'
+                      fullWidth
+                      value={addressID}
+                      onChange={(e) => setAddressID(e.target.value)}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='phoneNumber'>
-                  <TextField
-                    required
-                    variant='outlined'
-                    label='Număr de telefon'
-                    fullWidth
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    {...(emptyFieldError.phoneNumber && {
-                      error: true,
-                      helperText: emptyFieldError.phoneNumber,
-                    })}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      required
+                      variant='outlined'
+                      label='Număr de telefon'
+                      fullWidth
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      {...(emptyFieldError.phoneNumber && {
+                        error: true,
+                        helperText: emptyFieldError.phoneNumber,
+                      })}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='email'>
-                  <TextField
-                    variant='outlined'
-                    label='Adresă email'
-                    fullWidth
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    {...(emptyFieldError.email && {
-                      error: true,
-                      helperText: emptyFieldError.email,
-                    })}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      variant='outlined'
+                      label='Adresă email'
+                      fullWidth
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      {...(emptyFieldError.email && {
+                        error: true,
+                        helperText: emptyFieldError.email,
+                      })}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='passportId'>
-                  <TextField
-                    variant='outlined'
-                    label='Observații(CI/Pașaport)'
-                    fullWidth
-                    value={passportId}
-                    onChange={(e) => setPassportId(e.target.value)}
-                  />
+                  <ThemeProvider theme={theme}>
+                    <TextField
+                      variant='outlined'
+                      label='Observații(CI/Pașaport)'
+                      fullWidth
+                      value={passportId}
+                      onChange={(e) => setPassportId(e.target.value)}
+                    />
+                  </ThemeProvider>
                 </Form.Group>
 
                 <Form.Group controlId='formBasicCheckbox'>
@@ -319,13 +332,15 @@ const PatientPage = ({ history, match }) => {
 
                 {differentResidenceAddress && (
                   <Form.Group controlId='addressResidence'>
-                    <TextField
-                      variant='outlined'
-                      label='Adresa de domiciliu'
-                      fullWidth
-                      value={addressResidence}
-                      onChange={(e) => setAddressResidence(e.target.value)}
-                    />
+                    <ThemeProvider theme={theme}>
+                      <TextField
+                        variant='outlined'
+                        label='Adresa de domiciliu'
+                        fullWidth
+                        value={addressResidence}
+                        onChange={(e) => setAddressResidence(e.target.value)}
+                      />
+                    </ThemeProvider>
                   </Form.Group>
                 )}
 
