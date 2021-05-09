@@ -20,13 +20,13 @@ const columns = [
     id: 'prelevationDate',
     label: 'Dată prelevare',
     align: 'center',
-    minWidth: 150,
+    minWidth: 140,
   },
   {
     id: 'resultDate',
     label: 'Dată rezultat',
     align: 'center',
-    minWidth: 150,
+    minWidth: 140,
   },
   {
     id: 'labId',
@@ -42,7 +42,7 @@ const columns = [
   },
 ];
 
-const PatientTestsTable = ({
+const TablePatientTests = ({
   tests,
   setAddResultModalShow,
   setCurrentTest,
@@ -76,6 +76,7 @@ const PatientTestsTable = ({
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
+                    className={classes.secondaryMediumColourBg}
                   >
                     {column.label}
                   </TableCell>
@@ -85,6 +86,7 @@ const PatientTestsTable = ({
                     key='addResult'
                     align='center'
                     style={{ minWidth: 250 }}
+                    className={classes.secondaryMediumColourBg}
                   ></TableCell>
                 )}
               </TableRow>
@@ -151,4 +153,4 @@ const PatientTestsTable = ({
   );
 };
 
-export default PatientTestsTable;
+export default TablePatientTests;

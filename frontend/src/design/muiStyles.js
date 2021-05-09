@@ -4,6 +4,7 @@ const colours = {
   primaryDark: '#50487d',
   primaryMedium: '#603f83ff',
   primaryLight: '#745085',
+  secondaryUltraDark: '#555555',
   secondaryDark: '#777777',
   secondaryMedium: '#cccccc',
   secondaryLight: '#f8f8f8',
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   buttonMdSecondaryMedium: {
-    backgroundColor: colours.secondaryMedium,
+    backgroundColor: colours.secondaryDark,
     color: colours.secondaryLight,
     borderRadius: '5px',
     padding: '0 30px',
@@ -70,12 +71,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: colours.secondaryDark,
+      backgroundColor: colours.secondaryUltraDark,
     },
   },
   buttonTable: {
     backgroundColor: colours.secondaryLight,
-    color: colours.secondaryDark,
+    color: colours.secondaryUltraDark,
     borderRadius: '5px',
     padding: '0 30px',
     width: 'auto',
@@ -151,9 +152,6 @@ const useStyles = makeStyles((theme) => ({
       padding: '0 5px',
     },
   },
-  patientTestTablePrelevation: {
-    display: 'block',
-  },
   patientTestTable: {
     margin: ' 0 10px',
   },
@@ -162,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
     color: colours.primaryMedium,
   },
   navbar: {
-    backgroundColor: colours.secondaryDark,
+    backgroundColor: colours.secondaryUltraDark,
     padding: 20,
     paddingRight: 50,
     paddingLeft: 50,
@@ -206,6 +204,7 @@ const useStyles = makeStyles((theme) => ({
     color: colours.secondaryLight,
   },
   secondaryMediumColourBg: {
+    fontWeight: 'bold',
     backgroundColor: colours.secondaryMedium,
   },
   green: {

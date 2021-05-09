@@ -33,11 +33,6 @@ function App() {
           />
           <Route path='/admin/utilizatori' component={UserListPage} exact />
           <Route
-            path='/admin/utilizatori/pagina/:pageNumber'
-            component={UserListPage}
-            exact
-          />
-          <Route
             path='/admin/utilizatori/adaugare'
             component={AddUserPage}
             exact

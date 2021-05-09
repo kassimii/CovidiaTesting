@@ -32,18 +32,16 @@ const PatientListPage = ({ history, match }) => {
 
   return (
     <>
-      <div>
-        <Grid container justify='space-between'>
-          <Grid item>
-            <Typography variant='h4' gutterBottom className='my-3'>
-              Pacienți
-            </Typography>
-          </Grid>
-          <Grid item>
-            <SearchBox history={history} />
-          </Grid>
+      <Grid container justify='space-between'>
+        <Grid item>
+          <Typography variant='h4' gutterBottom className='my-3'>
+            Pacienți
+          </Typography>
         </Grid>
-      </div>
+        <Grid item>
+          <SearchBox history={history} />
+        </Grid>
+      </Grid>
 
       {loading ? (
         <Loader />

@@ -22,7 +22,7 @@ const useRowStyles = makeStyles({
   },
 });
 
-const TableRowCustom = ({ adminLogEntry }) => {
+const TableRowAdminLog = ({ adminLogEntry }) => {
   const classes = useRowStyles();
   const [open, setOpen] = useState(false);
 
@@ -101,4 +101,4 @@ const TableRowCustom = ({ adminLogEntry }) => {
   );
 };
 
-export default TableRowCustom;
+export default TableRowAdminLog;

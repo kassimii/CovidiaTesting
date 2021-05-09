@@ -12,7 +12,7 @@ import {
   CircularProgress,
   Button,
 } from '@material-ui/core';
-import TableRowCustom from '../components/TableRowCustom';
+import TableRowAdminLog from '../components/TableRowAdminLog';
 import Message from '../components/Message';
 import { getAdminLogList } from '../redux/actions/adminLogActions';
 
@@ -73,7 +73,7 @@ const AdminLogPage = ({ history }) => {
               <TableBody>
                 {adminLog &&
                   adminLog.map((adminLogEntry) => (
-                    <TableRowCustom
+                    <TableRowAdminLog
                       key={adminLogEntry._id}
                       adminLogEntry={adminLogEntry}
                     />

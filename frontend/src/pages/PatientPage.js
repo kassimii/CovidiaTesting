@@ -16,7 +16,7 @@ import { theme, useStyles } from '../design/muiStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import PatientTestsTable from '../components/PatientTestsTable';
+import TablePatientTests from '../components/TablePatientTests';
 import AddTestModal from '../components/AddTestModal';
 import AddResultModal from '../components/AddResultModal';
 import {
@@ -388,7 +388,7 @@ const PatientPage = ({ history, match }) => {
               <Message variant='error'>{errorTests}</Message>
             ) : (
               <div>
-                <PatientTestsTable
+                <TablePatientTests
                   tests={tests}
                   setAddResultModalShow={setAddResultModalShow}
                   setCurrentTest={setCurrentTest}
