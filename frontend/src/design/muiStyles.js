@@ -4,9 +4,11 @@ const colours = {
   primaryDark: '#50487d',
   primaryMedium: '#603f83ff',
   primaryLight: '#745085',
-  secondaryDark: '#555555',
-  secondaryMedium: '#777777',
+  secondaryDark: '#777777',
+  secondaryMedium: '#cccccc',
   secondaryLight: '#f8f8f8',
+  green: '#329932',
+  red: '#ff5a5a',
 };
 
 const theme = createMuiTheme({
@@ -36,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     width: '50%',
+    height: 45,
+    fontSize: 18,
+  },
+  buttonLg: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: '100%',
     height: 45,
     fontSize: 18,
   },
@@ -195,6 +204,15 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryLightColour: {
     color: colours.secondaryLight,
+  },
+  secondaryMediumColourBg: {
+    backgroundColor: colours.secondaryMedium,
+  },
+  green: {
+    color: colours.green,
+  },
+  red: {
+    color: colours.red,
   },
   title: {
     margin: 20,
