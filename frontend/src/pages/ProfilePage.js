@@ -67,7 +67,7 @@ const ProfilePage = ({ location, history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match');
+      setMessage('Parolele nu se potrivesc!');
     } else {
       if (validateForm())
         dispatch(
@@ -88,7 +88,7 @@ const ProfilePage = ({ location, history }) => {
         Profil utilizator
       </Typography>
       {message && <Message variant='error'>{message}</Message>}
-      {error && <Message variant='error'>{error}</Message>}
+      {error && <Message variant='error'>A apărut o eroare!</Message>}
       {successUpdate && <Message variant='success'>Profil actualizat!</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>

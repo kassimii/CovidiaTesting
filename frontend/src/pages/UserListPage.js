@@ -70,13 +70,13 @@ const UserListPage = ({ history }) => {
       </Grid>
 
       {loadingDelete && <Loader />}
-      {errorDelete && <Message variant='error'>{errorDelete}</Message>}
+      {errorDelete && <Message variant='error'>A apărut o eroare!</Message>}
       {loadingCreate && <Loader />}
-      {errorCreate && <Message variant='error'>{errorCreate}</Message>}
+      {errorCreate && <Message variant='error'>A apărut o eroare!</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='error'>{error}</Message>
+        <Message variant='error'>A apărut o eroare!</Message>
       ) : (
         <>
           <TableAdminUsers users={users} history={history} />

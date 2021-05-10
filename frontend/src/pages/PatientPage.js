@@ -367,10 +367,10 @@ const PatientPage = ({ history, match }) => {
               <Typography variant='h5'>Istoric teste</Typography>
             </Grid>
             {errorTestCreate && (
-              <Message variant='error'>{errorTestCreate}</Message>
+              <Message variant='error'>A apărut o eroare!</Message>
             )}
             {errorTestUpdate && (
-              <Message variant='error'>{errorTestUpdate}</Message>
+              <Message variant='error'>A apărut o eroare!</Message>
             )}
             {userInfo && userInfo.isPrelevationWorker && (
               <Grid item>
@@ -389,7 +389,7 @@ const PatientPage = ({ history, match }) => {
             {loadingTests ? (
               <Loader />
             ) : errorTests ? (
-              <Message variant='error'>{errorTests}</Message>
+              <Message variant='error'>A apărut o eroare!</Message>
             ) : (
               <div>
                 <TablePatientTests

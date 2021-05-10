@@ -43,7 +43,9 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
 //@route GET /api/admin-log
 //@access Private Admin
 const getAdminLogEntries = asyncHandler(async (req, res) => {
-  const adminLog = await AdminLog.find({}).populate('modifiedBy', 'id name');
+  const adminLog = await AdminLog.find({})
+    .populate('modifiedBy', 'id name')
+    .sort('-createdAt');
 
   res.json(adminLog);
 });

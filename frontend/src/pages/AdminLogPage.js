@@ -31,6 +31,8 @@ const AdminLogPage = ({ history }) => {
       <Grid container className='my-3'>
         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
           <Button
+            variant='outlined'
+            color='secundary'
             className={classes.buttonBack}
             onClick={() => history.goBack()}
           >

@@ -150,11 +150,11 @@ const UserEditPage = ({ match, history }) => {
           Editare utilizator
         </Typography>
         {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant='error'>{errorUpdate}</Message>}
+        {errorUpdate && <Message variant='error'>A apărut o eroare!</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant='error'>{error}</Message>
+          <Message variant='error'>A apărut o eroare!</Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='name'>

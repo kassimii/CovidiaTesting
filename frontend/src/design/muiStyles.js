@@ -265,6 +265,9 @@ const useStyles = makeStyles((theme) => ({
   green: {
     color: colours.green,
   },
+  greenBg: {
+    backgroundColor: colours.green,
+  },
   red: {
     color: colours.red,
   },
