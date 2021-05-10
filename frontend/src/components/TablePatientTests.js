@@ -38,7 +38,7 @@ const columns = [
     id: 'status',
     label: 'Rezultat',
     align: 'center',
-    minWidth: 120,
+    minWidth: 110,
   },
 ];
 

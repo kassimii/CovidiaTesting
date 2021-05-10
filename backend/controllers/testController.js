@@ -61,20 +61,13 @@ const updateTest = asyncHandler(async (req, res) => {
 //@route GET /api/tests
 //@access Private/Admin
 const getTests = asyncHandler(async (req, res) => {
-  const pageSize = 10;
-  const page = Number(req.query.pageNumber) || 1;
-
-  const count = await Test.countDocuments();
-
   const tests = await Test.find({})
     .populate('patient', 'id patientCode email')
     .populate('collectedBy', 'name')
     .populate('resultBy', 'name')
-    .sort({ sentToDSP: 1, prelevationDate: -1 })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    .sort({ sentToDSP: 1, prelevationDate: -1 });
 
-  res.json({ tests, page, pages: Math.ceil(count / pageSize) });
+  res.json({ tests });
 });
 
 //@desc Send test result for Patient

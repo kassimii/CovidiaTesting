@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
-  IconButton,
   Button,
   FormControl,
   InputLabel,
@@ -13,36 +11,22 @@ import {
   Typography,
   Grid,
 } from '@material-ui/core';
-import {
-  Edit,
-  NoteAdd,
-  GetApp,
-  RemoveCircleOutline,
-  CheckCircle,
-  ViewList,
-} from '@material-ui/icons';
+import { NoteAdd, GetApp, ViewList } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme, useStyles } from '../design/muiStyles';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import Paginate from '../components/Paginate';
 import TestInfoModal from '../components/TestInfoModal';
 import TestEditModal from '../components/TestEditModal';
-import {
-  getTests,
-  sendTestPatientPDF,
-  generateCSVFileForDSP,
-  verifyTodaysTests,
-  downloadPatientPDF,
-} from '../redux/actions/testActions';
+import TableAdminTests from '../components/TableAdminTests';
+import { getTests, generateCSVFileForDSP } from '../redux/actions/testActions';
 import { getAdminLogList } from '../redux/actions/adminLogActions';
 import {
   TEST_DSP_CSV_RESET_SUCCESS,
   TEST_DOWNLOAD_PDF_RESET,
 } from '../redux/constants/testConstants';
-import { convertDate } from '../utils/commonFunctions';
 
-const TestListPage = ({ history, match }) => {
+const TestListPage = ({ history }) => {
   const classes = useStyles();
 
   const [testInfoShow, setTestInfoShow] = useState(false);
@@ -50,12 +34,10 @@ const TestListPage = ({ history, match }) => {
   const [currentTest, setCurrentTest] = useState('');
   const [doctor, setDoctor] = useState('-');
 
-  const pageNumber = match.params.pageNumber || 1;
-
   const dispatch = useDispatch();
 
   const testListAdmin = useSelector((state) => state.testListAdmin);
-  const { loading, error, tests, page, pages } = testListAdmin;
+  const { loading, error, tests } = testListAdmin;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -75,7 +57,7 @@ const TestListPage = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(getTests(pageNumber));
+      dispatch(getTests());
       dispatch(getAdminLogList());
 
       if (successToastCSV) {
@@ -89,15 +71,7 @@ const TestListPage = ({ history, match }) => {
     } else {
       history.push('/login');
     }
-  }, [
-    dispatch,
-    history,
-    userInfo,
-    pageNumber,
-    successToastCSV,
-    fileUrl,
-    successTestEdit,
-  ]);
+  }, [dispatch, history, userInfo, successToastCSV, fileUrl, successTestEdit]);
 
   const adminLogHandler = () => {
     history.push('/admin/log');
@@ -106,13 +80,13 @@ const TestListPage = ({ history, match }) => {
   return (
     <>
       <ToastContainer />
-      <Grid container className='my-4'>
+      <Grid container className='my-2'>
         <Typography variant='h4' gutterBottom>
           Teste
         </Typography>
       </Grid>
 
-      <Grid container justify='space-around' className='my-4'>
+      <Grid container justify='space-between' className='mb-2'>
         <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
           <ThemeProvider theme={theme}>
             <FormControl
@@ -137,7 +111,7 @@ const TestListPage = ({ history, match }) => {
                 <option value='1'>Doctor 1</option>
                 <option value='2'>Doctor 2</option>
               </Select>
-              <FormHelperText>Required</FormHelperText>
+              <FormHelperText>Obligatoriu</FormHelperText>
             </FormControl>
           </ThemeProvider>
         </Grid>
@@ -146,9 +120,8 @@ const TestListPage = ({ history, match }) => {
           <ThemeProvider theme={theme}>
             <Button
               variant='contained'
-              color='secondary'
               startIcon={<ViewList />}
-              className={`${classes.buttonAdmin} ${classes.secondaryUltraDarkColour}`}
+              className={`${classes.buttonAdmin} ${classes.secondaryUltraDarkColour}  `}
               onClick={adminLogHandler}
             >
               Admin Log
@@ -192,7 +165,16 @@ const TestListPage = ({ history, match }) => {
       ) : error ? (
         <Message variant='error'>{error}</Message>
       ) : (
-        <>
+        <Grid container justify='center'>
+          <Grid item xs={12} sm={12} md={12} lg='auto' xl='auto'>
+            <TableAdminTests
+              tests={tests}
+              doctor={doctor}
+              setCurrentTest={setCurrentTest}
+              setTestInfoShow={setTestInfoShow}
+              setTestEditShow={setTestEditShow}
+            />
+          </Grid>
           <TestInfoModal
             show={testInfoShow}
             onClose={() => {
@@ -206,97 +188,7 @@ const TestListPage = ({ history, match }) => {
             onClose={() => setTestEditShow(false)}
             test={currentTest}
           />
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID TEST</th>
-                <th>NR.</th>
-                <th>COD UTILIZATOR</th>
-                <th>DATA RECOLTARE</th>
-                <th>DATA REZULTAT</th>
-                <th>STATUS</th>
-                <th>LAB ID</th>
-                <th>GENERAT DSP</th>
-                <th>EMAIL PACIENT</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {tests.map((test) => (
-                <tr key={test._id}>
-                  <td
-                    onClick={() => {
-                      if (test.status !== '-' && test.sentToPatient === true) {
-                        dispatch(downloadPatientPDF(test._id));
-                      }
-                      setCurrentTest(test);
-                      setTestInfoShow(true);
-                    }}
-                  >
-                    {test._id}
-                  </td>
-                  <td>{test.testReportNumber}</td>
-                  <td>{test.patient.patientCode}</td>
-                  <td>{convertDate(test.prelevationDate)}</td>
-                  <td>
-                    {test.resultDate ? convertDate(test.resultDate) : '-'}
-                  </td>
-                  <td>{test.status}</td>
-                  <td>{test.labId}</td>
-                  <td>
-                    {test.sentToDSP && (
-                      <CheckCircle
-                        style={{
-                          color: 'green',
-                        }}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    {test.sentToPatient ? (
-                      <CheckCircle
-                        style={{
-                          color: 'green',
-                        }}
-                      />
-                    ) : test.patient.email ? (
-                      test.status !== '-' &&
-                      doctor !== '-' && (
-                        <Button
-                          variant='contained'
-                          color='primary'
-                          className='btn-sm'
-                          onClick={() =>
-                            dispatch(sendTestPatientPDF(test._id, doctor))
-                          }
-                        >
-                          TRIMITE
-                        </Button>
-                      )
-                    ) : (
-                      <RemoveCircleOutline
-                        style={{
-                          color: 'red',
-                        }}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    <IconButton
-                      onClick={() => {
-                        setCurrentTest(test);
-                        setTestEditShow(true);
-                      }}
-                    >
-                      <Edit />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Paginate pages={pages} page={page} isAdmin={true} scope='tests' />
-        </>
+        </Grid>
       )}
     </>
   );

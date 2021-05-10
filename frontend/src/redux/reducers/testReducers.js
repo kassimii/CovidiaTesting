@@ -131,8 +131,6 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
       return {
         loading: false,
         tests: action.payload.tests,
-        pages: action.payload.pages,
-        page: action.payload.page,
       };
     case TEST_LIST_ADMIN_FAIL:
       return {
@@ -199,6 +197,7 @@ export const testPatientPdfReducer = (state = {}, action) => {
     case TEST_PATIENT_PDF_SUCCESS:
       return {
         loading: false,
+        success: true,
       };
     case TEST_PATIENT_PDF_FAIL:
       return {

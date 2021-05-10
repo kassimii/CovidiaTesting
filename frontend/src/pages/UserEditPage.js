@@ -250,8 +250,8 @@ const UserEditPage = ({ match, history }) => {
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                 <Button
-                  variant='contained'
-                  color='secondary'
+                  variant='outlined'
+                  color='primary'
                   className={classes.buttonHalf}
                   onClick={() => history.goBack()}
                 >

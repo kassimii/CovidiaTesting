@@ -27,10 +27,6 @@ function App() {
           <Route path='/' component={LoginPage} exact />
           <Route path='/admin/log' component={AdminLogPage} />
           <Route path='/admin/teste' component={TestListPage} exact />
-          <Route
-            path='/admin/teste/pagina/:pageNumber'
-            component={TestListPage}
-          />
           <Route path='/admin/utilizatori' component={UserListPage} exact />
           <Route
             path='/admin/utilizatori/adaugare'

@@ -160,12 +160,16 @@ const PatientPage = ({ history, match }) => {
     <>
       <Grid container className={classes.patientPageHeader}>
         <Grid item xs={2} sm={2}>
-          <Button
-            className={classes.buttonBack}
-            onClick={() => history.goBack()}
-          >
-            Înapoi
-          </Button>
+          <ThemeProvider theme={theme}>
+            <Button
+              variant='outlined'
+              color='secundary'
+              className={classes.buttonBack}
+              onClick={() => history.goBack()}
+            >
+              Înapoi
+            </Button>
+          </ThemeProvider>
         </Grid>
         <Grid item>
           <Paper elevation={15} className={classes.cardPatientCode}>

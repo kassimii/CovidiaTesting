@@ -131,6 +131,7 @@ const TestInfoModal = (props) => {
                         variant='contained'
                         color='primary'
                         onClick={sendSMSPatientHandler}
+                        disabled={props.test.status === '-'}
                       >
                         Trimite
                       </Button>

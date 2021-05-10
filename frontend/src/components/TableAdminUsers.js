@@ -131,7 +131,7 @@ const TableAdminUsers = ({ users, history }) => {
                             )
                           }
                         >
-                          <Edit />
+                          <Edit className={classes.secondaryMediumColour} />
                         </IconButton>
 
                         <IconButton

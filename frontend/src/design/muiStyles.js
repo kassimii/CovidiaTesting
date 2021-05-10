@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
   },
   buttonBack: {
-    backgroundColor: colours.secondaryLight,
     color: colours.secondaryDark,
     borderRadius: '5px',
     width: '150%',
@@ -60,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: colours.secondaryMedium,
+      backgroundColor: colours.secondaryLight,
     },
   },
   buttonMdSecondaryMedium: {
@@ -72,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
     height: 30,
     fontSize: 16,
     fontWeight: 'bold',
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryUltraDark}`,
     '&:hover': {
       backgroundColor: colours.secondaryUltraDark,
     },
@@ -242,6 +242,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  primaryMediumColour: {
+    color: colours.primaryMedium,
+  },
   secondaryLightColour: {
     color: colours.secondaryLight,
   },
@@ -250,6 +253,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: colours.secondaryMedium,
     },
+  },
+  secondaryMediumColour: {
+    color: colours.secondaryDark,
   },
   secondaryMediumColourBg: {
     fontWeight: 'bold',
