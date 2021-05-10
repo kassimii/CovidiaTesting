@@ -256,7 +256,7 @@ const verifyTodaysTests = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Download patent pdf
+//@desc Download patient pdf
 //@route GET /api/tests/pdf/:testId
 //@access Private/Admin
 const downloadPdf = asyncHandler(async (req, res) => {

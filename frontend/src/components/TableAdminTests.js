@@ -19,7 +19,8 @@ import {
   RemoveCircleOutline,
   MoreVert,
 } from '@material-ui/icons';
-import { useStyles } from '../design/muiStyles';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme, useStyles } from '../design/muiStyles';
 import {
   sendTestPatientPDF,
   downloadPatientPDF,
@@ -102,7 +103,11 @@ const TableAdminTests = ({
 
   const sentToPatientValue = (test) => {
     if (currentSendingTest === test._id && loadingPatientPdf)
-      return <CircularProgress />;
+      return (
+        <ThemeProvider theme={theme}>
+          <CircularProgress />
+        </ThemeProvider>
+      );
 
     if (test.sentToPatient) return <CheckCircle className={classes.green} />;
     else {
@@ -110,16 +115,18 @@ const TableAdminTests = ({
         return (
           test.status !== '-' &&
           doctor !== '-' && (
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => {
-                setCurrentSendingTest(test._id);
-                dispatch(sendTestPatientPDF(test._id, doctor));
-              }}
-            >
-              TRIMITE
-            </Button>
+            <ThemeProvider theme={theme}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => {
+                  setCurrentSendingTest(test._id);
+                  dispatch(sendTestPatientPDF(test._id, doctor));
+                }}
+              >
+                TRIMITE
+              </Button>
+            </ThemeProvider>
           )
         );
       } else {

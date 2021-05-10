@@ -155,13 +155,13 @@ function generateTestInfo(doc) {
     .font('backend/pdf_utils/fonts/aileron/Aileron-Bold.otf')
     .text('Metoda - ', { continued: true })
     .font('backend/pdf_utils/fonts/aileron/Aileron-Italic.otf')
-    .text('Real-time PCR: ', { continued: true })
+    .text('Real-time PCR:  ', { continued: true })
     .font('backend/pdf_utils/fonts/aileron/Aileron-Light.otf')
-    .text(
-      'reacție de polimerizare în lanț cu detecie în timp real a fluoreșcenței produsului PCR acumulat'
-    )
+    .text('reacție de polimerizare în lanț cu detecție în timp real a')
+    .text('fluoreșcenței produsului PCR acumulat', 205)
     .moveDown();
 
+  doc.x = 70;
   doc
     .moveDown()
     .fontSize(12)
@@ -210,6 +210,10 @@ function generateFooter(doc) {
 }
 
 function insertDataIntoTable(doc, testInfo) {
+  const passportField = testInfo.patient.passportId
+    ? testInfo.patient.passportId
+    : '';
+
   dataInRowFirst(doc, `${testInfo.patient.name}`, startY + 5);
   dataInRowFirst(doc, `${testInfo.patient.surname}`, startY + 25);
   dataInRowFirst(doc, `${testInfo.patient.cnp}`, startY + 45);
@@ -220,7 +224,7 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowSecond(doc, `${convertDate(testInfo.resultDate)}`, startY + 25);
   dataInRowSecond(doc, 'EXUDAT NAZAL-FARINGAL', startY + 45);
   dataInRowSecond(doc, 'DA', startY + 65);
-  dataInRowSecond(doc, `${testInfo.patient.passportId}`, startY + 85);
+  dataInRowSecond(doc, `${passportField}`, startY + 85);
 }
 
 function insertDoctorStamp(doc, doctorStamp) {
