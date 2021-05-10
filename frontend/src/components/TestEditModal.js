@@ -21,6 +21,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { theme, useStyles } from '../design/muiStyles';
 import { editTest } from '../redux/actions/testActions';
 import { createAdminLogEntry } from '../redux/actions/adminLogActions';
+import Message from './Message';
 
 const TestEditModal = (props) => {
   const classes = useStyles();
@@ -32,6 +33,8 @@ const TestEditModal = (props) => {
   const [prelevationDate, setPrelevationDate] = useState(new Date());
   const [resultDate, setResultDate] = useState(new Date());
   const [testResult, setTestResult] = useState('-');
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
 
@@ -77,23 +80,31 @@ const TestEditModal = (props) => {
     return adminLogEntry;
   };
 
-  const onUpdateHandler = () => {
-    dispatch(
-      editTest({
-        testId: props.test._id,
-        test: {
-          prelevationDate: prelevationDate,
-          resultDate: resultDate,
-          status: testResult,
-        },
-      })
-    );
-
-    const adminLogEntry = setAdminLogEntryData();
-
-    dispatch(createAdminLogEntry(adminLogEntry));
-
+  const handleClose = () => {
+    setErrorMessage('');
     props.onClose();
+  };
+
+  const onUpdateHandler = () => {
+    if (testResult === '-') {
+      setErrorMessage('Adăgați rezultatul testului!');
+    } else {
+      dispatch(
+        editTest({
+          testId: props.test._id,
+          test: {
+            prelevationDate: prelevationDate,
+            resultDate: resultDate,
+            status: testResult,
+          },
+        })
+      );
+
+      const adminLogEntry = setAdminLogEntryData();
+
+      dispatch(createAdminLogEntry(adminLogEntry));
+      handleClose();
+    }
   };
 
   return (
@@ -103,8 +114,8 @@ const TestEditModal = (props) => {
         size='lg'
         aria-labelledby='contained-modal-title-vcenter'
         centered
-        onExit={props.onClose}
-        onHide={props.onClose}
+        onExit={handleClose}
+        onHide={handleClose}
       >
         <Modal.Header closeButton className={classes.testModalHeader}>
           <Typography variant='h5' display='inline' className='mr-2'>
@@ -120,6 +131,7 @@ const TestEditModal = (props) => {
         </Modal.Header>
 
         <Modal.Body className='m-3 p-3'>
+          {errorMessage && <Message variant='error'>{errorMessage}</Message>}
           <Grid container justify='space-between'>
             <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
               <Grid container direction='column' className='mb-4'>
@@ -205,7 +217,7 @@ const TestEditModal = (props) => {
             <Button
               variant='outlined'
               color='primary'
-              onClick={props.onClose}
+              onClick={handleClose}
               className='mx-1'
             >
               Închide
