@@ -25,6 +25,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { useStyles } from '../design/muiStyles';
 import { logout } from '../redux/actions/userActions';
+import logo from '../logo_covidia.png';
 
 const MUIHeader = ({ history }) => {
   const classes = useStyles();
@@ -123,8 +124,6 @@ const MUIHeader = ({ history }) => {
       <AppBar position='static'>
         <Toolbar className={classes.navbar}>
           <Typography
-            variant='h6'
-            color='inherit'
             className={
               !userInfo ? classes.navbarTitle : classes.navbarTitleLoggedIn
             }
@@ -132,7 +131,7 @@ const MUIHeader = ({ history }) => {
               userInfo ? history.push('/home') : history.push('/login');
             }}
           >
-            Covidia
+            <img src={logo} alt='Covidia' height='50px' />
           </Typography>
 
           {userInfo && (
