@@ -65,7 +65,7 @@ const getTests = asyncHandler(async (req, res) => {
     .populate('patient', 'id patientCode email')
     .populate('collectedBy', 'name')
     .populate('resultBy', 'name')
-    .sort({ sentToDSP: 1, prelevationDate: -1 });
+    .sort({ sentToDSP: 1, resultDate: -1 });
 
   res.json({ tests });
 });
@@ -383,6 +383,24 @@ const getTestsStats = asyncHandler(async (req, res) => {
     .populate('patient', 'cnp')
     .sort('-resultDate');
 
+  const posTests = await Test.countDocuments({
+    status: {
+      $eq: 'Pozitiv',
+    },
+  });
+
+  const negTests = await Test.countDocuments({
+    status: {
+      $eq: 'Negativ',
+    },
+  });
+
+  const inconclusiveTests = await Test.countDocuments({
+    status: {
+      $eq: 'Neconcludent',
+    },
+  });
+
   const periodDates = [];
   for (let i = 0; i < days; i++) {
     periodDates.push(
@@ -415,7 +433,7 @@ const getTestsStats = asyncHandler(async (req, res) => {
     });
   }
 
-  res.json({ tests });
+  res.json({ tests, posTests, negTests, inconclusiveTests });
 });
 
 export {

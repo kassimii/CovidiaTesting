@@ -2,7 +2,7 @@ import { createMuiTheme, makeStyles, fade } from '@material-ui/core/styles';
 
 const colours = {
   primaryDark: '#50487d',
-  primaryMedium: '#603f83ff',
+  primaryMedium: '#603f83',
   primaryLight: '#745085',
   primaryUltraLight: '#cc99cc',
   secondaryUltraDark: '#555555',
@@ -189,7 +189,22 @@ const useStyles = makeStyles((theme) => ({
     padding: '0 40px',
     color: colours.secondaryLight,
     backgroundColor: colours.primaryLight,
-    boxShadow: `3px 3px 10px 2px ${colours.secondaryMedium}`,
+    border: 'solid',
+    borderColor: colours.primaryMedium,
+    boxShadow: `3px 3px 10px 1px ${colours.primaryLight}`,
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 5px',
+    },
+  },
+  cardStats: {
+    minWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    margin: '15px 0',
+    padding: '10px 40px',
+    color: `rgb(96, 63, 131, 0.5)`,
+    backgroundColor: `rgb(96, 63, 131, 0.2)`,
+    boxShadow: `3px 3px 10px 5px ${colours.primaryLight}`,
     [theme.breakpoints.down('sm')]: {
       padding: '0 5px',
     },
@@ -241,6 +256,9 @@ const useStyles = makeStyles((theme) => ({
         width: '20ch',
       },
     },
+  },
+  primaryMediumSoftColour: {
+    color: `rgb(96, 63, 131, 0.7)`,
   },
   primaryMediumColour: {
     color: colours.primaryMedium,
@@ -312,6 +330,18 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
     overflowX: 'auto',
+  },
+  borderBottom: {
+    borderBottom: 'solid',
+  },
+  borderRight: {
+    borderRight: 'solid',
+  },
+  paddingStatsCard: {
+    padding: '5px 15px',
+  },
+  statsGraph: {
+    margin: '30px 0',
   },
 }));
 

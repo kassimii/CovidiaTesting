@@ -337,7 +337,10 @@ export const testPatientSMSReducer = (state = {}, action) => {
   }
 };
 
-export const testsOneWeekReducer = (state = { oneWeek: [] }, action) => {
+export const testsOneWeekReducer = (
+  state = { oneWeek: [], posTests: 0, negTests: 0, inconclusiveTests: 0 },
+  action
+) => {
   switch (action.type) {
     case TEST_ONE_WEEK_REQUEST:
       return {
@@ -348,6 +351,9 @@ export const testsOneWeekReducer = (state = { oneWeek: [] }, action) => {
         loading: false,
         success: true,
         oneWeek: action.payload.tests,
+        posTests: action.payload.posTests,
+        negTests: action.payload.negTests,
+        inconclusiveTests: action.payload.inconclusiveTests,
       };
     case TEST_ONE_WEEK_FAIL:
       return {
