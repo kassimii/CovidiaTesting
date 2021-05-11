@@ -121,7 +121,7 @@ const TestListPage = ({ history }) => {
             <Button
               variant='contained'
               startIcon={<ViewList />}
-              className={`${classes.buttonAdmin} ${classes.secondaryUltraDarkColour}  `}
+              className={`${classes.buttonAdmin} ${classes.secondaryUltraDarkColour}`}
               onClick={adminLogHandler}
             >
               Admin Log

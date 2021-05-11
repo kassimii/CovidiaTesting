@@ -32,7 +32,6 @@ const Patient = ({ patient }) => {
               style={{ height: 45 }}
             >
               <Button
-                className='btn-block'
                 color='primary'
                 variant='contained'
                 type='button'
@@ -41,7 +40,7 @@ const Patient = ({ patient }) => {
                 md={3}
                 lg={3}
               >
-                Editeaza pacient
+                Editează pacient
               </Button>
             </LinkContainer>
           </ThemeProvider>

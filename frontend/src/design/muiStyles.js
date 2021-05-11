@@ -36,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     width: '25%',
     height: 45,
     fontSize: 18,
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryMedium}`,
+    '&:hover': {
+      backgroundColor: colours.secondaryMedium,
+      boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
+    },
   },
   buttonMd: {
     marginTop: theme.spacing(1),
@@ -50,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: 45,
     fontSize: 18,
+    '&:hover': {
+      boxShadow: `2px 2px 5px 2px ${colours.primaryDark}`,
+    },
   },
   buttonBack: {
     color: colours.secondaryDark,
@@ -58,8 +66,10 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     fontSize: 16,
     fontWeight: 'bold',
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryLight}`,
     '&:hover': {
       backgroundColor: colours.secondaryLight,
+      boxShadow: `2px 2px 5px 2px ${colours.secondaryMedium}`,
     },
   },
   buttonMdSecondaryMedium: {
@@ -71,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
     height: 30,
     fontSize: 16,
     fontWeight: 'bold',
-    boxShadow: `2px 2px 5px 2px ${colours.secondaryUltraDark}`,
     '&:hover': {
       backgroundColor: colours.secondaryUltraDark,
     },
@@ -127,9 +136,8 @@ const useStyles = makeStyles((theme) => ({
     width: '95%',
     fontSize: 16,
     fontWeight: 'bold',
-    boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
     '&:hover': {
-      boxShadow: `2px 2px 5px 5px ${colours.secondaryDark}`,
+      boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
     },
     [theme.breakpoints.down('sm')]: {
       height: 45,
@@ -146,16 +154,25 @@ const useStyles = makeStyles((theme) => ({
   buttonDownloadCSV: {
     color: colours.secondaryUltraDark,
     backgroundColor: colours.secondaryLight,
-    boxShadow: `2px 2px 5px 5px ${colours.secondaryMedium}`,
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryMedium}`,
     '&:hover': {
       backgroundColor: colours.secondaryLight,
-      boxShadow: `2px 2px 5px 5px ${colours.secondaryUltraDark}`,
+      boxShadow: `2px 2px 5px 2px ${colours.secondaryUltraDark}`,
+    },
+  },
+  buttonPatientCard: {
+    boxShadow: `2px 2px 5px 2px ${colours.primaryMedium}`,
+    '&:hover': {
+      boxShadow: `2px 2px 5px 4px ${colours.primaryDark}`,
     },
   },
   dropdownAdmin: {
     marginBottom: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     width: '95%',
+    [theme.breakpoints.down('sm')]: {
+      width: '80%',
+    },
   },
   card: {
     width: '110%',
@@ -349,6 +366,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       paddingTop: '15px',
       paddingRight: '1px',
+    },
+  },
+  statsButtonsAlign: {
+    marginTop: '20px',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: '60px',
     },
   },
   statsGraph: {
