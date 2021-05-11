@@ -40,6 +40,10 @@ import {
   TEST_PATIENT_SMS_SUCCESS,
   TEST_PATIENT_SMS_FAIL,
   TEST_PATIENT_SMS_RESET,
+  TEST_ONE_WEEK_REQUEST,
+  TEST_ONE_WEEK_SUCCESS,
+  TEST_ONE_WEEK_FAIL,
+  TEST_ONE_WEEK_RESET,
 } from '../constants/testConstants';
 
 export const testCreateReducer = (state = { test: {} }, action) => {
@@ -328,6 +332,30 @@ export const testPatientSMSReducer = (state = {}, action) => {
     case TEST_PATIENT_SMS_RESET:
       return {};
 
+    default:
+      return state;
+  }
+};
+
+export const testsOneWeekReducer = (state = { oneWeek: [] }, action) => {
+  switch (action.type) {
+    case TEST_ONE_WEEK_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_ONE_WEEK_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        oneWeek: action.payload.tests,
+      };
+    case TEST_ONE_WEEK_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_ONE_WEEK_RESET:
+      return { oneWeek: [] };
     default:
       return state;
   }

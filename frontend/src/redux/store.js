@@ -3,6 +3,10 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import {
+  adminLogCreateReducer,
+  adminLogListReducer,
+} from './reducers/adminLogReducers';
+import {
   patientListReducer,
   patientUpdateReducer,
   patientDetailsReducer,
@@ -31,13 +35,12 @@ import {
   testDownloadPdfReducer,
   testEditReducer,
   testPatientSMSReducer,
+  testsOneWeekReducer,
 } from './reducers/testReducers';
-import {
-  adminLogCreateReducer,
-  adminLogListReducer,
-} from './reducers/adminLogReducers';
 
 const reducer = combineReducers({
+  adminLogCreate: adminLogCreateReducer,
+  adminLogList: adminLogListReducer,
   patientList: patientListReducer,
   patientDetails: patientDetailsReducer,
   patientUpdate: patientUpdateReducer,
@@ -62,8 +65,7 @@ const reducer = combineReducers({
   testDownloadPdf: testDownloadPdfReducer,
   testEdit: testEditReducer,
   testPatientSMS: testPatientSMSReducer,
-  adminLogCreate: adminLogCreateReducer,
-  adminLogList: adminLogListReducer,
+  testsOneWeek: testsOneWeekReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

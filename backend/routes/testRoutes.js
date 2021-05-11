@@ -11,6 +11,7 @@ import {
   downloadPdf,
   editTest,
   sendSMSPatient,
+  getTestsStats,
 } from '../controllers/testController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -25,5 +26,7 @@ router
   .get(protect, admin, downloadPdf);
 router.route('/edit-test/:testId').put(protect, admin, editTest);
 router.route('/sms-test-result/:testId').put(protect, admin, sendSMSPatient);
+
+router.route('/stats').get(protect, getTestsStats);
 
 export default router;

@@ -341,6 +341,7 @@ const sendSMSPatient = asyncHandler(async (req, res) => {
 
   if (test) {
     const messageBody = createMessageBody(test);
+
     clientTwilio.messages
       .create({
         body: messageBody,
@@ -358,6 +359,65 @@ const sendSMSPatient = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Get all tests for the last x days
+//@route GET /api/tests/stats?days=
+//@access Private
+const getTestsStats = asyncHandler(async (req, res) => {
+  const { days } = req.query;
+
+  var yesterday = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
+  yesterday.setUTCHours(23, 59, 59, 0);
+
+  var startPeriod = new Date(new Date().getTime() - days * 24 * 60 * 60 * 1000);
+  startPeriod.setUTCHours(0, 0, 0, 0);
+
+  const testsDB = await Test.find({
+    resultDate: {
+      $gte: startPeriod,
+      $lt: yesterday,
+    },
+  })
+    .select(
+      '-collectedBy -resultBy -sentToPatient -sentToPatientSMS -sentToDSP -testReportNumber -createdAt -updatedAt'
+    )
+    .populate('patient', 'cnp')
+    .sort('-resultDate');
+
+  const periodDates = [];
+  for (let i = 0; i < days; i++) {
+    periodDates.push(
+      convertDate(new Date(startPeriod.getTime() + i * 24 * 60 * 60 * 1000))
+    );
+  }
+
+  const tests = [];
+
+  for (let i = 0; i < days; i++) {
+    let numberTotal = 0;
+    let numberPositive = 0;
+
+    testsDB.map((test) => {
+      if (periodDates[i] === convertDate(test.resultDate)) {
+        numberTotal++;
+        tests[i] = {
+          date: periodDates[i],
+          total: numberTotal,
+          positive:
+            test.status === 'Pozitiv' ? ++numberPositive : numberPositive,
+        };
+      } else {
+        tests[i] = {
+          date: periodDates[i],
+          total: numberTotal,
+          positive: numberPositive,
+        };
+      }
+    });
+  }
+
+  res.json({ tests });
+});
+
 export {
   addTestEntry,
   getTestsForPatient,
@@ -369,4 +429,5 @@ export {
   downloadPdf,
   editTest,
   sendSMSPatient,
+  getTestsStats,
 };

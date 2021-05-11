@@ -29,6 +29,9 @@ import {
   TEST_PATIENT_SMS_REQUEST,
   TEST_PATIENT_SMS_SUCCESS,
   TEST_PATIENT_SMS_FAIL,
+  TEST_ONE_WEEK_REQUEST,
+  TEST_ONE_WEEK_SUCCESS,
+  TEST_ONE_WEEK_FAIL,
 } from '../constants/testConstants';
 import axios from 'axios';
 
@@ -372,6 +375,39 @@ export const sendPatientSMS = (testId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: TEST_PATIENT_SMS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getOneWeekTests = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEST_ONE_WEEK_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/tests/stats?days=7`, config);
+
+    dispatch({
+      type: TEST_ONE_WEEK_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TEST_ONE_WEEK_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
