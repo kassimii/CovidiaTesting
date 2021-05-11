@@ -35,7 +35,8 @@ import {
   testDownloadPdfReducer,
   testEditReducer,
   testPatientSMSReducer,
-  testsOneWeekReducer,
+  testStatsReducer,
+  testOneWeekReducer,
 } from './reducers/testReducers';
 
 const reducer = combineReducers({
@@ -65,7 +66,8 @@ const reducer = combineReducers({
   testDownloadPdf: testDownloadPdfReducer,
   testEdit: testEditReducer,
   testPatientSMS: testPatientSMSReducer,
-  testsOneWeek: testsOneWeekReducer,
+  testStats: testStatsReducer,
+  testOneWeek: testOneWeekReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

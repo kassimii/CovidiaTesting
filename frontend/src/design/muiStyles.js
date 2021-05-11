@@ -198,15 +198,13 @@ const useStyles = makeStyles((theme) => ({
   },
   cardStats: {
     minWidth: '100%',
-    display: 'flex',
-    alignItems: 'center',
     margin: '15px 0',
     padding: '10px 40px',
     color: `rgb(96, 63, 131, 0.5)`,
     backgroundColor: `rgb(96, 63, 131, 0.2)`,
     boxShadow: `3px 3px 10px 5px ${colours.primaryLight}`,
-    [theme.breakpoints.down('sm')]: {
-      padding: '0 5px',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: '0',
     },
   },
   patientTestTable: {
@@ -339,6 +337,19 @@ const useStyles = makeStyles((theme) => ({
   },
   paddingStatsCard: {
     padding: '5px 15px',
+  },
+  paddingStatsCardRight: {
+    paddingRight: '20px',
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: '30px',
+    },
+  },
+  paddingStatsCardLeft: {
+    paddingLeft: '10px',
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: '15px',
+      paddingRight: '1px',
+    },
   },
   statsGraph: {
     margin: '30px 0',

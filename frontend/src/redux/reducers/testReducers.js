@@ -40,6 +40,10 @@ import {
   TEST_PATIENT_SMS_SUCCESS,
   TEST_PATIENT_SMS_FAIL,
   TEST_PATIENT_SMS_RESET,
+  TEST_STATS_REQUEST,
+  TEST_STATS_SUCCESS,
+  TEST_STATS_FAIL,
+  TEST_STATS_RESET,
   TEST_ONE_WEEK_REQUEST,
   TEST_ONE_WEEK_SUCCESS,
   TEST_ONE_WEEK_FAIL,
@@ -337,8 +341,32 @@ export const testPatientSMSReducer = (state = {}, action) => {
   }
 };
 
-export const testsOneWeekReducer = (
-  state = { oneWeek: [], posTests: 0, negTests: 0, inconclusiveTests: 0 },
+export const testStatsReducer = (state = { stats: [] }, action) => {
+  switch (action.type) {
+    case TEST_STATS_REQUEST:
+      return {
+        loading: true,
+      };
+    case TEST_STATS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        stats: action.payload.tests,
+      };
+    case TEST_STATS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case TEST_STATS_RESET:
+      return { stats: [] };
+    default:
+      return state;
+  }
+};
+
+export const testOneWeekReducer = (
+  state = { totalTests: 0, posTests: 0, negTests: 0, inconclusiveTests: 0 },
   action
 ) => {
   switch (action.type) {
@@ -350,7 +378,7 @@ export const testsOneWeekReducer = (
       return {
         loading: false,
         success: true,
-        oneWeek: action.payload.tests,
+        totalTests: action.payload.totalTests,
         posTests: action.payload.posTests,
         negTests: action.payload.negTests,
         inconclusiveTests: action.payload.inconclusiveTests,
@@ -361,7 +389,7 @@ export const testsOneWeekReducer = (
         error: action.payload,
       };
     case TEST_ONE_WEEK_RESET:
-      return { oneWeek: [] };
+      return { totalTests: 0, posTests: 0, negTests: 0, inconclusiveTests: 0 };
     default:
       return state;
   }

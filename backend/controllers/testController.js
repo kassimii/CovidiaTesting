@@ -383,24 +383,6 @@ const getTestsStats = asyncHandler(async (req, res) => {
     .populate('patient', 'cnp')
     .sort('-resultDate');
 
-  const posTests = await Test.countDocuments({
-    status: {
-      $eq: 'Pozitiv',
-    },
-  });
-
-  const negTests = await Test.countDocuments({
-    status: {
-      $eq: 'Negativ',
-    },
-  });
-
-  const inconclusiveTests = await Test.countDocuments({
-    status: {
-      $eq: 'Neconcludent',
-    },
-  });
-
   const periodDates = [];
   for (let i = 0; i < days; i++) {
     periodDates.push(
@@ -433,7 +415,57 @@ const getTestsStats = asyncHandler(async (req, res) => {
     });
   }
 
-  res.json({ tests, posTests, negTests, inconclusiveTests });
+  res.json({ tests });
+});
+
+//@desc Get test numbers for last week
+//@route GET /api/tests/last-week-stats
+//@access Private
+const getStatsLastWeek = asyncHandler(async (req, res) => {
+  var yesterday = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
+  yesterday.setUTCHours(23, 59, 59, 0);
+
+  var startPeriod = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+  startPeriod.setUTCHours(0, 0, 0, 0);
+
+  const totalTests = await Test.countDocuments({
+    resultDate: {
+      $gte: startPeriod,
+      $lt: yesterday,
+    },
+  });
+
+  const posTests = await Test.countDocuments({
+    resultDate: {
+      $gte: startPeriod,
+      $lt: yesterday,
+    },
+    status: {
+      $eq: 'Pozitiv',
+    },
+  });
+
+  const negTests = await Test.countDocuments({
+    resultDate: {
+      $gte: startPeriod,
+      $lt: yesterday,
+    },
+    status: {
+      $eq: 'Negativ',
+    },
+  });
+
+  const inconclusiveTests = await Test.countDocuments({
+    resultDate: {
+      $gte: startPeriod,
+      $lt: yesterday,
+    },
+    status: {
+      $eq: 'Neconcludent',
+    },
+  });
+
+  res.json({ totalTests, posTests, negTests, inconclusiveTests });
 });
 
 export {
@@ -448,4 +480,5 @@ export {
   editTest,
   sendSMSPatient,
   getTestsStats,
+  getStatsLastWeek,
 };

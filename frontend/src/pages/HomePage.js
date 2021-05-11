@@ -16,7 +16,7 @@ import { theme, useStyles } from '../design/muiStyles';
 import Loader from '../components/Loader';
 import TestsChart from '../components/TestsChart';
 import StatsCard from '../components/StatsCard';
-import { getOneWeekTests } from '../redux/actions/testActions';
+import { getOneWeekTests, getTestStats } from '../redux/actions/testActions';
 
 const HomePage = ({ history }) => {
   const classes = useStyles();
@@ -25,27 +25,48 @@ const HomePage = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const testsOneWeek = useSelector((state) => state.testsOneWeek);
-  const { oneWeek, loading: loadingOneWeek } = testsOneWeek;
+  const testStats = useSelector((state) => state.testStats);
+  const { stats, loading: loadingStats } = testStats;
+
+  const testOneWeek = useSelector((state) => state.testOneWeek);
+  const {
+    totalTests,
+    posTests,
+    negTests,
+    inconclusiveTests,
+    loading: loadingOneWeek,
+  } = testOneWeek;
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     } else {
       dispatch(getOneWeekTests());
+      dispatch(getTestStats(7));
     }
   }, [history, userInfo, dispatch]);
 
   return (
     <>
       <Grid container justify='flex-end'>
-        <Grid item xs={12} sm={8} md={6} lg={5} xl={5}>
-          <StatsCard oneWeekStats={testsOneWeek} />
+        <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
+          {loadingOneWeek ? (
+            <Loader />
+          ) : (
+            <StatsCard
+              oneWeekStats={{
+                totalTests,
+                posTests,
+                negTests,
+                inconclusiveTests,
+              }}
+            />
+          )}
         </Grid>
       </Grid>
 
       <Grid container className={classes.statsGraph}>
-        {loadingOneWeek ? <Loader /> : <TestsChart oneWeek={oneWeek} />}
+        {loadingStats ? <Loader /> : <TestsChart stats={stats} />}
       </Grid>
     </>
   );
