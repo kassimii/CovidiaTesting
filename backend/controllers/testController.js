@@ -432,6 +432,42 @@ const filterByAge = (age, testList) => {
   return ageTests;
 };
 
+const countFilteredTests = (days, startPeriod, testList) => {
+  const periodDates = [];
+  for (let i = 0; i < days; i++) {
+    periodDates.push(
+      convertDate(new Date(startPeriod.getTime() + i * 24 * 60 * 60 * 1000))
+    );
+  }
+
+  const tests = [];
+
+  for (let i = 0; i < days; i++) {
+    let numberTotal = 0;
+    let numberPositive = 0;
+
+    testList.map((test) => {
+      if (periodDates[i] === convertDate(test.resultDate)) {
+        numberTotal++;
+        tests[i] = {
+          date: periodDates[i],
+          total: numberTotal,
+          positive:
+            test.status === 'Pozitiv' ? ++numberPositive : numberPositive,
+        };
+      } else {
+        tests[i] = {
+          date: periodDates[i],
+          total: numberTotal,
+          positive: numberPositive,
+        };
+      }
+    });
+  }
+
+  return tests;
+};
+
 const getTestsStats = asyncHandler(async (req, res) => {
   const { days, age, gender } = req.query;
 
@@ -457,37 +493,7 @@ const getTestsStats = asyncHandler(async (req, res) => {
 
   filteredTests = filterByAge(age, filteredTests);
 
-  const periodDates = [];
-  for (let i = 0; i < days; i++) {
-    periodDates.push(
-      convertDate(new Date(startPeriod.getTime() + i * 24 * 60 * 60 * 1000))
-    );
-  }
-
-  const tests = [];
-
-  for (let i = 0; i < days; i++) {
-    let numberTotal = 0;
-    let numberPositive = 0;
-
-    filteredTests.map((test) => {
-      if (periodDates[i] === convertDate(test.resultDate)) {
-        numberTotal++;
-        tests[i] = {
-          date: periodDates[i],
-          total: numberTotal,
-          positive:
-            test.status === 'Pozitiv' ? ++numberPositive : numberPositive,
-        };
-      } else {
-        tests[i] = {
-          date: periodDates[i],
-          total: numberTotal,
-          positive: numberPositive,
-        };
-      }
-    });
-  }
+  const tests = countFilteredTests(days, startPeriod, filteredTests);
 
   res.json({ tests });
 });
