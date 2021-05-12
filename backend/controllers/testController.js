@@ -363,24 +363,9 @@ const sendSMSPatient = asyncHandler(async (req, res) => {
 //@route GET /api/tests/stats?days=
 //@access Private
 
-const filterByGender = (gender, testList) => {
-  if (gender === '0' || !gender) return testList;
-
-  const genderTests = testList.filter((test) => {
-    const genderId = parseInt(gender);
-
-    if (
-      test.patient.cnp.startsWith(gender) ||
-      test.patient.cnp.startsWith((genderId + 4).toString())
-    )
-      return true;
-    return false;
-  });
-
-  return genderTests;
-};
-
 const filterByAge = (age, testList) => {
+  if (age === '1' || !age) return testList;
+
   const currentYear = new Date().getFullYear();
   const yearPeriods = [
     currentYear % 100,
@@ -390,8 +375,6 @@ const filterByAge = (age, testList) => {
     (currentYear - 60) % 100,
     (currentYear - 70) % 100,
   ];
-
-  if (age === '1' || !age) return testList;
 
   const ageTests = testList.filter((test) => {
     let birthYear = test.patient.cnp.substring(1, 3);
@@ -430,6 +413,23 @@ const filterByAge = (age, testList) => {
   });
 
   return ageTests;
+};
+
+const filterByGender = (gender, testList) => {
+  if (gender === '0' || !gender) return testList;
+
+  const genderTests = testList.filter((test) => {
+    const genderId = parseInt(gender);
+
+    if (
+      test.patient.cnp.startsWith(gender) ||
+      test.patient.cnp.startsWith((genderId + 4).toString())
+    )
+      return true;
+    return false;
+  });
+
+  return genderTests;
 };
 
 const countFilteredTests = (days, startPeriod, testList) => {
@@ -489,9 +489,9 @@ const getTestsStats = asyncHandler(async (req, res) => {
     .populate('patient', 'cnp')
     .sort('-resultDate');
 
-  var filteredTests = filterByGender(gender, testsDB);
+  var filteredTests = filterByAge(age, testsDB);
 
-  filteredTests = filterByAge(age, filteredTests);
+  filteredTests = filterByGender(gender, filteredTests);
 
   const tests = countFilteredTests(days, startPeriod, filteredTests);
 

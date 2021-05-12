@@ -174,45 +174,43 @@ export const getTests = () => async (dispatch, getState) => {
   }
 };
 
-export const sendTestPatientPDF = (testId, doctor) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    dispatch({
-      type: TEST_PATIENT_PDF_REQUEST,
-    });
+export const sendTestPatientPDF =
+  (testId, doctor) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: TEST_PATIENT_PDF_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(
-      `/api/tests/pdf/${testId}`,
-      { doctor },
-      config
-    );
+      const { data } = await axios.put(
+        `/api/tests/pdf/${testId}`,
+        { doctor },
+        config
+      );
 
-    dispatch({
-      type: TEST_PATIENT_PDF_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: TEST_PATIENT_PDF_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: TEST_PATIENT_PDF_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: TEST_PATIENT_PDF_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const generateCSVFileForDSP = () => async (dispatch, getState) => {
   try {
@@ -312,6 +310,7 @@ export const downloadPatientPDF = (testId) => async (dispatch, getState) => {
     });
   }
 };
+
 export const editTest = (test) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -386,38 +385,42 @@ export const sendPatientSMS = (testId) => async (dispatch, getState) => {
   }
 };
 
-export const getTestStats = (days) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: TEST_STATS_REQUEST,
-    });
+export const getTestStats =
+  (days, age, gender) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: TEST_STATS_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get(`/api/tests/stats?days=${days}`, config);
+      const { data } = await axios.get(
+        `/api/tests/stats?days=${days}&age=${age}&gender=${gender}`,
+        config
+      );
 
-    dispatch({
-      type: TEST_STATS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: TEST_STATS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: TEST_STATS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: TEST_STATS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const getOneWeekTests = () => async (dispatch, getState) => {
   try {

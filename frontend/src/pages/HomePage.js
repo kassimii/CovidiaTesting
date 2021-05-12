@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  TextField,
-  Typography,
   Button,
-  Paper,
-  Box,
-  Checkbox,
-  FormControlLabel,
   Grid,
   FormControl,
   InputLabel,
   Select,
 } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme, useStyles } from '../design/muiStyles';
 import Loader from '../components/Loader';
@@ -24,9 +17,9 @@ import { getOneWeekTests, getTestStats } from '../redux/actions/testActions';
 const HomePage = ({ history }) => {
   const classes = useStyles();
 
-  const [period, setPeriod] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
+  const [period, setPeriod] = useState('7');
+  const [age, setAge] = useState('1');
+  const [gender, setGender] = useState('0');
 
   const dispatch = useDispatch();
 
@@ -45,12 +38,16 @@ const HomePage = ({ history }) => {
     loading: loadingOneWeek,
   } = testOneWeek;
 
+  const handleShowStatsButton = () => {
+    dispatch(getTestStats(period, age, gender));
+  };
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     } else {
       dispatch(getOneWeekTests());
-      dispatch(getTestStats(7));
+      dispatch(getTestStats(7, 1, 0));
     }
   }, [history, userInfo, dispatch]);
 
@@ -90,9 +87,6 @@ const HomePage = ({ history }) => {
                   id: 'outlined-period-native-simple',
                 }}
               >
-                <option aria-label='None' value='-'>
-                  -
-                </option>
                 <option value='7'>1 săptămână</option>
                 <option value='14'>2 săptămâni</option>
                 <option value='30'>1 lună</option>
@@ -120,15 +114,15 @@ const HomePage = ({ history }) => {
                   id: 'outlined-age-native-simple',
                 }}
               >
-                <option aria-label='None' value='-'>
-                  -
+                <option aria-label='None' value='1'>
+                  Toate
                 </option>
-                <option value='7'>&lt;30</option>
-                <option value='14'>30-40</option>
-                <option value='30'>40-50</option>
-                <option value='90'>50-60</option>
-                <option value='180'>60-70</option>
-                <option value='365'>&gt;70</option>
+                <option value='2'>&lt;30</option>
+                <option value='3'>30-40</option>
+                <option value='4'>40-50</option>
+                <option value='5'>50-60</option>
+                <option value='6'>60-70</option>
+                <option value='7'>&gt;70</option>
               </Select>
             </FormControl>
           </ThemeProvider>
@@ -150,11 +144,11 @@ const HomePage = ({ history }) => {
                   id: 'outlined-gender-native-simple',
                 }}
               >
-                <option aria-label='None' value='-'>
-                  -
+                <option aria-label='None' value='0'>
+                  Toate
                 </option>
-                <option value='Negativ'>Masculin</option>
-                <option value='Pozitiv'>Feminim</option>
+                <option value='1'>Masculin</option>
+                <option value='2'>Feminim</option>
               </Select>
             </FormControl>
           </ThemeProvider>
@@ -166,6 +160,7 @@ const HomePage = ({ history }) => {
               variant='outlined'
               color='primary'
               className={`${classes.buttonAdmin} ${classes.buttonDownloadCSV}`}
+              onClick={handleShowStatsButton}
             >
               Afișează statistica
             </Button>
