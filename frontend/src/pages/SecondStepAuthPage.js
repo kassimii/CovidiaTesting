@@ -23,6 +23,9 @@ const SecondStepAuthPage = ({ history }) => {
     if (userInfo) {
       history.push('/home');
     }
+    if (!userInfoFirstStepAuth) {
+      history.push('/login');
+    }
   }, [history, userInfo, dispatch]);
 
   const handle2FAComplete = (sigResponse) => {
