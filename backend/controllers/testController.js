@@ -362,8 +362,78 @@ const sendSMSPatient = asyncHandler(async (req, res) => {
 //@desc Get all tests for the last x days
 //@route GET /api/tests/stats?days=
 //@access Private
+
+const filterByGender = (gender, testList) => {
+  if (gender === '0' || !gender) return testList;
+
+  const genderTests = testList.filter((test) => {
+    const genderId = parseInt(gender);
+
+    if (
+      test.patient.cnp.startsWith(gender) ||
+      test.patient.cnp.startsWith((genderId + 4).toString())
+    )
+      return true;
+    return false;
+  });
+
+  return genderTests;
+};
+
+const filterByAge = (age, testList) => {
+  const currentYear = new Date().getFullYear();
+  const yearPeriods = [
+    currentYear % 100,
+    (currentYear - 30) % 100,
+    (currentYear - 40) % 100,
+    (currentYear - 50) % 100,
+    (currentYear - 60) % 100,
+    (currentYear - 70) % 100,
+  ];
+
+  if (age === '1' || !age) return testList;
+
+  const ageTests = testList.filter((test) => {
+    let birthYear = test.patient.cnp.substring(1, 3);
+    switch (age) {
+      case '2':
+        if (
+          (birthYear <= yearPeriods[0]) & (birthYear > 0) ||
+          (birthYear < 99 && birthYear > yearPeriods[1])
+        ) {
+          return true;
+        }
+        break;
+      case '3':
+        if (birthYear <= yearPeriods[1] && birthYear > yearPeriods[2])
+          return true;
+        break;
+      case '4':
+        if (birthYear <= yearPeriods[2] && birthYear > yearPeriods[3])
+          return true;
+        break;
+      case '5':
+        if (birthYear <= yearPeriods[3] && birthYear > yearPeriods[4])
+          return true;
+        break;
+      case '6':
+        if (birthYear <= yearPeriods[4] && birthYear > yearPeriods[5])
+          return true;
+        break;
+      case '7':
+        if (birthYear <= yearPeriods[5] && birthYear > yearPeriods[0])
+          return true;
+        break;
+      default:
+        return true;
+    }
+  });
+
+  return ageTests;
+};
+
 const getTestsStats = asyncHandler(async (req, res) => {
-  const { days } = req.query;
+  const { days, age, gender } = req.query;
 
   var yesterday = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
   yesterday.setUTCHours(23, 59, 59, 0);
@@ -383,6 +453,10 @@ const getTestsStats = asyncHandler(async (req, res) => {
     .populate('patient', 'cnp')
     .sort('-resultDate');
 
+  var filteredTests = filterByGender(gender, testsDB);
+
+  filteredTests = filterByAge(age, filteredTests);
+
   const periodDates = [];
   for (let i = 0; i < days; i++) {
     periodDates.push(
@@ -396,7 +470,7 @@ const getTestsStats = asyncHandler(async (req, res) => {
     let numberTotal = 0;
     let numberPositive = 0;
 
-    testsDB.map((test) => {
+    filteredTests.map((test) => {
       if (periodDates[i] === convertDate(test.resultDate)) {
         numberTotal++;
         tests[i] = {
