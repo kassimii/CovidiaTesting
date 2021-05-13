@@ -311,42 +311,44 @@ export const downloadPatientPDF = (testId) => async (dispatch, getState) => {
   }
 };
 
-export const editTest = (test) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: TEST_EDIT_REQUEST,
-    });
+export const editTest =
+  ({ testId, test }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: TEST_EDIT_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(
-      `/api/tests/edit-test/${test.testId}`,
-      test.test,
-      config
-    );
+      const { data } = await axios.put(
+        `/api/tests/edit-test/${testId}`,
+        test,
+        config
+      );
 
-    dispatch({
-      type: TEST_EDIT_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: TEST_EDIT_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: TEST_EDIT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: TEST_EDIT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? 'eroare 1' + error.response.data.message
+            : 'eroare 2' + error.message,
+      });
+    }
+  };
 
 export const sendPatientSMS = (testId) => async (dispatch, getState) => {
   try {

@@ -253,6 +253,8 @@ const verifyTodaysTests = asyncHandler(async (req, res) => {
   if (todaysTests === 0) {
     res.send('No tests today');
     return;
+  } else {
+    res.end();
   }
 });
 
@@ -284,15 +286,15 @@ const downloadPdf = asyncHandler(async (req, res) => {
 });
 
 //@desc Edit test
-//@route PUT /api/tests/:testId
+//@route PUT /api/tests/edit-test/:testId
 //@access Private/Admin
 const editTest = asyncHandler(async (req, res) => {
   const test = await Test.findById(req.params.testId);
 
   if (test) {
-    test.prelevationDate = req.body.prelevationDate || test.prelevationDate;
-    test.resultDate = req.body.resultDate || test.resultDate;
-    test.status = req.body.status || test.status;
+    test.prelevationDate = req.body.prelevationDate;
+    test.resultDate = req.body.resultDate;
+    test.status = req.body.status;
 
     const updatedTest = await test.save();
     res.json(updatedTest);

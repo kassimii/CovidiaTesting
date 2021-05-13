@@ -247,7 +247,7 @@ export const CSVFileReducer = (state = { fileUrl: {} }, action) => {
   }
 };
 
-export const verifyTestsReducer = (state = { status: {} }, action) => {
+export const verifyTestsReducer = (state = { status: '' }, action) => {
   switch (action.type) {
     case TEST_VERIFY_REQUEST:
       return {
@@ -264,7 +264,7 @@ export const verifyTestsReducer = (state = { status: {} }, action) => {
         error: action.payload,
       };
     case TEST_VERIFY_RESET:
-      return { status: {} };
+      return { status: '' };
     default:
       return state;
   }

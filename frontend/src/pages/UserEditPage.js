@@ -54,7 +54,11 @@ const UserEditPage = ({ match, history }) => {
   const validateForm = () => {
     let temp = {};
     temp.phoneNumber =
-      phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
+      phoneNumber && phoneNumber !== ''
+        ? phoneNumber.length > 9
+          ? ''
+          : 'Introduceți un număr de telefon corect'
+        : '';
     temp.email = /\S+@\S+\.\S+/.test(email)
       ? ''
       : 'Adresa de email nu este validă';
@@ -253,7 +257,10 @@ const UserEditPage = ({ match, history }) => {
                   variant='outlined'
                   color='primary'
                   className={classes.buttonHalf}
-                  onClick={() => history.goBack()}
+                  onClick={() => {
+                    history.goBack();
+                    dispatch({ type: USER_UPDATE_RESET });
+                  }}
                 >
                   Anulare
                 </Button>

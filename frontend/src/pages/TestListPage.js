@@ -19,7 +19,11 @@ import Loader from '../components/Loader';
 import TestInfoModal from '../components/TestInfoModal';
 import TestEditModal from '../components/TestEditModal';
 import TableAdminTests from '../components/TableAdminTests';
-import { getTests, generateCSVFileForDSP } from '../redux/actions/testActions';
+import {
+  getTests,
+  verifyTodaysTests,
+  generateCSVFileForDSP,
+} from '../redux/actions/testActions';
 import { getAdminLogList } from '../redux/actions/adminLogActions';
 import {
   TEST_DSP_CSV_RESET_SUCCESS,
@@ -45,9 +49,6 @@ const TestListPage = ({ history }) => {
   const verifyTests = useSelector((state) => state.verifyTests);
   const { status: statusTests } = verifyTests;
 
-  const testEdit = useSelector((state) => state.testEdit);
-  const { success: successTestEdit } = testEdit;
-
   const CSVFile = useSelector((state) => state.CSVFile);
   const {
     successToast: successToastCSV,
@@ -59,6 +60,7 @@ const TestListPage = ({ history }) => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getTests());
       dispatch(getAdminLogList());
+      dispatch(verifyTodaysTests());
 
       if (successToastCSV) {
         toast.success('Fisier CSV generat cu success!', {
@@ -71,7 +73,7 @@ const TestListPage = ({ history }) => {
     } else {
       history.push('/login');
     }
-  }, [dispatch, history, userInfo, successToastCSV, fileUrl, successTestEdit]);
+  }, [dispatch, history, userInfo, successToastCSV, fileUrl]);
 
   const adminLogHandler = () => {
     history.push('/admin/log');
@@ -130,17 +132,19 @@ const TestListPage = ({ history }) => {
         </Grid>
 
         <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
-          <ThemeProvider theme={theme}>
-            <Button
-              variant='contained'
-              color='primary'
-              startIcon={<NoteAdd />}
-              className={classes.buttonAdmin}
-              onClick={() => dispatch(generateCSVFileForDSP())}
-            >
-              Generează CSV
-            </Button>
-          </ThemeProvider>
+          {statusTests === '' && (
+            <ThemeProvider theme={theme}>
+              <Button
+                variant='contained'
+                color='primary'
+                startIcon={<NoteAdd />}
+                className={classes.buttonAdmin}
+                onClick={() => dispatch(generateCSVFileForDSP())}
+              >
+                Generează CSV
+              </Button>
+            </ThemeProvider>
+          )}
         </Grid>
 
         <Grid item xs={5} sm={5} md={5} lg={3} xl={3}>
