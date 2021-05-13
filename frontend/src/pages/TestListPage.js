@@ -163,7 +163,7 @@ const TestListPage = ({ history }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='error'>A apărut o eroare!</Message>
+        <Message variant='error'>{error}</Message>
       ) : (
         <Grid container justify='center'>
           <Grid item xs={12} sm={12} md={12} lg='auto' xl='auto'>

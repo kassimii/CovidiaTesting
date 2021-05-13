@@ -76,7 +76,7 @@ const UserListPage = ({ history }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='error'>A apărut o eroare!</Message>
+        <Message variant='error'>{error}</Message>
       ) : (
         <>
           <TableAdminUsers users={users} history={history} />

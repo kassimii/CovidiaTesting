@@ -2,9 +2,15 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 const TestsChart = ({ stats }) => {
-  const statsLabels = stats.map((test) => test.date);
-  const statsTotals = stats.map((test) => test.total);
-  const statsPositives = stats.map((test) => test.positive);
+  var statsLabels = [];
+  var statsTotals = [];
+  var statsPositives = [];
+
+  if (stats) {
+    statsLabels = stats.map((test) => test.date);
+    statsTotals = stats.map((test) => test.total);
+    statsPositives = stats.map((test) => test.positive);
+  }
 
   return (
     <>
