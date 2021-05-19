@@ -125,7 +125,6 @@ const ProfilePage = ({ location, history }) => {
         <Form.Group controlId='phoneNumber'>
           <ThemeProvider theme={theme}>
             <TextField
-              required
               variant='outlined'
               label='Număr de telefon'
               fullWidth
