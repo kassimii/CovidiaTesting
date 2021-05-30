@@ -229,9 +229,9 @@ const createUser = asyncHandler(async (req, res) => {
   });
 
   var mailOptions = {
-    from: `CovidTesting <${process.env.TRANSPORTER_EMAIL}>`,
+    from: `Covidia Testing <${process.env.TRANSPORTER_EMAIL}>`,
     to: email,
-    subject: 'Cont creat pe platforma CovidTesting',
+    subject: 'Cont creat pe platforma Covidia Testing',
     text: `
     Email: ${email} 
     Parola: ${randomPassword}`,

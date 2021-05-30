@@ -110,7 +110,7 @@ const sendTestPatientPDF = asyncHandler(async (req, res) => {
               },
             });
             var mailOptions = {
-              from: `COVIDTesting <${process.env.TRANSPORTER_EMAIL}>`,
+              from: `Covidia Testing <${process.env.TRANSPORTER_EMAIL}>`,
               to: `${test.patient.email}`,
               subject: 'Rezultate test PCR',
               text: 'Atașat aveți buletinul de analize.',
