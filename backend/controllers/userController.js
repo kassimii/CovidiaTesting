@@ -204,7 +204,7 @@ const createUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(404);
+    res.status(409);
     throw new Error('Există deja un utilizator cu această adresă de email.');
   }
 

@@ -20,7 +20,7 @@ const addPatient = asyncHandler(async (req, res) => {
   const patientExists = await Patient.findOne({ cnp });
 
   if (patientExists) {
-    res.status(404);
+    res.status(409);
     throw new Error('Pacientul este deja înregistrat!');
   }
 
