@@ -38,9 +38,8 @@ const PatientPage = ({ history, match }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [passportId, setPassportId] = useState('');
-  const [differentResidenceAddress, setDifferentResidenceAddress] = useState(
-    false
-  );
+  const [differentResidenceAddress, setDifferentResidenceAddress] =
+    useState(false);
   const [addressResidence, setAddressResidence] = useState(null);
 
   const [addTestModalShow, setAddTestModalShow] = useState(false);
@@ -361,7 +360,7 @@ const PatientPage = ({ history, match }) => {
           </Grid>
         )}
 
-        <Grid item className='mx-4'>
+        <Grid item className='mx-3'>
           <Grid container justify='space-between' className='mb-3 ml-3 pr-3'>
             <Grid item>
               <Typography variant='h5'>Istoric teste</Typography>
