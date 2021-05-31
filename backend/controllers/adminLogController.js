@@ -14,6 +14,8 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
     modifiedResultDate,
     prevStatus,
     modifiedStatus,
+    prevTestReportNumber,
+    modifiedTestReportNumber,
     modifiedBy,
   } = req.body;
 
@@ -27,6 +29,8 @@ const addAdminLogEntry = asyncHandler(async (req, res) => {
       modifiedResultDate,
       prevStatus,
       modifiedStatus,
+      prevTestReportNumber,
+      modifiedTestReportNumber,
       modifiedBy,
     });
 

@@ -9,6 +9,7 @@ import {
   Select,
   Grid,
   FormHelperText,
+  Input,
 } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -29,10 +30,12 @@ const TestEditModal = (props) => {
   const [prevPrelevationDate, setPrevPrelevationDate] = useState(new Date());
   const [prevResultDate, setPrevResultDate] = useState(new Date());
   const [prevTestResult, setPrevTestResult] = useState('-');
+  const [prevTestReportNumber, setPrevTestReportNumber] = useState(0);
 
   const [prelevationDate, setPrelevationDate] = useState(new Date());
   const [resultDate, setResultDate] = useState(new Date());
   const [testResult, setTestResult] = useState('-');
+  const [testReportNumber, setTestReportNumber] = useState(0);
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -53,6 +56,9 @@ const TestEditModal = (props) => {
 
       setTestResult(props.test.status);
       setPrevTestResult(props.test.status);
+
+      setTestReportNumber(props.test.testReportNumber);
+      setPrevTestReportNumber(props.test.testReportNumber);
     }
   }, [props.test]);
 
@@ -77,6 +83,11 @@ const TestEditModal = (props) => {
       adminLogEntry.modifiedStatus = testResult;
     }
 
+    if (prevTestReportNumber !== testReportNumber) {
+      adminLogEntry.prevTestReportNumber = prevTestReportNumber;
+      adminLogEntry.modifiedTestReportNumber = testReportNumber;
+    }
+
     return adminLogEntry;
   };
 
@@ -96,6 +107,7 @@ const TestEditModal = (props) => {
             prelevationDate: prelevationDate,
             resultDate: resultDate,
             status: testResult,
+            testReportNumber: testReportNumber,
           },
         })
       );
@@ -184,30 +196,44 @@ const TestEditModal = (props) => {
             </Grid>
 
             <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-              <ThemeProvider theme={theme}>
-                <FormControl variant='outlined' style={{ width: '80%' }}>
-                  <InputLabel htmlFor='outlined-age-native-simple'>
-                    Rezultat
-                  </InputLabel>
-                  <Select
-                    native
-                    value={testResult}
-                    onChange={(e) => setTestResult(e.target.value)}
-                    label='Rezultat'
-                    inputProps={{
-                      name: 'rezulat',
-                      id: 'outlined-age-native-simple',
-                    }}
-                  >
-                    <option aria-label='None' value='-'>
-                      -
-                    </option>
-                    <option value='Pozitiv'>Pozitiv</option>
-                    <option value='Negativ'>Negativ</option>
-                    <option value='Neconcludent'>Neconcludent</option>
-                  </Select>
-                </FormControl>
-              </ThemeProvider>
+              <Grid container direction='column' className='mb-4'>
+                <ThemeProvider theme={theme}>
+                  <FormControl variant='outlined' style={{ width: '80%' }}>
+                    <InputLabel htmlFor='outlined-age-native-simple'>
+                      Rezultat
+                    </InputLabel>
+                    <Select
+                      native
+                      value={testResult}
+                      onChange={(e) => setTestResult(e.target.value)}
+                      label='Rezultat'
+                      inputProps={{
+                        name: 'rezulat',
+                        id: 'outlined-age-native-simple',
+                      }}
+                    >
+                      <option aria-label='None' value='-'>
+                        -
+                      </option>
+                      <option value='Pozitiv'>Pozitiv</option>
+                      <option value='Negativ'>Negativ</option>
+                      <option value='Neconcludent'>Neconcludent</option>
+                    </Select>
+                  </FormControl>
+                </ThemeProvider>
+              </Grid>
+
+              <Grid container direction='column'>
+                <InputLabel>Nr. buletin analize</InputLabel>
+                <ThemeProvider theme={theme}>
+                  <Input
+                    type='number'
+                    value={testReportNumber}
+                    onChange={(e) => setTestReportNumber(e.target.value)}
+                    style={{ width: '80%' }}
+                  />
+                </ThemeProvider>
+              </Grid>
             </Grid>
           </Grid>
         </Modal.Body>

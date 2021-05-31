@@ -95,6 +95,17 @@ const TableRowAdminLog = ({ adminLogEntry }) => {
                       </TableCell>
                     </TableRow>
                   )}
+                  {adminLogEntry.prevTestReportNumber && (
+                    <TableRow>
+                      <TableCell>Nr. buletin analize</TableCell>
+                      <TableCell align='center'>
+                        {adminLogEntry.prevTestReportNumber}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {adminLogEntry.modifiedTestReportNumber}
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </Box>

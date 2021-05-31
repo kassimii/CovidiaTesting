@@ -295,6 +295,7 @@ const editTest = asyncHandler(async (req, res) => {
     test.prelevationDate = req.body.prelevationDate;
     test.resultDate = req.body.resultDate;
     test.status = req.body.status;
+    test.testReportNumber = req.body.testReportNumber;
 
     const updatedTest = await test.save();
     res.json(updatedTest);

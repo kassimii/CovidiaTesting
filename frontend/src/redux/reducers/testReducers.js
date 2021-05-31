@@ -169,6 +169,7 @@ export const testListAdminReducer = (state = { tests: [] }, action) => {
             status: action.payload.status,
             resultDate: action.payload.resultDate,
             prelevationDate: action.payload.prelevationDate,
+            testReportNumber: action.payload.testReportNumber,
           };
         else return test;
       });

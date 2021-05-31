@@ -27,6 +27,12 @@ const adminLogSchema = mongoose.Schema(
       enum: ['Pozitiv', 'Negativ', 'Neconcludent', '-', null],
       type: String,
     },
+    prevTestReportNumber: {
+      type: Number,
+    },
+    modifiedTestReportNumber: {
+      type: Number,
+    },
     modifiedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
