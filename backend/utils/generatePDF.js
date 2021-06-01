@@ -217,7 +217,7 @@ function insertDataIntoTable(doc, testInfo) {
   dataInRowFirst(doc, `${testInfo.patient.name}`, startY + 5);
   dataInRowFirst(doc, `${testInfo.patient.surname}`, startY + 25);
   dataInRowFirst(doc, `${testInfo.patient.cnp}`, startY + 45);
-  dataInRowFirst(doc, 'Timis', startY + 65);
+  dataInRowFirst(doc, 'Timiș', startY + 65);
   dataInRowFirst(doc, `${testInfo.labId}`, startY + 85);
 
   dataInRowSecond(doc, `${convertDate(testInfo.prelevationDate)}`, startY + 5);

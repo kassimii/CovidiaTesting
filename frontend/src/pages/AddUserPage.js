@@ -61,7 +61,7 @@ const AddUserPage = ({ history }) => {
     let temp = {};
     temp.phoneNumber =
       phoneNumber !== ''
-        ? phoneNumber.length > 9
+        ? phoneNumber.length > 9 && phoneNumber.length < 16
           ? ''
           : 'Introduceți un număr de telefon corect'
         : '';

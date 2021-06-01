@@ -24,9 +24,8 @@ const PatientFormPage = ({ history }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [passportId, setPassportId] = useState('');
-  const [differentResidenceAddress, setDifferentResidenceAddress] = useState(
-    false
-  );
+  const [differentResidenceAddress, setDifferentResidenceAddress] =
+    useState(false);
   const [addressResidence, setAddressResidence] = useState('');
   const [message, setMessage] = useState('');
   const [emptyFieldError, setEmptyFieldError] = useState({});
@@ -44,7 +43,9 @@ const PatientFormPage = ({ history }) => {
     let temp = {};
     temp.cnp = cnp.length === 13 ? '' : 'Introduceți un CNP valid';
     temp.phoneNumber =
-      phoneNumber.length > 9 ? '' : 'Introduceți un număr de telefon corect';
+      phoneNumber.length > 9 && phoneNumber.length < 16
+        ? ''
+        : 'Introduceți un număr de telefon corect';
     temp.email =
       email !== ''
         ? /\S+@\S+\.\S+/.test(email)
