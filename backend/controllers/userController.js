@@ -290,7 +290,7 @@ const sendResetPasswordLink = asyncHandler(async (req, res) => {
     });
 
     var mailOptions = {
-      from: `CovidTesting <${process.env.TRANSPORTER_EMAIL}>`,
+      from: `Covidia Testing <${process.env.TRANSPORTER_EMAIL}>`,
       to: user[0].email,
       subject: 'Resetarea parolei',
       html: `<p>Pentru a reseta parola apăsați aici: <a href=${resetLink}>Resetare parolă</a></p> `,
