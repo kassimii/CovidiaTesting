@@ -1,13 +1,13 @@
 import { createMuiTheme, makeStyles, fade } from '@material-ui/core/styles';
 
 const colours = {
-  primaryDark: '#50487d',
-  primaryMedium: '#603f83',
-  primaryLight: '#745085',
-  primaryUltraLight: '#cc99cc',
-  secondaryUltraDark: '#555555',
-  secondaryDark: '#777777',
-  secondaryMedium: '#cccccc',
+  primaryDark: '#6d4794',
+  primaryMedium: '#865db1',
+  primaryLight: '#a07fc2',
+  primaryUltraLight: '#ad91ca',
+  secondaryUltraDark: '#626262',
+  secondaryDark: '#a2a2a2',
+  secondaryMedium: '#f2f2f2',
   secondaryLight: '#f8f8f8',
   green: '#329932',
   greenLight: '#b2d8b2',
@@ -36,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
     width: '25%',
     height: 45,
     fontSize: 18,
-    boxShadow: `2px 2px 5px 2px ${colours.secondaryMedium}`,
+    boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
     '&:hover': {
       backgroundColor: colours.secondaryMedium,
-      boxShadow: `2px 2px 5px 2px ${colours.secondaryDark}`,
+      boxShadow: `2px 2px 5px 2px ${colours.secondaryUltraDark}`,
     },
   },
   buttonMd: {
@@ -154,7 +154,7 @@ const useStyles = makeStyles((theme) => ({
   buttonDownloadCSV: {
     color: colours.secondaryUltraDark,
     backgroundColor: colours.secondaryLight,
-    boxShadow: `2px 2px 5px 2px ${colours.secondaryMedium}`,
+    boxShadow: `2px 2px 5px 1px ${colours.secondaryDark}`,
     '&:hover': {
       backgroundColor: colours.secondaryLight,
       boxShadow: `2px 2px 5px 2px ${colours.secondaryUltraDark}`,
@@ -283,6 +283,7 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryUltraDarkColour: {
     color: colours.secondaryUltraDark,
+    backgroundColor: colours.secondaryMedium,
     '&:hover': {
       backgroundColor: colours.secondaryMedium,
     },

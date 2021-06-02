@@ -99,6 +99,8 @@ const TestEditModal = (props) => {
   const onUpdateHandler = () => {
     if (testResult === '-') {
       setErrorMessage('Adăgați rezultatul testului!');
+    } else if (testReportNumber === '') {
+      setErrorMessage('Adăgați numărul buletinului de  analize!');
     } else {
       dispatch(
         editTest({
