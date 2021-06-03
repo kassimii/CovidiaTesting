@@ -4,11 +4,7 @@ import generateToken from '../utils/generateToken.js';
 
 //node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit
 
-const prelevationToken = generateToken('60b6425995a4432c88e21087');
-const prelevationBearerToken = `Bearer ${prelevationToken}`;
-const labToken = generateToken('60b6425995a4432c88e21089');
-const labBearerToken = `Bearer ${labToken}`;
-const adminToken = generateToken('60b6425995a4432c88e21086');
+const adminToken = generateToken('60a50e55645c2b0808562939');
 const adminBearerToken = `Bearer ${adminToken}`;
 
 const notExistingPatientId = '60b637c60491a40721008474';
@@ -21,122 +17,6 @@ let createdPatient;
 let createdPatientForTest;
 let createdTest;
 
-//Patient routes
-
-// describe('Post Patient', () => {
-//   it('should create a new patient', async (done) => {
-//     const res = await request(app)
-//       .post('/api/patients')
-//       .set('Authorization', prelevationBearerToken)
-//       .send({
-//         name: 'Cristescu',
-//         surname: 'Marcel',
-//         cnp: '1550707354432',
-//         addressID: 'Str. Timiș, bl. 34A, ap.2, Timișoara, Timiș',
-//         phoneNumber: '0749683909',
-//       });
-//     createdPatient = res.body._id;
-//     expect(res.statusCode).toEqual(201);
-//     done();
-//   });
-// });
-
-// describe('Post Patient', () => {
-//   it('should create a new patient for testing', async (done) => {
-//     const res = await request(app)
-//       .post('/api/patients')
-//       .set('Authorization', prelevationBearerToken)
-//       .send({
-//         name: 'Paulescu',
-//         surname: 'Anamaria',
-//         cnp: '2550707354432',
-//         addressID: 'Str. Linistei, nr. 33, Timișoara, Timiș',
-//         phoneNumber: '0749683909',
-//       });
-//     createdPatientForTest = res.body._id;
-//     expect(res.statusCode).toEqual(201);
-//     done();
-//   });
-// });
-
-// describe('Post Patient with existing CNP', () => {
-//   it('should throw error already existing patient', async (done) => {
-//     const res = await request(app)
-//       .post('/api/patients')
-//       .set('Authorization', prelevationBearerToken)
-//       .send({
-//         name: 'Cristescu',
-//         surname: 'Marcel-Dorin',
-//         cnp: '1550707354432',
-//         addressID: 'Str. Timiș, nr. 4, Timișoara, Timiș',
-//         phoneNumber: '0749683909',
-//       });
-//     expect(res.statusCode).toEqual(409);
-//     done();
-//   });
-// });
-
-// describe('Get existing patient', () => {
-//   it('should return a pacient', async (done) => {
-//     const res = await request(app)
-//       .get(`/api/patients/${createdPatient}`)
-//       .set('Authorization', prelevationBearerToken);
-//     expect(res.statusCode).toEqual(200);
-//     done();
-//   });
-// });
-
-// describe('Get not existing patient', () => {
-//   it('should return not existing patient', async (done) => {
-//     const res = await request(app)
-//       .get(`/api/patients/${notExistingPatientId}`)
-//       .set('Authorization', prelevationBearerToken);
-//     expect(res.statusCode).toEqual(404);
-//     done();
-//   });
-// });
-
-// describe('Update existing patient', () => {
-//   it('should return updated info', async (done) => {
-//     const res = await request(app)
-//       .put(`/api/patients/${createdPatient}`)
-//       .set('Authorization', prelevationBearerToken)
-//       .send({
-//         surname: 'Marcel',
-//       });
-//     expect(res.statusCode).toEqual(200);
-//     done();
-//   });
-// });
-
-// describe('Update not existing patient', () => {
-//   it('should return no patient to update', async (done) => {
-//     const res = await request(app)
-//       .put(`/api/patients/${notExistingPatientId}`)
-//       .set('Authorization', prelevationBearerToken);
-//     expect(res.statusCode).toEqual(404);
-//     done();
-//   });
-// });
-
-// describe('Get all patients', () => {
-//   it('should return all patients', async (done) => {
-//     const res = await request(app)
-//       .get(`/api/patients`)
-//       .set('Authorization', prelevationBearerToken);
-//     expect(res.statusCode).toEqual(200);
-//     done();
-//   });
-// });
-
-// describe('Get all patients not logged in', () => {
-//   it('should return not authorized to list patients', async (done) => {
-//     const res = await request(app).get(`/api/patients`);
-//     expect(res.statusCode).toEqual(401);
-//     done();
-//   });
-// });
-
 //User routes
 
 describe('Post Prelevation User', () => {
@@ -145,8 +25,8 @@ describe('Post Prelevation User', () => {
       .post('/api/users')
       .set('Authorization', adminBearerToken)
       .send({
-        name: 'Albulescu Șerban',
-        email: 'albulescu.serban@example.com',
+        name: 'Pasculescu Alin',
+        email: 'alin.pasculescu@example.com',
         phoneNumber: '0749683909',
         isPrelevationWorker: true,
       });
@@ -162,8 +42,8 @@ describe('Post Lab User', () => {
       .post('/api/users')
       .set('Authorization', adminBearerToken)
       .send({
-        name: 'Minculescu Ștefania',
-        email: 'stef.minculescu@example.com',
+        name: 'Nincu Paula',
+        email: 'paula.nincu@example.com',
         phoneNumber: '0749683909',
         isLabWorker: true,
       });
@@ -182,13 +62,18 @@ describe('Post Admin User', () => {
         name: 'Tite Raluca',
         email: 'ralutite@example.com',
         phoneNumber: '0749683909',
-        idAdmin: true,
+        isAdmin: true,
       });
     createdAdminUser = res.body._id;
     expect(res.statusCode).toEqual(201);
     done();
   });
 });
+
+const prelevationToken = generateToken(createdPrelevationUser);
+const prelevationBearerToken = `Bearer ${prelevationToken}`;
+const labToken = generateToken(createdLabUser);
+const labBearerToken = `Bearer ${labToken}`;
 
 describe('Post User from non admin account', () => {
   it('should throw error not logged in as admin for create user', async (done) => {
@@ -309,10 +194,126 @@ describe('Get all users from non admin account', () => {
   });
 });
 
+//Patient routes
+
+describe('Post Patient', () => {
+  it('should create a new patient', async (done) => {
+    const res = await request(app)
+      .post('/api/patients')
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        name: 'Cristescu',
+        surname: 'Marcel',
+        cnp: '1550707354432',
+        addressID: 'Str. Timiș, bl. 34A, ap.2, Timișoara, Timiș',
+        phoneNumber: '0749683909',
+      });
+    createdPatient = res.body._id;
+    expect(res.statusCode).toEqual(201);
+    done();
+  });
+});
+
+describe('Post Patient', () => {
+  it('should create a new patient for testing', async (done) => {
+    const res = await request(app)
+      .post('/api/patients')
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        name: 'Paulescu',
+        surname: 'Anamaria',
+        cnp: '2550707354432',
+        addressID: 'Str. Linistei, nr. 33, Timișoara, Timiș',
+        phoneNumber: '0749683909',
+      });
+    createdPatientForTest = res.body._id;
+    expect(res.statusCode).toEqual(201);
+    done();
+  });
+});
+
+describe('Post Patient with existing CNP', () => {
+  it('should throw error already existing patient', async (done) => {
+    const res = await request(app)
+      .post('/api/patients')
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        name: 'Cristescu',
+        surname: 'Marcel-Dorin',
+        cnp: '1550707354432',
+        addressID: 'Str. Timiș, nr. 4, Timișoara, Timiș',
+        phoneNumber: '0749683909',
+      });
+    expect(res.statusCode).toEqual(409);
+    done();
+  });
+});
+
+describe('Get existing patient', () => {
+  it('should return a pacient', async (done) => {
+    const res = await request(app)
+      .get(`/api/patients/${createdPatient}`)
+      .set('Authorization', prelevationBearerToken);
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Get not existing patient', () => {
+  it('should return not existing patient', async (done) => {
+    const res = await request(app)
+      .get(`/api/patients/${notExistingPatientId}`)
+      .set('Authorization', prelevationBearerToken);
+    expect(res.statusCode).toEqual(404);
+    done();
+  });
+});
+
+describe('Update existing patient', () => {
+  it('should return updated info', async (done) => {
+    const res = await request(app)
+      .put(`/api/patients/${createdPatient}`)
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        surname: 'Marcel',
+      });
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Update not existing patient', () => {
+  it('should return no patient to update', async (done) => {
+    const res = await request(app)
+      .put(`/api/patients/${notExistingPatientId}`)
+      .set('Authorization', prelevationBearerToken);
+    expect(res.statusCode).toEqual(404);
+    done();
+  });
+});
+
+describe('Get all patients', () => {
+  it('should return all patients', async (done) => {
+    const res = await request(app)
+      .get(`/api/patients`)
+      .set('Authorization', prelevationBearerToken);
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Get all patients not logged in', () => {
+  it('should return not authorized to list patients', async (done) => {
+    const res = await request(app).get(`/api/patients`);
+    expect(res.statusCode).toEqual(401);
+    done();
+  });
+});
+
 //Test routes
 
-describe('Create test from prelevation account', () => {
-  it('should return created test', async (done) => {
+describe('Create test', () => {
+  it('should return successfully created test', async (done) => {
     const res = await request(app)
       .post(`/api/tests`)
       .set('Authorization', prelevationBearerToken)
@@ -322,7 +323,107 @@ describe('Create test from prelevation account', () => {
         testReportNumber: 10,
         collectedBy: createdPrelevationUser,
       });
+    createdTest = res.body._id;
     expect(res.statusCode).toEqual(201);
+    done();
+  });
+});
+
+describe('Create test not logged in', () => {
+  it('should return error cannot create test entry', async (done) => {
+    const res = await request(app).post(`/api/tests`).send({
+      prelevationDate: new Date(),
+      patient: createdPatientForTest,
+      testReportNumber: 10,
+      collectedBy: createdPrelevationUser,
+    });
+    expect(res.statusCode).toEqual(401);
+    done();
+  });
+});
+
+describe('Add test result', () => {
+  it('should return test result successfully added', async (done) => {
+    const res = await request(app)
+      .put(`/api/tests/${createdTest}`)
+      .set('Authorization', labBearerToken)
+      .send({
+        resultDate: new Date(),
+        status: 'Pozitiv',
+        resultBy: createdLabUser,
+      });
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Add test result with wrong status', () => {
+  it('should return test status not valid', async (done) => {
+    const res = await request(app)
+      .put(`/api/tests`)
+      .set('Authorization', labBearerToken)
+      .send({
+        resultDate: new Date(),
+        status: 'Positiv',
+        resultBy: createdLabUser,
+      });
+    expect(res.statusCode).toEqual(400);
+    done();
+  });
+});
+
+describe('Get all tests for patient', () => {
+  it('should return all tests for patient', async (done) => {
+    const res = await request(app)
+      .get(`/api/tests/patient/${createdPatientForTest}`)
+      .set('Authorization', prelevationBearerToken);
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Get all tests admin', () => {
+  it('should return all tests', async (done) => {
+    const res = await request(app)
+      .get(`/api/tests`)
+      .set('Authorization', adminBearerToken);
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Get all tests non admin', () => {
+  it('should return not authorised to get all tests', async (done) => {
+    const res = await request(app)
+      .get(`/api/tests`)
+      .set('Authorization', labBearerToken);
+    expect(res.statusCode).toEqual(401);
+    done();
+  });
+});
+
+describe('Edit test admin', () => {
+  it('should return test successfully edited', async (done) => {
+    const res = await request(app)
+      .get(`/api/tests`)
+      .set('Authorization', adminBearerToken)
+      .send({
+        resultDate: new Date(),
+      });
+    expect(res.statusCode).toEqual(200);
+    done();
+  });
+});
+
+describe('Edit test non admin', () => {
+  it('should return not authorised to edit test', async (done) => {
+    const res = await request(app)
+      .get(`/api/tests`)
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        resultDate: new Date(),
+      });
+    expect(res.statusCode).toEqual(401);
     done();
   });
 });

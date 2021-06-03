@@ -225,7 +225,7 @@ const MUIHeader = ({ history }) => {
                         className={classes.navbarButton}
                         onClick={() => handleButtonClick('/pacienti/adaugare')}
                       >
-                        Adaugă pacienți
+                        Adaugă pacient
                       </Button>
                     )}
 

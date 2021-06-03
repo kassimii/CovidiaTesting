@@ -29,7 +29,7 @@ const addTestEntry = asyncHandler(async (req, res) => {
 });
 
 //@desc Get tests for patient by id
-//@route GET /api/tests/:patientId
+//@route GET /api/tests/patient/:patientId
 //@access Private
 const getTestsForPatient = asyncHandler(async (req, res) => {
   const tests = await Test.find({ patient: req.params.patientId }).sort(
