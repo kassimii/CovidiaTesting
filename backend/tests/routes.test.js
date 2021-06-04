@@ -19,7 +19,7 @@ let createdTest;
 
 //User routes
 
-describe('Post Prelevation User', () => {
+describe('Post prelevation user', () => {
   it('should create a new prelevation user', async (done) => {
     const res = await request(app)
       .post('/api/users')
@@ -36,7 +36,7 @@ describe('Post Prelevation User', () => {
   });
 });
 
-describe('Post Lab User', () => {
+describe('Post lab user', () => {
   it('should create a new lab user', async (done) => {
     const res = await request(app)
       .post('/api/users')
@@ -53,7 +53,7 @@ describe('Post Lab User', () => {
   });
 });
 
-describe('Post Admin User', () => {
+describe('Post admin user', () => {
   it('should create a new admin user', async (done) => {
     const res = await request(app)
       .post('/api/users')
@@ -75,8 +75,8 @@ const prelevationBearerToken = `Bearer ${prelevationToken}`;
 const labToken = generateToken(createdLabUser);
 const labBearerToken = `Bearer ${labToken}`;
 
-describe('Post User from non admin account', () => {
-  it('should throw error not logged in as admin for create user', async (done) => {
+describe('Post user from non admin account', () => {
+  it('should throw error not authorized to create user', async (done) => {
     const res = await request(app)
       .post('/api/users')
       .set('Authorization', labBearerToken)
@@ -90,8 +90,8 @@ describe('Post User from non admin account', () => {
   });
 });
 
-describe('Update Prelevation User', () => {
-  it('should update a prelevation user', async (done) => {
+describe('Update prelevation user as admin', () => {
+  it('should update prelevation user', async (done) => {
     const res = await request(app)
       .put(`/api/users/${createdPrelevationUser}`)
       .set('Authorization', adminBearerToken)
@@ -108,7 +108,7 @@ describe('Update Prelevation User', () => {
   });
 });
 
-describe('Update Prelevation User from non admin account', () => {
+describe('Update prelevation user from non admin account', () => {
   it('should throw error not logged in as admin for update', async (done) => {
     const res = await request(app)
       .put(`/api/users/${notExistingUserId}`)
@@ -155,7 +155,7 @@ describe('Get existing user', () => {
 });
 
 describe('Get existing user from non admin account', () => {
-  it('should return not authorised as admin to get user', async (done) => {
+  it('should return not authorized as admin to get user', async (done) => {
     const res = await request(app)
       .get(`/api/users/${createdPrelevationUser}`)
       .set('Authorization', prelevationBearerToken);
@@ -185,7 +185,7 @@ describe('Get all users from admin account', () => {
 });
 
 describe('Get all users from non admin account', () => {
-  it('should return not authorised to get users', async (done) => {
+  it('should return not authorized to get users', async (done) => {
     const res = await request(app)
       .get(`/api/users`)
       .set('Authorization', labBearerToken);
@@ -196,7 +196,7 @@ describe('Get all users from non admin account', () => {
 
 //Patient routes
 
-describe('Post Patient', () => {
+describe('Post patient', () => {
   it('should create a new patient', async (done) => {
     const res = await request(app)
       .post('/api/patients')
@@ -214,7 +214,7 @@ describe('Post Patient', () => {
   });
 });
 
-describe('Post Patient', () => {
+describe('Post patient for testing', () => {
   it('should create a new patient for testing', async (done) => {
     const res = await request(app)
       .post('/api/patients')
@@ -232,7 +232,7 @@ describe('Post Patient', () => {
   });
 });
 
-describe('Post Patient with existing CNP', () => {
+describe('Post patient with existing CNP', () => {
   it('should throw error already existing patient', async (done) => {
     const res = await request(app)
       .post('/api/patients')
@@ -250,7 +250,7 @@ describe('Post Patient with existing CNP', () => {
 });
 
 describe('Get existing patient', () => {
-  it('should return a pacient', async (done) => {
+  it('should return pacient', async (done) => {
     const res = await request(app)
       .get(`/api/patients/${createdPatient}`)
       .set('Authorization', prelevationBearerToken);
@@ -342,6 +342,21 @@ describe('Create test not logged in', () => {
   });
 });
 
+describe('Create test with wrong data', () => {
+  it('should return error data not valid', async (done) => {
+    const res = await request(app)
+      .post(`/api/tests`)
+      .set('Authorization', prelevationBearerToken)
+      .send({
+        prelevationDate: new Date(),
+        patient: createdPatientForTest,
+        testReportNumber: 'abc',
+      });
+    expect(res.statusCode).toEqual(500);
+    done();
+  });
+});
+
 describe('Add test result', () => {
   it('should return test result successfully added', async (done) => {
     const res = await request(app)
@@ -382,7 +397,7 @@ describe('Get all tests for patient', () => {
   });
 });
 
-describe('Get all tests admin', () => {
+describe('Get all tests as admin', () => {
   it('should return all tests', async (done) => {
     const res = await request(app)
       .get(`/api/tests`)
@@ -393,7 +408,7 @@ describe('Get all tests admin', () => {
 });
 
 describe('Get all tests non admin', () => {
-  it('should return not authorised to get all tests', async (done) => {
+  it('should return not authorized to get all tests', async (done) => {
     const res = await request(app)
       .get(`/api/tests`)
       .set('Authorization', labBearerToken);
@@ -416,7 +431,7 @@ describe('Edit test admin', () => {
 });
 
 describe('Edit test non admin', () => {
-  it('should return not authorised to edit test', async (done) => {
+  it('should return not authorized to edit test', async (done) => {
     const res = await request(app)
       .get(`/api/tests`)
       .set('Authorization', prelevationBearerToken)
@@ -431,7 +446,7 @@ describe('Edit test non admin', () => {
 //Delete users
 
 describe('Delete existing user from non admin account', () => {
-  it('should return not authorised as admin to delete user', async (done) => {
+  it('should return not authorized as admin to delete user', async (done) => {
     const res = await request(app)
       .delete(`/api/users/${createdPrelevationUser}`)
       .set('Authorization', prelevationBearerToken);
