@@ -223,14 +223,18 @@ const TableAdminTests = ({
                       })}
 
                       <TableCell align='center'>
-                        <IconButton
-                          onClick={() => {
-                            setCurrentTest(test);
-                            setTestEditShow(true);
-                          }}
-                        >
-                          <Edit className={classes.secondaryMediumColour} />
-                        </IconButton>
+                        {!test.sentToDSP &&
+                          !test.sentToPatient &&
+                          !test.sentToPatientSMS && (
+                            <IconButton
+                              onClick={() => {
+                                setCurrentTest(test);
+                                setTestEditShow(true);
+                              }}
+                            >
+                              <Edit className={classes.secondaryMediumColour} />
+                            </IconButton>
+                          )}
                       </TableCell>
                     </TableRow>
                   );

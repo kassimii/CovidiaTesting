@@ -234,7 +234,7 @@ const PatientFormPage = ({ history }) => {
         )}
 
         <Button type='submit' className={classes.buttonMdPrimaryMedium}>
-          Adauga pacient
+          Adaugă pacient
         </Button>
       </Form>
     </FormContainer>
